@@ -1,4 +1,4 @@
-package com.project.domain;
+package com.project.master.domain;
 
 public enum CategoryType {
 	SPORT,

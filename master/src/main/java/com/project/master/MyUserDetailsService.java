@@ -1,4 +1,4 @@
-package com.project.controller;
+package com.project.master;
 
 import java.util.ArrayList;
 

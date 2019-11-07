@@ -1,4 +1,4 @@
-package com.project.domain;
+package com.project.master.domain;
 
 import java.sql.Date;
 
