@@ -32,7 +32,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
 		.authorizeRequests()
-		.antMatchers("/login").permitAll() 
+		.antMatchers("/login").permitAll()
+		.antMatchers("/paypal/start").permitAll()
+		.antMatchers("/paypal/pay").permitAll()
+		.antMatchers("/paypal/pay/success").permitAll()
+		.antMatchers("/paypal/pay/cancel").permitAll()
+		.antMatchers("/paypal/greeting").permitAll()
 		//.antMatchers("/demo").permitAll()
 		.antMatchers("/authenticate").permitAll().anyRequest()
 				.authenticated().and().exceptionHandling().and().sessionManagement()
