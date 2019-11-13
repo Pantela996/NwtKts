@@ -4,6 +4,7 @@ import javax.annotation.security.PermitAll;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.master.MyUserDetailsService;
 import com.project.master.util.AuthenticationRequest;
 import com.project.master.util.AuthenticationResponse;
 import com.project.master.util.JwtUtil;
@@ -34,7 +36,7 @@ public class LoginController {
 	private JwtUtil jwtTokenUtil;
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private MyUserDetailsService userDetailsService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<String> login(@RequestBody AuthenticationRequest authenticationRequest) {

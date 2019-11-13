@@ -7,7 +7,7 @@ public class Admin extends User {
 
 	public Admin(Long id, String username, String password) {
 		super(id, username, password);
-		this.type = UserType.SUPERADMIN;
+		//this.type = UserType.SUPERADMIN;
 	}
 
 	public Admin() {

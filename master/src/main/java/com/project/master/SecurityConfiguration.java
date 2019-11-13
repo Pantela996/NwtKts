@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private MyUserDetailsService userDetailsService;
 
 	@Autowired
 	private JwtRequestFilter jwtRequestFilter;
@@ -54,6 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
+		System.out.println();
+		System.out.println(NoOpPasswordEncoder.getInstance().toString());
 		return NoOpPasswordEncoder.getInstance();
 	}
 

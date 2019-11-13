@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Inheritance
 @Entity
-@Table(name = "user_table")
+@org.hibernate.annotations.DiscriminatorOptions(force=true)
 public class User {
 	
 	@Id
@@ -23,8 +23,10 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 	
+	/*
 	@Column(nullable = false)
 	protected UserType type;
+	*/
 
 	public User(Long id, String username, String password) {
 		this.id = id;

@@ -5,8 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+
 @EnableConfigurationProperties
-@EntityScan(basePackages = {"com.project.domain"})  // scan JPA entities
+@EntityScan(basePackages = {"com.project.master.domain"})  // scan JPA entities
 @SpringBootApplication
 public class MasterApplication {
 
