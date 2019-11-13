@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,9 +26,11 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Transactional
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		System.out.println("here");
+
 		User user = userRepository.findByUsername(username);
-		
-		System.out.println();
+
+		System.out.println(user.getUsername());
 
 		try {
 			System.out.println(user.getUsername() + "<- Nadjeni ->" + user.getPassword());
@@ -38,24 +41,16 @@ public class MyUserDetailsService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
 		} else {
-//		    	List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-//		    	for (UserAuthority ua: user.getUserAuthorities()) {
-//		    		grantedAuthorities.add(
-//		    			new SimpleGrantedAuthority(ua.getAuthority().getName()));
-//		    	}
 
 			// Java 1.8 way
 
-			/*
 			List<GrantedAuthority> grantedAuthorities = user.getUserAuthorities().stream()
 					.map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getName()))
 					.collect(Collectors.toList());
 
-			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-					grantedAuthorities);
-					*/
+			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+
 		}
-		return null;
 	}
 
 }

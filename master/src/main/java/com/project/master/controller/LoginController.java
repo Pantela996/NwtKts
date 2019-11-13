@@ -44,11 +44,14 @@ public class LoginController {
 			// Perform the authentication
 			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
 					authenticationRequest.getPassword());
+			System.out.println("password" + authenticationRequest.getPassword());
 			Authentication authentication = authenticationManager.authenticate(token);
+			System.out.println("details");
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			// Reload user details so we can generate token
 			UserDetails details = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+			
 			return new ResponseEntity<String>(jwtTokenUtil.generateToken(details), HttpStatus.OK);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
