@@ -1,10 +1,7 @@
 package com.project.master.controller;
 
-import javax.annotation.security.PermitAll;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,12 +10,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.master.MyUserDetailsService;
@@ -38,20 +34,25 @@ public class LoginController {
 	@Autowired
 	private MyUserDetailsService userDetailsService;
 
+
+
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<String> login(@RequestBody AuthenticationRequest authenticationRequest) {
 		try {
 			// Perform the authentication
-			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-					authenticationRequest.getPassword());
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+					authenticationRequest.getUsername(), authenticationRequest.getPassword());
 			System.out.println("password" + authenticationRequest.getPassword());
 			Authentication authentication = authenticationManager.authenticate(token);
 			System.out.println("details");
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+			
+			System.out.println(authentication.getAuthorities());
 
 			// Reload user details so we can generate token
 			UserDetails details = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-			
+
 			return new ResponseEntity<String>(jwtTokenUtil.generateToken(details), HttpStatus.OK);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());

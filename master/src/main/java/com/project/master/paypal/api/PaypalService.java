@@ -20,9 +20,10 @@ import com.paypal.base.rest.PayPalRESTException;
 @Service
 public class PaypalService {
 	
+	/*
 	@Autowired
 	private APIContext apiContext;
-	
+	*/
 	
 	public Payment createPayment(
 			Double total, 
@@ -56,7 +57,8 @@ public class PaypalService {
 		redirectUrls.setReturnUrl(successUrl);
 		payment.setRedirectUrls(redirectUrls);
 
-		return payment.create(apiContext);
+		//return payment.create(apiContext);
+		return null;
 	}
 	
 	public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException{
@@ -64,7 +66,8 @@ public class PaypalService {
 		payment.setId(paymentId);
 		PaymentExecution paymentExecute = new PaymentExecution();
 		paymentExecute.setPayerId(payerId);
-		return payment.execute(apiContext, paymentExecute);
+		//return payment.execute(apiContext, paymentExecute);
+		return null;
 	}
 
 }

@@ -34,11 +34,18 @@ public class Event {
 	@Column
 	private Long categoryId;
 
+	@Column
+	private String description;
+
+	@Column
+	private String user_id;
+	
 	public Event() {
 
 	}
 
-	public Event(Long id, String name, Date dateFrom, Date dateTo, Long locationId, Long hallId, Long categoryId) {
+	public Event(Long id, String name, Date dateFrom, Date dateTo, Long locationId, Long hallId, Long categoryId,
+			String description, String user) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -47,6 +54,22 @@ public class Event {
 		this.locationId = locationId;
 		this.hallId = hallId;
 		this.categoryId = categoryId;
+		this.description = description;
+		this.user_id = user;
+	}
+	
+	
+	public Event(String name, Date dateFrom, Date dateTo, Long locationId, Long hallId, Long categoryId,
+			String description, String user) {
+		super();
+		this.name = name;
+		this.dateFrom = dateFrom;
+		DateTo = dateTo;
+		this.locationId = locationId;
+		this.hallId = hallId;
+		this.categoryId = categoryId;
+		this.description = description;
+		this.user_id = user;
 	}
 
 	public Long getId() {
@@ -103,6 +126,22 @@ public class Event {
 
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getUser() {
+		return user_id;
+	}
+
+	public void setUser(String user) {
+		this.user_id = user;
 	}
 
 }
