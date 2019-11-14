@@ -20,6 +20,8 @@ public class EventLocation {
 	@Column(nullable = false)
 	private String locationCity;
 	
+	@Column(nullable = false)
+	private String user;
 	
 	
 	public EventLocation() {
@@ -31,6 +33,14 @@ public class EventLocation {
 		this.id = id;
 		this.name = name;
 		this.locationCity = locationCity;
+	}
+	
+	
+	public EventLocation(String name, String locationCity, String user) {
+		super();
+		this.name = name;
+		this.locationCity = locationCity;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -55,6 +65,14 @@ public class EventLocation {
 
 	public void setLocationCity(String locationCity) {
 		this.locationCity = locationCity;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
 	}
 
 }

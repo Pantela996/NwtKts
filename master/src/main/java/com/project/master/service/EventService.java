@@ -136,4 +136,15 @@ public class EventService {
 		return event;
 	}
 
+	public ArrayList<Event> getMyEvents(String name) {
+		ArrayList<Event> myEvents = new ArrayList<Event>();
+		ArrayList<Event> events = (ArrayList<Event>)eventRepository.findAll();
+		for (Event e: events) {
+			if(e.getUser().equalsIgnoreCase(name)) {
+				myEvents.add(e);
+			}
+		}
+		return myEvents;
+	}
+
 }

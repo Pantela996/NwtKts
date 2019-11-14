@@ -1,7 +1,6 @@
 package com.project.master.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,5 +79,20 @@ public class EventController {
 			return new ResponseEntity<Event>(new Event(), HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	@RequestMapping(value = "/myEvents", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<Event>> getMyEvents() {
+		try {
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			ArrayList<Event> events = eventService.getMyEvents(authentication.getName());
+			return new ResponseEntity<ArrayList<Event>>(events, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<ArrayList<Event>>(new ArrayList<Event>(), HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	
+	
 
 }
