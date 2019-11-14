@@ -39,6 +39,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/paypal/pay/cancel").permitAll()
 		.antMatchers("/paypal/greeting").permitAll()
 		.antMatchers("/event/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
+		.antMatchers("/event/delete").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
+		.antMatchers("/event/update").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
+		.antMatchers("/event/all").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
+		.antMatchers("/event/one").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/login").permitAll().anyRequest()
 				.authenticated().and().exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);

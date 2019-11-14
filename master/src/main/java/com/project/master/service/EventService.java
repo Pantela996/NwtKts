@@ -1,6 +1,7 @@
 package com.project.master.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,57 @@ public class EventService {
 		}
 
 		return "Success";
+	}
+
+	public String deleteEvent(String event_id) {
+		try {
+			Optional<Event> oe = eventRepository.findById(Long.valueOf(event_id));
+			if(oe.isPresent()) {
+				eventRepository.deleteById(Long.valueOf(event_id));
+			}else {
+				throw new DataException("Event does not exist");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return "Success";
+	}
+
+	public String updateEvent(String event_id, EventDTO eventDTO,String currentUser) {
+		try {
+			Optional<Event> oe = eventRepository.findById(Long.valueOf(event_id));
+			if(oe.isPresent()) {
+				eventRepository.deleteById(Long.valueOf(event_id));
+				this.createEvent(eventDTO, currentUser);
+			}else {
+				throw new DataException("Event does not exist");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "Success";
+	}
+
+	public ArrayList<Event> getAll() {
+		ArrayList<Event> events = (ArrayList<Event>)eventRepository.findAll();
+		return events;
+	}
+
+	public Event getOne(String event_id) {
+		Event event = null;
+		try {
+			Optional<Event> oe = eventRepository.findById(Long.valueOf(event_id));
+			if(oe.isPresent()) {
+				event = oe.get();
+			}else {
+				throw new DataException("Event does not exist");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return event;
 	}
 
 }
