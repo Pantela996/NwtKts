@@ -2,6 +2,8 @@ package com.project.master.controller;
 
 import java.util.ArrayList;
 
+import javax.annotation.security.PermitAll;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.master.domain.EventLocation;
 import com.project.master.dto.LocationDTO;
+import com.project.master.exception.DataException;
 import com.project.master.service.LocationService;
 
 @RestController
@@ -24,15 +27,20 @@ public class LocationController {
 	@Autowired
 	private LocationService locationService;
 
+	@PermitAll()
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ResponseEntity<String> createLocation(@RequestBody LocationDTO locationDTO) {
+
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String message = locationService.createLocation(locationDTO, authentication.getName());
+			String message = locationService.createLocation(locationDTO.getName(), locationDTO.getLocationCity(), locationDTO.getUser_id());
 			return new ResponseEntity<String>(message, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<String>("Invalid creation", HttpStatus.BAD_REQUEST);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			return new ResponseEntity<>("Failed null", HttpStatus.BAD_REQUEST);
 		}
+		
+
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -76,8 +84,7 @@ public class LocationController {
 			return new ResponseEntity<EventLocation>(new EventLocation(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
+
 	@RequestMapping(value = "/myLocations", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<EventLocation>> getMyEvents() {
 		try {
@@ -88,11 +95,7 @@ public class LocationController {
 			return new ResponseEntity<ArrayList<EventLocation>>(new ArrayList<EventLocation>(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
-	
-	
-	
-	//TO BE IMPLEMENTED : operacije nad halama u lokaciji
+
+	// TO BE IMPLEMENTED : operacije nad halama u lokaciji
 
 }
