@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
 		.authorizeRequests()
+		.antMatchers("/ticket/buy").permitAll()
 		.antMatchers("/paypal/start").permitAll()
 		.antMatchers("/paypal/pay").permitAll()
 		.antMatchers("/paypal/pay/success").permitAll()
