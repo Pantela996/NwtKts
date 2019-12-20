@@ -16,7 +16,7 @@ public class Ticket {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column
 	private int price;
 
 	@Column(nullable = false)
@@ -38,6 +38,14 @@ public class Ticket {
 		super();
 		this.id = id;
 		this.price = price;
+		this.seat_id = seat;
+		this.event = event;
+		this.user = user;
+	}
+
+	public Ticket(Long seat, Event event, User user) {
+		super();
+		this.id = id;
 		this.seat_id = seat;
 		this.event = event;
 		this.user = user;

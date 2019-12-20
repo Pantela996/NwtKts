@@ -27,15 +27,15 @@ public class Seat {
 	@Column
 	private boolean isAvailable;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	/*@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "hall_id", nullable = false)
-	private Hall hall;
+	private Hall hall;*/
 
 	public Seat() {
 		super();
 	}
 
-	public Seat(Long id, int seat_row, int seat_column, boolean isReserved, boolean isAvailable, Hall hall) {
+	/*public Seat(Long id, int seat_row, int seat_column, boolean isReserved, boolean isAvailable, Hall hall) {
 		super();
 		this.id = id;
 		this.seat_row = seat_row;
@@ -43,6 +43,15 @@ public class Seat {
 		this.isReserved = isReserved;
 		this.isAvailable = isAvailable;
 		this.hall = hall;
+	}*/
+
+	public Seat(Long id, int seat_row, int seat_column, boolean isReserved, boolean isAvailable) {
+		super();
+		this.id = id;
+		this.seat_row = seat_row;
+		this.seat_column = seat_column;
+		this.isReserved = isReserved;
+		this.isAvailable = isAvailable;
 	}
 
 	public Long getId() {
@@ -85,12 +94,12 @@ public class Seat {
 		this.isAvailable = isAvailable;
 	}
 
-	public Hall getHall() {
+	/*public Hall getHall() {
 		return hall;
 	}
 
 	public void setHall(Hall hall) {
 		this.hall = hall;
-	}
+	}*/
 
 }

@@ -1,13 +1,8 @@
 package com.project.master.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Hall {
@@ -30,6 +25,25 @@ public class Hall {
 	@JoinColumn(name = "location_id", nullable = false)
 	private EventLocation location;
 
+
+	@JoinTable(
+			name = "hall_seat",
+			joinColumns = @JoinColumn(
+					name = "hall_id",
+					referencedColumnName = "id"
+			),
+			inverseJoinColumns = @JoinColumn(
+					name = "seat_id",
+					referencedColumnName = "id"
+			)
+	)
+	@OneToMany
+	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "hall")
+	//@JoinColumn(name = "seat_id", nullable = false)
+	private List<Seat> seats;
+
+
+
 	public Hall() {
 		super();
 	}
@@ -41,6 +55,15 @@ public class Hall {
 		this.totalRows = totalRows;
 		this.totalColumns = totalColumns;
 		this.location = location;
+	}
+
+	public Hall(Long id, Category category, int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
+		this.id = id;
+		this.category = category;
+		this.totalRows = totalRows;
+		this.totalColumns = totalColumns;
+		this.location = location;
+		this.seats = seats;
 	}
 
 	public Long getId() {
@@ -83,4 +106,11 @@ public class Hall {
 		this.location = location;
 	}
 
+	public List<Seat> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(List<Seat> seats) {
+		this.seats = seats;
+	}
 }
