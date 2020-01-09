@@ -1,10 +1,7 @@
 package com.project.master.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 
@@ -22,6 +19,10 @@ public class EventLocation {
 	
 	@Column(nullable = false)
 	private String user;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Hall> hallList;
+
 	
 	
 	public EventLocation() {
@@ -53,6 +54,14 @@ public class EventLocation {
 
 	public String getName() {
 		return name;
+	}
+
+	public List<Hall> getHallList() {
+		return hallList;
+	}
+
+	public void setHallList(List<Hall> hallList) {
+		this.hallList = hallList;
 	}
 
 	public void setName(String name) {

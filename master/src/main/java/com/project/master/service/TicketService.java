@@ -8,10 +8,10 @@ import com.project.master.repository.CategoryRepository;
 import com.project.master.repository.EventRepository;
 import com.project.master.repository.HallRepository;
 import com.project.master.repository.TicketRepository;
-import javafx.scene.media.MediaErrorEvent;
+//import javafx.scene.media.MediaErrorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.plugin2.message.Message;
+//import sun.plugin2.message.Message;
 
 import java.util.ArrayList;
 import java.util.Date;

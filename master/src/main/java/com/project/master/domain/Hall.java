@@ -1,5 +1,7 @@
 package com.project.master.domain;
 
+import com.project.master.dto.HallDTO;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,35 +13,16 @@ public class Hall {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "category_id", nullable = false)
-	private Category category;
-
 	@Column
 	private int totalRows;
 
 	@Column
 	private int totalColumns;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "location_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
 	private EventLocation location;
 
-
-	@JoinTable(
-			name = "hall_seat",
-			joinColumns = @JoinColumn(
-					name = "hall_id",
-					referencedColumnName = "id"
-			),
-			inverseJoinColumns = @JoinColumn(
-					name = "seat_id",
-					referencedColumnName = "id"
-			)
-	)
-	@OneToMany
-	//@OneToMany(fetch = FetchType.LAZY, mappedBy = "hall")
-	//@JoinColumn(name = "seat_id", nullable = false)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Seat> seats;
 
 
@@ -48,38 +31,35 @@ public class Hall {
 		super();
 	}
 
-	public Hall(Long id, Category category, int totalRows, int totalColumns, EventLocation location) {
+	public Hall(Long id, int totalRows, int totalColumns, EventLocation location) {
 		super();
 		this.id = id;
-		this.category = category;
 		this.totalRows = totalRows;
 		this.totalColumns = totalColumns;
 		this.location = location;
 	}
 
-	public Hall(Long id, Category category, int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
+	public Hall(Long id, int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
 		this.id = id;
-		this.category = category;
 		this.totalRows = totalRows;
 		this.totalColumns = totalColumns;
 		this.location = location;
 		this.seats = seats;
 	}
 
+	public Hall(HallDTO hallDTO){
+		this.totalRows = hallDTO.getTotalRows();
+		this.totalColumns = hallDTO.getTotalColumns();
+
+		this.seats = new ArrayList<>(this.totalColumns*this.totalRows);
+
+	}
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 
 	public int getTotalRows() {
