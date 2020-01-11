@@ -7,6 +7,6 @@ import com.project.master.domain.EventLocation;
 
 public interface LocationRepository extends JpaRepository<EventLocation, Long>{
 
-	Optional<EventLocation> findByName(String locationname);
+	Optional<EventLocation> findByName(String name);
 
 }

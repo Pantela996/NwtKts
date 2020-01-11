@@ -42,6 +42,9 @@ public class Event {
 
 	@Column
 	private String user_id;
+
+	@Column
+	private int numberOfTakenPlaces;
 	
 	public Event() {
 
@@ -73,6 +76,20 @@ public class Event {
 		this.categoryId = categoryId;
 		this.description = description;
 		this.user_id = user;
+	}
+
+
+	public Event(Long id, String name, Date dateFrom, Date dateTo, Long locationId, Long hallId, Long categoryId, String description, String user_id, int numberOfTakenPlaces) {
+		this.id = id;
+		this.name = name;
+		this.dateFrom = dateFrom;
+		DateTo = dateTo;
+		this.locationId = locationId;
+		this.hallId = hallId;
+		this.categoryId = categoryId;
+		this.description = description;
+		this.user_id = user_id;
+		this.numberOfTakenPlaces = numberOfTakenPlaces;
 	}
 
 	public Long getId() {
@@ -147,4 +164,11 @@ public class Event {
 		this.user_id = user;
 	}
 
+	public int getNumberOfTakenPlaces() {
+		return numberOfTakenPlaces;
+	}
+
+	public void setNumberOfTakenPlaces(int numberOfTakenPlaces) {
+		this.numberOfTakenPlaces = numberOfTakenPlaces;
+	}
 }

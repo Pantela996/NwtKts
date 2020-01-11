@@ -1,13 +1,10 @@
 package com.project.master.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.project.master.dto.HallDTO;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Hall {
@@ -16,47 +13,53 @@ public class Hall {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "category_id", nullable = false)
-	private Category category;
-
 	@Column
 	private int totalRows;
 
 	@Column
 	private int totalColumns;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "location_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
 	private EventLocation location;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Seat> seats;
+
+
 
 	public Hall() {
 		super();
 	}
 
-	public Hall(Long id, Category category, int totalRows, int totalColumns, EventLocation location) {
+	public Hall(Long id, int totalRows, int totalColumns, EventLocation location) {
 		super();
 		this.id = id;
-		this.category = category;
 		this.totalRows = totalRows;
 		this.totalColumns = totalColumns;
 		this.location = location;
 	}
 
+	public Hall(Long id, int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
+		this.id = id;
+		this.totalRows = totalRows;
+		this.totalColumns = totalColumns;
+		this.location = location;
+		this.seats = seats;
+	}
+
+	public Hall(HallDTO hallDTO){
+		this.totalRows = hallDTO.getTotalRows();
+		this.totalColumns = hallDTO.getTotalColumns();
+
+		this.seats = new ArrayList<>(this.totalColumns*this.totalRows);
+
+	}
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 
 	public int getTotalRows() {
@@ -83,4 +86,11 @@ public class Hall {
 		this.location = location;
 	}
 
+	public List<Seat> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(List<Seat> seats) {
+		this.seats = seats;
+	}
 }
