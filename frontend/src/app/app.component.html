@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+  <a class="navbar-brand abs" href="" [(ngModel)] =  'main_page_link' id="main_page_link">Ticket Master</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="collapsingNavbar">
+      <ul class="navbar-nav mr-auto">
+        <li class="navbar navbar-light bg-light">
+                <button class="btn" *ngIf="isLocationEventAdmin()"  (click) ="creatSeatMap()" id="c_seatmap">Creat seat map</button>
+        </li>
+        <li class="navbar navbar-light bg-light">
+              <button class="btn" *ngIf="!loggedIn()"  (click) ="login()" id="login">Login</button>
+          </li>
+        <br/>
+          <li class="nav-item navbar-light bg-light">
+             
+          </li>
+      </ul>
+    </div>
+
+    <div class="dropdown" *ngIf="loggedIn()">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Profile Options
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
+            <button class="dropdown-item" *ngIf="loggedIn()" (click)="logout()" id="logout">Logout</button>
+    </div>
+    </div>
+</nav>
+<div class="row" *ngIf="loggedIn() && isMainPageRoute() ">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h2 class="form-signin-heading">Upcoming events</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>  </th>
+                    <th>Event</th>
+                    <th>Location</th>
+                    <th>City</th>
+                    <th>When</th>
+                    <th>Description</th>
+                    <th>  </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let event of events; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ event.name}}</td>
+                    <td>{{ event.locationId.name }}</td>
+                    <td>{{ event.locationId.locationCity }}</td>
+                    <td>{{ event.dateFrom }}</td>
+                    <td>{{ event.description }}</td>
+                    <td><button type="button" class="btn btn-primary"><i class="far fa-eye" (onclick) = "info()">i</i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container">
+      <router-outlet></router-outlet>
+</div>

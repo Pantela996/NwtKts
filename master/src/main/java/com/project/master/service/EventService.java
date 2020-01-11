@@ -42,7 +42,7 @@ public class EventService {
 		try {
 			
 			if (eventDTO == null) throw new DataException("Event is null");
-			LocationEventAdmin lea = (LocationEventAdmin) userRepository.findByUsername(currentUser);
+			LocationEventAdmin lea = (LocationEventAdmin) userRepository.findByUsername(currentUser).get();
 			if (lea == null) throw new DataException("User does not exist");
 			
 			EventLocation el;
@@ -74,7 +74,7 @@ public class EventService {
 				throw new DataException("Location does not exist");
 			}
 			if (category == null )throw new DataException("Category does not exist");
-			Event event = new Event(eventDTO.getName(), Date.valueOf(eventDTO.getDate_from()), Date.valueOf(eventDTO.getDate_to()), el.getId(), hall.getId(), category.getId(), eventDTO.getDescription(), lea.getUsername());
+			Event event = new Event(eventDTO.getName(), Date.valueOf(eventDTO.getDate_from()), Date.valueOf(eventDTO.getDate_to()), el, hall.getId(), category.getId(), eventDTO.getDescription(), lea.getUsername());
 			eventRepository.save(event);
 			
 			

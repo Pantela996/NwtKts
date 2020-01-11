@@ -1,6 +1,7 @@
 package com.project.master;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -27,29 +28,24 @@ public class MyUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		System.out.println("here");
 
-		User user = userRepository.findByUsername(username);
+		Optional<User> user = userRepository.findByUsername(username);
 
-		System.out.println(user.getUsername());
+		if (user.isPresent()) {
 
-		try {
-			System.out.println(user.getUsername() + "<- Nadjeni ->" + user.getPassword());
-		} catch (Exception e) {
+			System.out.println(user.get().getUsername());
+			System.out.println(user.get().getUsername() + "<- Nadjeni ->" + user.get().getPassword());
 
-		}
-
-		if (user == null) {
-			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
-		} else {
-
-			// Java 1.8 way
-
-			List<GrantedAuthority> grantedAuthorities = user.getUserAuthorities().stream()
+			List<GrantedAuthority> grantedAuthorities = user.get().getUserAuthorities().stream()
 					.map(authority -> new SimpleGrantedAuthority(authority.getAuthority().getName()))
 					.collect(Collectors.toList());
 
-			return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
+			return new org.springframework.security.core.userdetails.User(user.get().getUsername(), user.get().getPassword(),
+					grantedAuthorities);
 
+		} else {
+			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
 		}
+
 	}
 
 }

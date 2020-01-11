@@ -2,6 +2,8 @@ package com.project.master.controller;
 
 import java.util.ArrayList;
 
+import javax.annotation.security.PermitAll;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,8 +58,10 @@ public class EventController {
 			return new ResponseEntity<String>("Invalid update", HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	
+	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
+	@PermitAll()
 	public ResponseEntity<ArrayList<Event>> getAll() {
 		try {
 			ArrayList<Event> events = eventService.getAll();

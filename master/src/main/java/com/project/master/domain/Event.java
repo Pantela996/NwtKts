@@ -4,9 +4,12 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 
@@ -25,8 +28,8 @@ public class Event {
 	@Column(nullable = true)
 	private Date DateTo;
 
-	@Column
-	private Long locationId;
+	@OneToOne
+	private EventLocation location;
 
 	@Column
 	private Long hallId;
@@ -44,14 +47,14 @@ public class Event {
 
 	}
 
-	public Event(Long id, String name, Date dateFrom, Date dateTo, Long locationId, Long hallId, Long categoryId,
+	public Event(Long id, String name, Date dateFrom, Date dateTo, EventLocation location, Long hallId, Long categoryId,
 			String description, String user) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.dateFrom = dateFrom;
 		DateTo = dateTo;
-		this.locationId = locationId;
+		this.location = location;
 		this.hallId = hallId;
 		this.categoryId = categoryId;
 		this.description = description;
@@ -59,13 +62,13 @@ public class Event {
 	}
 	
 	
-	public Event(String name, Date dateFrom, Date dateTo, Long locationId, Long hallId, Long categoryId,
+	public Event(String name, Date dateFrom, Date dateTo, EventLocation location, Long hallId, Long categoryId,
 			String description, String user) {
 		super();
 		this.name = name;
 		this.dateFrom = dateFrom;
 		DateTo = dateTo;
-		this.locationId = locationId;
+		this.location = location;
 		this.hallId = hallId;
 		this.categoryId = categoryId;
 		this.description = description;
@@ -104,12 +107,12 @@ public class Event {
 		DateTo = dateTo;
 	}
 
-	public Long getLocationId() {
-		return locationId;
+	public EventLocation getLocationId() {
+		return location;
 	}
 
-	public void setLocationId(Long locationId) {
-		this.locationId = locationId;
+	public void setLocationId(EventLocation locationId) {
+		this.location = locationId;
 	}
 
 	public Long getHallId() {

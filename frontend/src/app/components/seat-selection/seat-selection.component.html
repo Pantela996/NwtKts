@@ -1,0 +1,56 @@
+<div class="col-lg-12 seat-container" >
+    <form class="form-group" (ngSubmit)="selectVIPSeat(seatobj)">
+        <div  *ngFor="let seatrow of seatmap " >
+            <div class="col-12 pricing-label" *ngIf="seatChartConfig?.showRowWisePricing && seatrow.seatPricingInformation != ''">{{seatrow.seatPricingInformation}}</div>
+            <div class="seatrow container">
+            <div *ngIf="seatChartConfig?.showRowsLabel">
+                    <div class="row-label" >  {{seatrow.seatRowLabel}} </div>
+            </div>
+            <div *ngFor="let seatobj of seatrow.seats">
+                    <div class="seat-item seat-space" style="color:white ; background-color:white" *ngIf="seatobj.seatLabel == ''">  &nbsp; </div>
+                    <div tooltip="Seat : {{seatobj.seatLabel}} | Price : {{seatobj.price}}" placement="top"
+                    [ngClass]="{ 'seat-item' : true , 'seat-available' : seatobj.status == 'available' ,'seat-vip' : seatobj.status == 'vip' ,'seat-unavailable' : seatobj.status == 'unavailable' }" 
+                    (click)="selectVIPSeat(seatobj)" [style.background-color]="color" id="s_seat" *ngIf="(seatobj.status == 'available' || seatobj.status == 'vip' )&& seatobj.seatLabel != ''">{{seatobj.seatNo}}</div>
+                    
+                    <div tooltip="Seat not available" placement="top"
+                    [ngClass]="{ 'seat-item' : true , 'seat-unavailable' : true }" 
+                    *ngIf="seatobj.status == 'unavailable' && seatobj.seatLabel != ''">{{seatobj.seatNo}}</div>
+            </div>
+        </div>
+        </div>
+
+        <!-- *ngIf="cart?.selectedSeats?.length > 0" -->
+        <div  class="container">
+          <div class="col-lg-16 summary-bar">
+      
+              <div class="col-lg-4"  *ngIf= "forBuying">
+                      <div>
+                          <h5>Total Selected : {{ cart?.selectedSeats?.length }}</h5>
+                          <h5>Total Amount :&nbsp;&nbsp; {{cart.totalamount}} Rs</h5>
+                      </div>
+              </div>
+
+          </div>
+          <div class="col-rg-12 selected-seats"  *ngIf= "isEntered&&changeMode()">
+                <h5 class="col-lg-12 no-padding">Select VIP Seats : </h5>
+                <span *ngFor="let seatLabel of cart.selectedSeats" class="badge badge-primary">{{seatLabel}}</span>
+            </div>
+            <div class="col-rg-12 selected-seats"  *ngIf= "isEntered&&changeModePassline()">
+                <h5 class="col-lg-12 no-padding">Select Passline Seats : </h5>
+                <span *ngFor="let seatLabel of selectedSeats" class="badge badge-primary">{{seatLabel}}</span>
+            </div>
+          <div class="col-rg-12 book-area" *ngIf= "isEntered">
+            <button [disabled]="cart?.selectedSeats?.length == 0" type="button"  (click)="processBooking()" class="btn btn-primary" mdbWavesEffect>Confirm</button>
+          </div>
+      </div>
+    </form>
+    <div class="input-group mb-3" *ngIf = "!isEntered">
+            <form class="form-signin" (ngSubmit)="initializeSeatMap()">
+                    <input type="text" class="form-control" placeholder="rows"  id="rows" (keyup)="onKeyRow($event)"><br>
+                    <input type="text"  class="form-control" placeholder="columns" (keyup)="onKeyCol($event)"><br>
+                    <button class= "btn btn-primary" type="submit">Create seat map</button>
+            </form>
+
+    </div>
+    </div>
+ 

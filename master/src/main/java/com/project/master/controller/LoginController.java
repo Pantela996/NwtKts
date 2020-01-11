@@ -50,7 +50,9 @@ public class LoginController {
 
 			// Reload user details so we can generate token
 			UserDetails details = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
+			
+			System.out.println("here");
+			
 			return new ResponseEntity<String>(jwtTokenUtil.generateToken(details), HttpStatus.OK);
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
