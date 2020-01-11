@@ -4,6 +4,9 @@ package com.project.master.service;
 import com.project.master.domain.User;
 import com.project.master.exception.UserNotFoundException;
 import com.project.master.repository.UserRepository;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +23,7 @@ public class UserService {
 
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
-    public User getLoggedUser() throws UserNotFoundException {
+    public Optional<User> getLoggedUser() throws UserNotFoundException {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
             org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) auth

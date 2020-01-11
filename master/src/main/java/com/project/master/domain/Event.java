@@ -79,12 +79,12 @@ public class Event {
 	}
 
 
-	public Event(Long id, String name, Date dateFrom, Date dateTo, Long locationId, Long hallId, Long categoryId, String description, String user_id, int numberOfTakenPlaces) {
+	public Event(Long id, String name, Date dateFrom, Date dateTo, EventLocation locationId, Long hallId, Long categoryId, String description, String user_id, int numberOfTakenPlaces) {
 		this.id = id;
 		this.name = name;
 		this.dateFrom = dateFrom;
 		DateTo = dateTo;
-		this.locationId = locationId;
+		this.location = locationId;
 		this.hallId = hallId;
 		this.categoryId = categoryId;
 		this.description = description;

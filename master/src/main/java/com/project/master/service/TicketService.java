@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 
 @Service
@@ -46,7 +47,7 @@ public class TicketService {
 
     public MessageDTO reserveTicket(TicketDTO ticketDTO) throws UserNotFoundException {
 
-        User user = userService.getLoggedUser();
+        Optional<User> user = userService.getLoggedUser();
 
 
         if(user == null){
@@ -110,7 +111,7 @@ public class TicketService {
             hallRepository.save(hall);
             eventRepository.save(event);
 
-            ticket = new Ticket(hall.getSeats().get(r * hall.getTotalColumns() + c).getId(),event,user);
+            ticket = new Ticket(hall.getSeats().get(r * hall.getTotalColumns() + c).getId(),event,user.get());
 
 
         }else{
@@ -123,7 +124,7 @@ public class TicketService {
             hallRepository.save(hall);
             eventRepository.save(event);
 
-            ticket = new Ticket(hall.getSeats().get(r * hall.getTotalColumns() + c).getId(),event,user);
+            ticket = new Ticket(hall.getSeats().get(r * hall.getTotalColumns() + c).getId(),event,user.get());
 
         }
 
