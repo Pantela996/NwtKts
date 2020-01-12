@@ -38,7 +38,8 @@
                     <th>Event</th>
                     <th>Location</th>
                     <th>City</th>
-                    <th>When</th>
+                    <th>From</th>
+                    <th>To</th>
                     <th>Description</th>
                     <th>  </th>
                 </tr>
@@ -47,9 +48,10 @@
                 <tr *ngFor="let event of events; index as i">
                     <th scope="row">{{ i + 1 }}</th>
                     <td>{{ event.name}}</td>
-                    <td>{{ event.locationId.name }}</td>
-                    <td>{{ event.locationId.locationCity }}</td>
-                    <td>{{ event.dateFrom }}</td>
+                    <td>{{ event.location.name }}</td>
+                    <td>{{ event.location.locationCity }}</td>
+                    <td>{{ event.dateFrom | date }}</td>
+                    <td>{{ event.dateTo | date }}</td>
                     <td>{{ event.description }}</td>
                     <td><button type="button" class="btn btn-primary"><i class="far fa-eye" (onclick) = "info()">i</i></button></td>
                 </tr>

@@ -28,7 +28,6 @@ export class SeatSelectionComponent implements OnInit {
   status:string;
   mode = 0;
   selectedSeat = [];
-
   private seatChartConfig = {
     showRowsLabel : false,
     showRowWisePricing : false,
@@ -175,9 +174,9 @@ export class SeatSelectionComponent implements OnInit {
 
   public selectVIPSeat(seatObject : any){
     this.status = "vip";
+
     this.selectSeat(seatObject);
-    
-    
+
   }
 
 
@@ -244,5 +243,11 @@ export class SeatSelectionComponent implements OnInit {
   processBooking(){
    console.log(this.cart.selectedSeats);
    this.mode = 1;
+   for(let i = 0; i < this.cart.selectedSeats.length;i++){
+    var a = document.getElementById("s_seat"+this.cart.selectedSeats[i]);
+    a.classList.add("disabled");
+   }
+
+   
   }
 }

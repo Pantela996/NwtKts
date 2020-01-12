@@ -6,11 +6,11 @@
             <div *ngIf="seatChartConfig?.showRowsLabel">
                     <div class="row-label" >  {{seatrow.seatRowLabel}} </div>
             </div>
-            <div *ngFor="let seatobj of seatrow.seats">
+            <div *ngFor="let seatobj of seatrow.seats;index as i">
                     <div class="seat-item seat-space" style="color:white ; background-color:white" *ngIf="seatobj.seatLabel == ''">  &nbsp; </div>
                     <div tooltip="Seat : {{seatobj.seatLabel}} | Price : {{seatobj.price}}" placement="top"
                     [ngClass]="{ 'seat-item' : true , 'seat-available' : seatobj.status == 'available' ,'seat-vip' : seatobj.status == 'vip' ,'seat-unavailable' : seatobj.status == 'unavailable' }" 
-                    (click)="selectVIPSeat(seatobj)" [style.background-color]="color" id="s_seat" *ngIf="(seatobj.status == 'available' || seatobj.status == 'vip' )&& seatobj.seatLabel != ''">{{seatobj.seatNo}}</div>
+                    (click)="selectVIPSeat(seatobj)" [style.background-color]="color" id="s_seat{{seatobj.seatLabel}}" *ngIf="(seatobj.status == 'available' || seatobj.status == 'vip' )&& seatobj.seatLabel != ''">{{seatobj.seatNo}}</div>
                     
                     <div tooltip="Seat not available" placement="top"
                     [ngClass]="{ 'seat-item' : true , 'seat-unavailable' : true }" 

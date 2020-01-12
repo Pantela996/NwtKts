@@ -47,12 +47,20 @@
     font-weight: bolder;
     border: 1px solid white;
 }
-.seat-vip {
+
+.seat-vip{
     color: green;
     font-weight: bolder;
     background-color: #a0a0a0;
     border: 1px solid white;
 }
+.disabled{
+    color: black;
+    pointer-events:none;
+    visibility: hidden;
+}
+
+
 .seat-item:hover {
     cursor: pointer;
 }
