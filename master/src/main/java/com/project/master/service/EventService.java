@@ -118,6 +118,7 @@ public class EventService {
 
 	public ArrayList<Event> getAll() {
 		ArrayList<Event> events = (ArrayList<Event>)eventRepository.findAll();
+		System.out.println(events.size());
 		return events;
 	}
 

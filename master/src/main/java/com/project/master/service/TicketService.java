@@ -54,7 +54,7 @@ public class TicketService {
             return new MessageDTO(false,"User not found!");
         }
 
-        ArrayList<Event> events = eventRepository.findAll();
+        ArrayList<Event> events = (ArrayList<Event>)eventRepository.findAll();
 
         Event event = null;
         for (int i = 0; i < events.size(); i++) {

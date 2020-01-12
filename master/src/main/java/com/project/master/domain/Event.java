@@ -56,7 +56,7 @@ public class Event {
 		this.id = id;
 		this.name = name;
 		this.dateFrom = dateFrom;
-		DateTo = dateTo;
+		this.DateTo = dateTo;
 		this.location = location;
 		this.hallId = hallId;
 		this.categoryId = categoryId;
@@ -83,13 +83,13 @@ public class Event {
 		this.id = id;
 		this.name = name;
 		this.dateFrom = dateFrom;
-		DateTo = dateTo;
+		this.DateTo = dateTo;
 		this.location = locationId;
 		this.hallId = hallId;
 		this.categoryId = categoryId;
 		this.description = description;
 		this.user_id = user_id;
-		this.numberOfTakenPlaces = numberOfTakenPlaces;
+		this.numberOfTakenPlaces = 0;
 	}
 
 	public Long getId() {
@@ -124,11 +124,11 @@ public class Event {
 		DateTo = dateTo;
 	}
 
-	public EventLocation getLocationId() {
+	public EventLocation getLocation() {
 		return location;
 	}
 
-	public void setLocationId(EventLocation locationId) {
+	public void setLocation(EventLocation locationId) {
 		this.location = locationId;
 	}
 

@@ -61,7 +61,6 @@ public class EventController {
 	
 	
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
-	@PermitAll()
 	public ResponseEntity<ArrayList<Event>> getAll() {
 		try {
 			ArrayList<Event> events = eventService.getAll();
