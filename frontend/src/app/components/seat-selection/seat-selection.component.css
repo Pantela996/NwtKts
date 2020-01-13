@@ -54,6 +54,14 @@
     background-color: #a0a0a0;
     border: 1px solid white;
 }
+
+.seat-passline{
+    color: black;
+    font-weight: bolder;
+    background-color: #a0a0a0;
+    border: 1px solid white;
+}
+
 .disabled{
     color: black;
     pointer-events:none;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Inject }  from '@angular/core';
 import { DOCUMENT } from '@angular/common'; 
+import { EventService } from 'src/app/services/event.service';
 
 @Component({
   selector: 'app-seat-selection',
@@ -12,13 +13,14 @@ export class SeatSelectionComponent implements OnInit {
 
 
 
-  constructor(@Inject(DOCUMENT) document) {
-
+  constructor(@Inject(DOCUMENT) document, eventService:EventService) {
+    this.eventService  = eventService;
    }
 
   ngOnInit() {
   }
-
+  eventService:any;
+  start = true;
   private seatConfig: any = null;
   private seatmap = [];
   isEntered = false;
@@ -27,7 +29,9 @@ export class SeatSelectionComponent implements OnInit {
   columns : number;
   status:string;
   mode = 0;
+  private seats = [];
   selectedSeat = [];
+  private available_seats = [];
   private seatChartConfig = {
     showRowsLabel : false,
     showRowWisePricing : false,
@@ -43,8 +47,11 @@ export class SeatSelectionComponent implements OnInit {
   };
   
   initializeSeatMap(){
+    this.cart.selectedSeats = [];
+    this.mode = 0;
+    this.start = true;
     this.isEntered = true;
-    this.seatConfig = this.generateSeatConfig(this.rows,this.columns,0);
+    this.seatConfig = this.generateSeatConfig([]);
     console.log(this.seatConfig);
     this.processSeatChart(this.seatConfig);
   }
@@ -57,24 +64,30 @@ export class SeatSelectionComponent implements OnInit {
     this.columns = event.target.value;
   }
   
-  generateSeatConfig(rows, columns, seat_price):any{
+  generateSeatConfig(map:any):any{
 
     var x = [];
     var temp = {};
     this.isEntered = true;
     var setup:"";
-    for (let i = 0; i < rows; i++) {
-      setup = "";
-      for (let j = 0; j < columns; j++){
-        setup += "g";
+    if(this.start){
+      for (let i = 0; i < this.rows; i++) {
+        setup = "";
+        for (let j = 0; j < this.columns; j++){
+          setup += "g";
+        }
+        console.log(setup);
+        temp = {
+          "seat_label" : i,
+          "layout" :  setup
+        }
+        x.push(temp);
+        this.start = false;
       }
-      console.log(setup);
-      temp = {
-        "seat_label" : i,
-        "layout" :  setup
-      }
-      x.push(temp);
+    }else{
+      x = map;
     }
+   
     
     this.seatConfig = [
       {
@@ -82,13 +95,15 @@ export class SeatSelectionComponent implements OnInit {
         "seat_map":x
       }
       ]
+    console.log(this.seatConfig);
     return this.seatConfig;   
   }
 
 
   public processSeatChart ( map_data : any[] )
   {
-    
+    var x:number = 0;
+    var a:string = "A";
       if( map_data.length > 0 )
       {
         var seatNoCounter = 1;
@@ -116,16 +131,26 @@ export class SeatSelectionComponent implements OnInit {
             };
             row_label = "";
             var seatValArr = map_element.layout.split('');
+            console.log("lookuphere");
+            console.log(seatValArr);
             if( this.seatChartConfig.newSeatNoForRow )
             {
               seatNoCounter = 1; //Reset the seat label counter for new row
             }
             var totalItemCounter = 1;
+
             seatValArr.forEach(item => {
+              if( item == 'g'){
+                this.status = "available";
+              }else if(item == "v"){
+                this.status = "vip";
+              }else{
+                this.status = "passline";
+              }
               var seatObj = {
                 "key" : map_element.seat_label+"_"+totalItemCounter,
                 "price" : map_data[__counter]["seat_price"],
-                "status" : "available"
+                "status" :  this.status
               };
                
               if( item == 'g')
@@ -137,14 +162,23 @@ export class SeatSelectionComponent implements OnInit {
                 
                 seatNoCounter++;
               }else if(item == 'v'){
-                seatObj["seatNo"] = "A" + seatNoCounter;
-                alert("here");
+                seatObj["seatLabel"] = map_element.seat_label+" "+seatNoCounter;
+                if (x<9){
+
+                  seatObj["seatNo"] = a + x;
+                  x += 1;
+                }else{
+                  var m = 0;
+                  a= this.getNextLetter(a).toString();
+                  x = 0;
+                }
+                seatNoCounter++;
               }
-              else
-              {
+              else{
                 seatObj["seatLabel"] = "";
               }
               totalItemCounter++;
+              this.seats.push(seatObj);
               mapObj["seats"].push(seatObj);
             });
             console.log(" \n\n\n Seat Objects " , mapObj);
@@ -155,6 +189,15 @@ export class SeatSelectionComponent implements OnInit {
 
       }
   }
+
+
+  getNextLetter(char: String): String {
+    var code: number = char.charCodeAt(0);
+    code = code + 1;
+    var help:string = String.fromCharCode(code);
+    return help;
+}
+
   changeMode(){
     if (this.mode == 0){
       return true;
@@ -170,6 +213,20 @@ export class SeatSelectionComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+    
+  public selectSeatMode(seatObject : any){
+    if(this.mode==0){
+      this.status = "vip";
+      this.selectSeat(seatObject);  
+    }else if(this.mode==1){
+      this.status = "passline";
+      this.selectSeat(seatObject);  
+    }else{
+      alert("here");
+    }
+
   }
 
   public selectVIPSeat(seatObject : any){
@@ -196,6 +253,17 @@ export class SeatSelectionComponent implements OnInit {
       console.log(this.cart.seatstoStore);
     }
     else if( seatObject.status = "vip" )
+    {
+      seatObject.status ="available";
+      var seatIndex = this.cart.selectedSeats.indexOf(seatObject.seatLabel);
+      if( seatIndex > -1)
+      {
+        this.cart.selectedSeats.splice(seatIndex , 1);
+        this.cart.seatstoStore.splice(seatIndex , 1);
+        this.cart.totalamount -= seatObject.price;
+      }
+      
+    } else if( seatObject.status = "passline" )
     {
       seatObject.status ="available";
       var seatIndex = this.cart.selectedSeats.indexOf(seatObject.seatLabel);
@@ -240,13 +308,83 @@ export class SeatSelectionComponent implements OnInit {
     }
     
   }
+
+  public createSeatMap(exp:string){
+    var j:number  = 0;
+    var temp = {};
+    var start =0;
+    var end = 5;
+    var map = [];
+    exp = exp.replace(/\n/g, '')
+    for(let i =0; i < this.rows;i++){
+      temp = {
+        "seat_label" : i,
+        "layout" :  exp.substring(start, end)
+      }
+      map.push(temp);
+      start = end;
+      if( end + 5 > exp.length){
+        end  = end + (exp.length%5) + 1;
+      }else{
+        end = end + 5;
+      }
+      
+    }
+    console.log(map);
+    return this.generateSeatConfig(map);
+  }
+
+  ifMode2Active(){
+    if(this.mode == 2){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+
+  deleteChoice(){
+    this.isEntered =  false;
+    this.seatmap = [];
+  }
   processBooking(){
-   console.log(this.cart.selectedSeats);
-   this.mode = 1;
-   for(let i = 0; i < this.cart.selectedSeats.length;i++){
-    var a = document.getElementById("s_seat"+this.cart.selectedSeats[i]);
-    a.classList.add("disabled");
+   var exp="";
+   var j = 0;
+   var seat_conf:any;
+   if(this.mode < 2){
+     console.log(this.cart.selectedSeats);
+     for(let i = 0; i < this.cart.selectedSeats.length;i++){
+      var a = document.getElementById("s_seat"+this.cart.selectedSeats[i]);
+      a.classList.add("disabled");
+     }
+     if(this.mode == 1){
+      for (let i = 0; i < this.seats.length; i++){
+
+        if(this.seats[i].status == "available"){
+           exp += "g";
+        }else if(this.seats[i].status == "vip"){
+           exp += "v";
+        }else{
+           exp += "x";
+        }
+        if(j == this.rows-1){
+         exp += "\n";
+           j = 0;
+         }else{
+           j += 1;
+         }
+    
+      }
+      seat_conf = this.createSeatMap(exp);
+      this.seatmap = [];
+      this.processSeatChart(seat_conf);
+ 
+    }
+    this.mode = this.mode + 1;
+   }else{
+      this.eventService.createSeatmap();
    }
+ 
 
    
   }

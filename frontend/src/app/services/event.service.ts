@@ -15,4 +15,7 @@ export class EventService {
     return this.http.get(this.basePath + "/all", {responseType: 'json'})
   }
 
+  createSeatMap(){
+    
+  }
 }

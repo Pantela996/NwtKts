@@ -12,6 +12,7 @@ export class AppComponent implements OnInit{
 
   public events = []
   title = 'frontend';
+  first_visit = true;
 
   constructor(private authService:AuthenticationService, public router:Router, private eventService:EventService) { }
 
@@ -54,13 +55,15 @@ export class AppComponent implements OnInit{
   }
 
  isLocationEventAdmin(){
-   var  roles = this.authService.getRoles();
-   var user = this.authService.getCurrentUser();
-   if(roles.includes("LOCATION_AND_EVENT_ADMIN_ROLE")){
-    return true;
-   }else{
-    return false;
-   }
+  
+    var user = this.authService.getCurrentUser();
+    var  roles = this.authService.getRoles();
+    if(roles.includes("LOCATION_AND_EVENT_ADMIN_ROLE")){
+     return true;
+    }else{
+     return false;
+    }
+  
   
  }
 
