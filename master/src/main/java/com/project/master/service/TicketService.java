@@ -99,15 +99,15 @@ public class TicketService {
             }
 
 
-            if (hall.getSeats().get(r * hall.getTotalColumns() + c).isReserved()) {
+            if ((hall.getSeats().get(r * hall.getTotalColumns() + c).getTypeOfSeat()) == TypeOfSeat.RESERVED) {
                 return new MessageDTO(false, "Seat was already taken!");
             }
 
-            if (!hall.getSeats().get(r * hall.getTotalColumns() + c).isAvailable()) {
+            if (!((hall.getSeats().get(r * hall.getTotalColumns() + c).getTypeOfSeat()) == TypeOfSeat.AVAILABLE)) {
                 return new MessageDTO(false, "There is not seat at this coordinates!");
             }
 
-            hall.getSeats().get(r * hall.getTotalColumns() + c).setReserved(true);
+            hall.getSeats().get(r * hall.getTotalColumns() + c).setTypeOfSeat(TypeOfSeat.RESERVED);
             hallRepository.save(hall);
             eventRepository.save(event);
 

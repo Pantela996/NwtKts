@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.master.domain.Event;
 import com.project.master.dto.EventDTO;
+import com.project.master.dto.SeatInfoDTO;
 import com.project.master.service.EventService;
+import com.project.master.service.HallService;
 
 @RestController
 @RequestMapping("event")
@@ -25,6 +27,9 @@ public class EventController {
 
 	@Autowired
 	private EventService eventService;
+	
+	@Autowired 
+	private HallService hallService;
 
 	// @PreAuthorize("hasAuthority('LOCATION_AND_EVENT_ADMIN_ROLE')")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -37,6 +42,9 @@ public class EventController {
 			return new ResponseEntity<String>("Invalid creation", HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
+	
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteEvent(@RequestParam String event_id) {
@@ -94,8 +102,16 @@ public class EventController {
 		}
 	}
 	
-	
-	
+	@RequestMapping(value = "/createEventHallMap", method = RequestMethod.POST, consumes ="application/json", produces = "text/plain")
+	public ResponseEntity<String> createSeatingMap(@RequestBody SeatInfoDTO seatDTO) {
+		try {
+			String response = hallService.saveSeats(seatDTO);
+			System.out.println("response");
+			return new ResponseEntity<String>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("Bad request", HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 
 }

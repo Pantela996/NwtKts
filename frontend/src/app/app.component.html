@@ -6,7 +6,7 @@
     <div class="navbar-collapse collapse" id="collapsingNavbar">
       <ul class="navbar-nav mr-auto">
         <li class="navbar navbar-light bg-light">
-                <button class="btn" *ngIf="isLocationEventAdmin()"  (click) ="creatSeatMap()" id="c_seatmap">Creat seat map</button>
+                <a class="btn" *ngIf="isLocationEventAdmin()"  href ="/seatmap" id="c_seatmap">Creat seat map</a>
         </li>
         <li class="navbar navbar-light bg-light">
               <button class="btn" *ngIf="!loggedIn()"  (click) ="login()" id="login">Login</button>

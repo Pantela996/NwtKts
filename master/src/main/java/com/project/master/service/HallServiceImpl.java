@@ -2,7 +2,11 @@ package com.project.master.service;
 
 import com.project.master.domain.EventLocation;
 import com.project.master.domain.Hall;
+import com.project.master.domain.Seat;
+import com.project.master.domain.TypeOfSeat;
 import com.project.master.dto.HallDTO;
+import com.project.master.dto.SeatDTO;
+import com.project.master.dto.SeatInfoDTO;
 import com.project.master.repository.HallRepository;
 import com.project.master.repository.LocationRepository;
 import com.project.master.repository.SeatRepository;
@@ -22,6 +26,9 @@ public class HallServiceImpl implements HallService {
     @Autowired
     LocationRepository locationRepository;
 
+    @Autowired
+    SeatRepository seatRepository;
+    
     @Override
     public ArrayList<Hall> getAll(){
         return hallRepository.findAll();
@@ -86,6 +93,32 @@ public class HallServiceImpl implements HallService {
 
         hallRepository.delete(optionalHall.get());
     }
+
+	@Override
+	public String saveSeats(SeatInfoDTO seatsDTO) {
+		Optional<Hall> optionalHall = hallRepository.findById(1);
+		List<Seat> seats = new ArrayList<Seat>();
+		Hall h = optionalHall.get();
+		System.out.println(seatsDTO.getSeatsP().size());
+		
+		for(SeatDTO s:seatsDTO.getSeatsP()) {
+			System.out.println("seatsDTO p");
+			String[] arrOfStr = s.getKey().split("_");
+			System.out.println(arrOfStr[0]);
+			System.out.println(arrOfStr[1]);
+			System.out.println(s.getStatus());
+			Seat temp  = new Seat();
+			temp.setSeat_row(Integer.valueOf(arrOfStr[0]));
+			temp.setSeat_column(Integer.valueOf(arrOfStr[1]));
+			temp.setTypeOfSeat(TypeOfSeat.valueOf(s.getStatus().toUpperCase()));
+			seats.add(temp);
+		}
+		h.setTotalRows(seatsDTO.getRowsP());
+		h.setTotalColumns(seatsDTO.getColumnsP());
+		h.setSeats(seats);
+		hallRepository.save(h);
+		return "Data saved";
+	}
 
 
 }

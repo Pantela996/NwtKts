@@ -38,6 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
 		.authorizeRequests()
+		
 		.antMatchers("/ticket/buy").permitAll()
 		.antMatchers("/paypal/start").permitAll()
 		.antMatchers("/paypal/pay").permitAll()
@@ -49,6 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/event/update").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/event/all").permitAll()
 		.antMatchers("/event/one").permitAll()
+		.antMatchers("/event/createEventHallMap").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/event/myEvents").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		//.antMatchers("/location/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/location/create").permitAll()

@@ -22,18 +22,12 @@ public class Seat {
 	private int seat_column;
 
 	@Column
-	private boolean isReserved;
-
-	@Column
-	private boolean isAvailable;
+	TypeOfSeat typeOfSeat;
 
 	/*@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "hall_id", nullable = false)
 	private Hall hall;*/
 
-	public Seat() {
-		super();
-	}
 
 	/*public Seat(Long id, int seat_row, int seat_column, boolean isReserved, boolean isAvailable, Hall hall) {
 		super();
@@ -45,19 +39,41 @@ public class Seat {
 		this.hall = hall;
 	}*/
 
-	public Seat(Long id, int seat_row, int seat_column, boolean isReserved, boolean isAvailable) {
-		super();
-		this.id = id;
-		this.seat_row = seat_row;
-		this.seat_column = seat_column;
-		this.isReserved = isReserved;
-		this.isAvailable = isAvailable;
-	}
 
+
+	
 	public Long getId() {
 		return id;
 	}
 
+	public TypeOfSeat getTypeOfSeat() {
+		return typeOfSeat;
+	}
+
+	public void setTypeOfSeat(TypeOfSeat typeOfSeat) {
+		this.typeOfSeat = typeOfSeat;
+	}
+
+	public Seat(Long id, int seat_row, int seat_column, TypeOfSeat typeOfSeat) {
+		super();
+		this.id = id;
+		this.seat_row = seat_row;
+		this.seat_column = seat_column;
+		this.typeOfSeat = typeOfSeat;
+	}
+
+	
+	public Seat(int seat_row, int seat_column, TypeOfSeat typeOfSeat) {
+		this.seat_row = seat_row;
+		this.seat_column = seat_column;
+		this.typeOfSeat = typeOfSeat;
+	}
+	
+	
+	public Seat() {
+
+	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -76,22 +92,6 @@ public class Seat {
 
 	public void setSeat_column(int seat_column) {
 		this.seat_column = seat_column;
-	}
-
-	public boolean isReserved() {
-		return isReserved;
-	}
-
-	public void setReserved(boolean isReserved) {
-		this.isReserved = isReserved;
-	}
-
-	public boolean isAvailable() {
-		return isAvailable;
-	}
-
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
 	}
 
 	/*public Hall getHall() {

@@ -37,20 +37,20 @@
             </div>
             <div class="col-rg-12 selected-seats"  *ngIf= "isEntered&&changeModePassline()">
                 <h5 class="col-lg-12 no-padding">Select Passline Seats : </h5>
-                <span *ngFor="let seatLabel of selectedSeats" class="badge badge-primary">{{seatLabel}}</span>
+                <span *ngFor="let seatLabel of passlineseats" class="badge badge-primary">{{seatLabel}}</span>
             </div>
           <div class="col-rg-12 book-area" *ngIf= "isEntered">
-            <button [disabled]="cart?.selectedSeats?.length == 0" type="button" (click)="processBooking()" class="btn btn-primary" mdbWavesEffect>Confirm</button>
-            <button  *ngIf="ifMode2Active()" type="button" (click)="deleteChoice()" class="btn btn-danger" mdbWavesEffect>Cancel</button>
             <h5 *ngIf="ifMode2Active()" class="col-lg-12 no-padding">Do you want to keep choice?</h5>
+            <button [disabled]="cart?.selectedSeats?.length == 0" type="button" (click)="processBooking()" class="btn btn-primary" mdbWavesEffect>Confirm</button> &nbsp; 
+            <button  *ngIf="ifMode2Active()" type="button" (click)="deleteChoice()" class="btn btn-danger" mdbWavesEffect>Cancel</button>
           </div>
       </div>
     </form>
     <div class="input-group mb-3" *ngIf = "!isEntered">
             <form class="form-signin" (ngSubmit)="initializeSeatMap()">
-                    <input type="text" class="form-control" placeholder="rows"  id="rows" (keyup)="onKeyRow($event)"><br>
-                    <input type="text"  class="form-control" placeholder="columns" (keyup)="onKeyCol($event)"><br>
-                    <button class= "btn btn-primary" type="submit">Create seat map</button>
+                    <input type="number" class="form-control" placeholder="rows" min="1"  id="rows" (keyup)="onKeyRow($event)" required="required" /><br> 
+                    <input type="number"  class="form-control" placeholder="columns" min="1"  (keyup)="onKeyCol($event)" required="required" /><br>
+                    <input class= "btn btn-primary" *ngIf="positiveValues()" type="submit" value="Create seat map"/>
             </form>
 
     </div>
