@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
@@ -20,7 +20,7 @@ import { TokenInterceptorService } from './services/security/token-interceptor.s
 import { LoginGuardGuard } from './services/security/login-guard.guard';
 import {EventService} from './services/event.service';
 import { SeatSelectionComponent } from './components/seat-selection/seat-selection.component';
-
+import { DragToSelectModule } from 'ngx-drag-to-select';
 const  appRoutes = [
   {
     path:'login',
@@ -42,6 +42,7 @@ const  appRoutes = [
   ],
   imports: [
     FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(
@@ -51,7 +52,8 @@ const  appRoutes = [
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    DragToSelectModule.forRoot()
   ],
   providers: [
     AuthGuardGuard,

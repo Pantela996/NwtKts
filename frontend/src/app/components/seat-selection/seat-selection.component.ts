@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Inject }  from '@angular/core';
 import { DOCUMENT } from '@angular/common'; 
 import { Router } from '@angular/router';
@@ -10,26 +10,29 @@ import { EventService } from 'src/app/services/event.service';
   styleUrls: ['./seat-selection.component.css']
 })
 export class SeatSelectionComponent implements OnInit {
+  
 
-
-  eventService:any;
-  start = true;
+  public eventService:any;
+  public start = true;
   private seatConfig: any = null;
   private seatmap = [];
-  isEntered = false;
-  forBuying = false;
-  rows :number;
-  columns : number;
-  status:string;
-  mode = 0;
+  public isEntered = false;
+  public forBuying = false;
+  public rows :number;
+  public columns : number;
+  public status:string;
+  public mode = 0;
   private seats = [];
-  selectedSeat = [];
-  passlineseats = [];
-  seatingObject:any;
+  public selectedSeat = [];
+  public passlineseats = [];
+  public seatingObject:any;
   public seatsP;
   public rowsP;
   public columnsP;
   private available_seats = [];
+  public selectedDocuments = [];
+  private dragStart:number = 0;
+  private dragOver:number = 0;
   private seatChartConfig = {
     showRowsLabel : false,
     showRowWisePricing : false,
@@ -43,6 +46,17 @@ export class SeatSelectionComponent implements OnInit {
     cartId : "",
     eventId : 0
   };
+
+  
+  @HostListener('document:mousedown', ['$event'])
+  onMouseDown(ev) {
+      this.dragStart = ev.clientY;
+  }
+  @HostListener('document:mouseup', ['$event'])
+  onMouseUp(ev) {
+      this.dragStart = 0;
+      this.dragOver = 0;
+  }
   
 
   constructor(@Inject(DOCUMENT) document, eventService:EventService, public router:Router,) {
@@ -71,25 +85,34 @@ export class SeatSelectionComponent implements OnInit {
     this.seats = [];
     this.passlineseats = [];
     console.log(this.seatConfig);
+    if(this.rows > 10 && this.columns > 10){
+      var a = document.getElementById("seatsDIV");
+      a.classList.remove("seat-container");
+      a.classList.add("seat-container-change");
+    }
+
+    if(this.rows > 24 && this.columns > 24){
+      var a = document.getElementById("seatsDIV");
+      a.classList.remove("seat-container");
+      a.classList.add("seat-container-change2");
+    }
     this.processSeatChart(this.seatConfig);
   }
 
   onKeyRow(event) {
-    if(parseInt(event.target.value) > 0){
+    if(parseInt(event.target.value) > 1){
       this.rows = parseInt(event.target.value);
     }else{
       this.rows = 0;
-      alert("Enter value greater then 1");
     }
     
   }
 
   onKeyCol(event) {
-    if(parseInt(event.target.value) > 0){
+    if(parseInt(event.target.value) > 1){
       this.columns = parseInt(event.target.value);
     }else{
-      this.rows = 0;
-      alert("Enter value greater then 1");
+      this.columns = 0;
     }
     
   }
@@ -129,6 +152,9 @@ export class SeatSelectionComponent implements OnInit {
     return this.seatConfig;   
   }
 
+  someMethod(event){
+    alert(event.target.value);
+  }
 
   public processSeatChart ( map_data : any[] )
   {
@@ -241,6 +267,32 @@ export class SeatSelectionComponent implements OnInit {
     }
   }
 
+  onMouseOver(ev, item) {
+    if(ev.which!==1) {
+        return false;
+    }
+
+    ev.preventDefault();
+
+    if(ev.type==='mouseenter' && !item.selected) {
+        this.dragOver = ev.clientY - this.dragStart > 0 ? 1:-1;
+        this.selectSeatMode(item);
+        return false;
+    }
+
+    if(ev.type==='mouseleave') {
+        if(this.dragOver===1 && ev.clientY < ev.target.offsetTop && item.selected) {
+            console.log('desel...', item);
+            this.selectSeatMode(item);
+            return false;
+        }
+        if(this.dragOver===-1 && ev.clientY > ev.target.offsetTop && item.selected) {
+            console.log('desel...', item);
+            this.selectSeatMode(item);
+            return false;
+        }
+    }
+}
     
   public selectSeatMode(seatObject : any){
     if(this.mode==0){

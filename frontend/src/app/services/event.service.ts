@@ -15,7 +15,11 @@ export class EventService {
     return this.http.get(this.basePath + "/all", {responseType: 'json'})
   }
 
-  createSeatMap(){
-    
+  createHallSeats(seatingObj:any){
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    console.log(seatingObj.seatsP);
+    console.log(seatingObj.rowsP);
+    console.log(seatingObj.columnsP);
+    return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'});
   }
 }
