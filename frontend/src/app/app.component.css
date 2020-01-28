@@ -7,3 +7,51 @@ h4 {
 .table-image td, .table-image th {
     vertical-align: middle;
 }
+  .more-info {
+    display: none;
+  }
+  .next_btn {
+    position: absolute;
+    top: 67%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  .prev_btn {
+    position: absolute;
+    top: 66%;
+    left: 26.5%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  #slider{
+    margin-right: 20%;
+  }
+
+  .col-md-3{
+    max-width: 20%;
+  }
+
+  .img_dim{
+    width:  450px;
+    height: 250px;
+    margin-left: 30%;
+    border-radius: 8px;
+  }
+

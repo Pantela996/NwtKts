@@ -13,15 +13,23 @@ export class AppComponent implements OnInit{
   public events = []
   title = 'frontend';
   first_visit = true;
+  img_src = "fruit.jpg";
+  image_slider = [];
+  slide_count = 0;
 
   constructor(private authService:AuthenticationService, public router:Router, private eventService:EventService) { }
 
   ngOnInit() {
     this.eventService.getAll().subscribe(success => {this.setEvents(success)});
+    this.image_slider.push(this.img_src);
+    this.image_slider.push("random_pic.jpeg");
+    this.slide_count = 0;
   }
 
 
-  setEvents(data){
+
+
+  async setEvents(data){
     
     if(data.length != 0){
       this.events = data;
@@ -51,7 +59,20 @@ export class AppComponent implements OnInit{
   }
 
   info(){
-    console.log("info");
+    var information  = document.getElementById("information");
+    $(function(){ 
+      var $information = $("#information");
+        if($('.more-info').css("display") == "none"){
+          $('.more-info').fadeIn('slow');
+        }else{
+          $('.more-info').fadeOut('slow');
+        };
+        
+        $('#slider').on('click', function () {
+          $("#slider").fadeOut("100").fadeIn("100");
+         });
+  });
+  
   }
 
  isLocationEventAdmin(){
@@ -63,9 +84,27 @@ export class AppComponent implements OnInit{
     }else{
      return false;
     }
-  
-  
- }
+  }
+  next_slide(val:number){
+    if(val > 0){
+      if(this.slide_count + val == this.image_slider.length){
+        this.img_src = this.image_slider[0];
+        this.slide_count = 0;
+      }else{
+        this.slide_count++;
+        this.img_src = this.image_slider[this.slide_count];
+      }
+    }else{
+      if(this.slide_count + val < 0){
+        this.slide_count = this.image_slider.length - 1;
+        this.img_src = this.image_slider[this.slide_count];
+      }else{
+        this.slide_count--;
+        this.img_src = this.image_slider[this.slide_count];
+      }
+    }
+
+  }
 
 
 }
