@@ -1,19 +1,30 @@
 package com.project.master.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import javax.annotation.security.PermitAll;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.master.domain.Event;
 import com.project.master.dto.EventDTO;
@@ -27,9 +38,11 @@ public class EventController {
 
 	@Autowired
 	private EventService eventService;
-	
-	@Autowired 
+
+	@Autowired
 	private HallService hallService;
+
+	
 
 	// @PreAuthorize("hasAuthority('LOCATION_AND_EVENT_ADMIN_ROLE')")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -42,9 +55,6 @@ public class EventController {
 			return new ResponseEntity<String>("Invalid creation", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
-	
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ResponseEntity<String> deleteEvent(@RequestParam String event_id) {
@@ -66,8 +76,7 @@ public class EventController {
 			return new ResponseEntity<String>("Invalid update", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
+
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<Event>> getAll() {
 		try {
@@ -77,9 +86,6 @@ public class EventController {
 			return new ResponseEntity<ArrayList<Event>>(new ArrayList<Event>(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	
-	
 
 	@RequestMapping(value = "/one", method = RequestMethod.POST)
 	public ResponseEntity<Event> getOne(@RequestParam String event_id) {
@@ -90,7 +96,7 @@ public class EventController {
 			return new ResponseEntity<Event>(new Event(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@RequestMapping(value = "/myEvents", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<Event>> getMyEvents() {
 		try {
@@ -101,8 +107,8 @@ public class EventController {
 			return new ResponseEntity<ArrayList<Event>>(new ArrayList<Event>(), HttpStatus.BAD_REQUEST);
 		}
 	}
-	
-	@RequestMapping(value = "/createEventHallMap", method = RequestMethod.POST, consumes ="application/json", produces = "text/plain")
+
+	@RequestMapping(value = "/createEventHallMap", method = RequestMethod.POST, consumes = "application/json", produces = "text/plain")
 	public ResponseEntity<String> createSeatingMap(@RequestBody SeatInfoDTO seatDTO) {
 		try {
 			String response = hallService.saveSeats(seatDTO);
@@ -112,6 +118,29 @@ public class EventController {
 			return new ResponseEntity<String>("Bad request", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
 
+	@RequestMapping(value = "/upload-frame", method = RequestMethod.POST)
+	public ResponseEntity<String> upload(@RequestParam("files") MultipartFile[] files, @RequestParam("id") Long id) {
+		
+		try {
+			eventService.saveImage(files, id);
+			return new ResponseEntity<String>("Uploaded", HttpStatus.OK);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
+		}
+
+		
+
+	}
+
+	@RequestMapping(value = "/get-image", produces = MediaType.IMAGE_JPEG_VALUE)
+	public ResponseEntity<byte[]> getImageWithMediaType(@RequestParam("img_id") String img_url) throws IOException {
+		byte[] frame = eventService.getFrame(img_url);
+		return new ResponseEntity<byte[]>(frame,HttpStatus.OK);
+	}
+	
+	
+	
+	
 }

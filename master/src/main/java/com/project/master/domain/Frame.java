@@ -20,17 +20,14 @@ public class Frame {
 	@Column
 	private String url;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "event_id", nullable = false)
-	private Event event;
+
 
 	public Frame() {
 	}
 
-	public Frame(Long id, String url, Event event) {
+	public Frame(Long id, String url) {
 		this.id = id;
 		this.url = url;
-		this.event = event;
 	}
 
 	public Long getId() {
@@ -49,12 +46,5 @@ public class Frame {
 		this.url = url;
 	}
 
-	public Event getEvent() {
-		return event;
-	}
-
-	public void setEvent(Event event) {
-		this.event = event;
-	}
 
 }

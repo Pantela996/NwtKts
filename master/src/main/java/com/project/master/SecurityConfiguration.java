@@ -50,6 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/event/update").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/event/all").permitAll()
 		.antMatchers("/event/one").permitAll()
+		.antMatchers("/event/upload-frame").permitAll()
+		.antMatchers("/event//get-image").permitAll()
 		.antMatchers("/event/createEventHallMap").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/event/myEvents").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		//.antMatchers("/location/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")

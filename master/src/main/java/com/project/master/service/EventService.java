@@ -1,21 +1,33 @@
 package com.project.master.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.master.domain.Category;
 import com.project.master.domain.Event;
 import com.project.master.domain.EventLocation;
+import com.project.master.domain.Frame;
 import com.project.master.domain.Hall;
 import com.project.master.domain.LocationEventAdmin;
 import com.project.master.dto.EventDTO;
 import com.project.master.exception.DataException;
 import com.project.master.repository.CategoryRepository;
 import com.project.master.repository.EventRepository;
+import com.project.master.repository.FrameRepository;
 import com.project.master.repository.HallRepository;
 import com.project.master.repository.LocationRepository;
 import com.project.master.repository.UserRepository;
@@ -35,8 +47,13 @@ public class EventService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	@Autowired
+	private FrameRepository frameRepository;
+	
 	@Autowired 
 	UserRepository userRepository;
+	
+	private static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
 
 	public String createEvent(EventDTO eventDTO, String currentUser) {
 		try {
@@ -146,6 +163,41 @@ public class EventService {
 			}
 		}
 		return myEvents;
+	}
+
+	public boolean saveImage(MultipartFile[] files, Long id) throws FileNotFoundException {
+		Optional<Event> optEvent = eventRepository.findById(id);
+		//find event and save img 
+		if(optEvent.isPresent()) {
+			Event event = optEvent.get();
+			for (MultipartFile file : files) {
+				Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
+				try {
+					Files.write(fileNameAndPath, file.getBytes());
+					Frame f = new Frame();
+					f.setUrl(uploadDirectory + "" + file.getOriginalFilename());
+					event.getFrames().add(f);
+					frameRepository.save(f);
+					eventRepository.save(event);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new FileNotFoundException();
+				}
+
+			}
+		}else {
+			return false;
+		}
+		
+		return true;
+		
+	}
+
+	public byte[] getFrame(String img_name) throws IOException {
+		InputStream in = getClass().getResourceAsStream(img_name);
+		return StreamUtils.copyToByteArray(in);
+		
 	}
 
 }

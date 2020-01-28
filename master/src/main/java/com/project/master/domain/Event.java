@@ -1,14 +1,19 @@
 package com.project.master.domain;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -46,6 +51,9 @@ public class Event {
 	@Column
 	private int numberOfTakenPlaces;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Frame> frames;
+	
 	public Event() {
 
 	}
@@ -62,6 +70,7 @@ public class Event {
 		this.categoryId = categoryId;
 		this.description = description;
 		this.user_id = user;
+		this.frames = new ArrayList<Frame>();
 	}
 	
 	
@@ -76,6 +85,7 @@ public class Event {
 		this.categoryId = categoryId;
 		this.description = description;
 		this.user_id = user;
+		this.frames = new ArrayList<Frame>();
 	}
 
 
@@ -90,6 +100,7 @@ public class Event {
 		this.description = description;
 		this.user_id = user_id;
 		this.numberOfTakenPlaces = 0;
+		this.frames = new ArrayList<Frame>();
 	}
 
 	public Long getId() {
@@ -171,4 +182,16 @@ public class Event {
 	public void setNumberOfTakenPlaces(int numberOfTakenPlaces) {
 		this.numberOfTakenPlaces = numberOfTakenPlaces;
 	}
+
+	public List<Frame> getFrames() {
+		return frames;
+	}
+
+	public void setFrames(List<Frame> frame) {
+		this.frames = frames;
+	}
+
+
+	
+	
 }
