@@ -2,23 +2,15 @@ package com.project.master.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.annotation.security.PermitAll;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.project.master.domain.Event;
 import com.project.master.dto.EventDTO;
 import com.project.master.dto.SeatInfoDTO;
+import com.project.master.exception.DataException;
 import com.project.master.service.EventService;
 import com.project.master.service.HallService;
 
@@ -134,10 +127,18 @@ public class EventController {
 
 	}
 
-	@RequestMapping(value = "/get-image", produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<byte[]> getImageWithMediaType(@RequestParam("img_id") String img_url) throws IOException {
-		byte[] frame = eventService.getFrame(img_url);
-		return new ResponseEntity<byte[]>(frame,HttpStatus.OK);
+	@RequestMapping(value = "/get-image")
+	public ResponseEntity<List<byte[]>> getImageWithMediaType(@RequestParam("event_id") String img_url) throws IOException {
+		List<byte[]> frames;
+		try {
+			frames = eventService.getFrames(img_url);
+			return new ResponseEntity<List<byte[]>>(frames,HttpStatus.OK);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<List<byte[]>>(new ArrayList<>(),HttpStatus.BAD_REQUEST);
+		}
+		
 	}
 	
 	

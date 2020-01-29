@@ -1,7 +1,8 @@
 package com.project.master.dto;
 
 public class EventDTO {
-
+	
+	Long id;
 	String name;
 	String date_from;
 	String date_to;
@@ -11,9 +12,10 @@ public class EventDTO {
 	String description;
 
 	public EventDTO(String name, String date_from, String date_to, String event_location, String location_hall,
-			String event_category, String description) {
+			String event_category, String description,Long id) {
 		super();
 		this.name = name;
+		this.id = id;
 		this.date_from = date_from;
 		this.date_to = date_to;
 		this.event_location = event_location;

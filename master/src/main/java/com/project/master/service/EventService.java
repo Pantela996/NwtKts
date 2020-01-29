@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class EventService {
 	@Autowired 
 	UserRepository userRepository;
 	
-	private static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
+	private static String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/uploads";
 
 	public String createEvent(EventDTO eventDTO, String currentUser) {
 		try {
@@ -167,7 +168,8 @@ public class EventService {
 
 	public boolean saveImage(MultipartFile[] files, Long id) throws FileNotFoundException {
 		Optional<Event> optEvent = eventRepository.findById(id);
-		//find event and save img 
+		StringBuilder sb = new StringBuilder();
+		//find event and save img
 		if(optEvent.isPresent()) {
 			Event event = optEvent.get();
 			for (MultipartFile file : files) {
@@ -175,7 +177,10 @@ public class EventService {
 				try {
 					Files.write(fileNameAndPath, file.getBytes());
 					Frame f = new Frame();
-					f.setUrl(uploadDirectory + "" + file.getOriginalFilename());
+					sb.append("/uploads/");
+					sb.append(file.getOriginalFilename());
+					System.out.println(sb.toString());
+					f.setUrl(sb.toString());
 					event.getFrames().add(f);
 					frameRepository.save(f);
 					eventRepository.save(event);
@@ -194,10 +199,26 @@ public class EventService {
 		
 	}
 
-	public byte[] getFrame(String img_name) throws IOException {
-		InputStream in = getClass().getResourceAsStream(img_name);
-		return StreamUtils.copyToByteArray(in);
+	public List<byte[]> getFrames(String event_id) throws IOException, DataException {
+		List<byte[]> frames = new ArrayList<byte[]>();
+		byte[] frame;
+		Optional<Event> oEvent = eventRepository.findById(Long.valueOf(event_id));
+		if(oEvent.isPresent()) {
+			
+			Event event = oEvent.get();
+			for(Frame f : event.getFrames()) {
+				System.out.println(f.getUrl());
+				InputStream in = getClass().getResourceAsStream(f.getUrl());
+				frame = StreamUtils.copyToByteArray(in);
+				System.out.println(frame);
+				frames.add(frame);
+			}
+		}else {
+			frames = null;
+			throw new DataException();
+		}
 		
+		return frames;
 	}
 
 }
