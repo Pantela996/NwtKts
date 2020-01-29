@@ -168,6 +168,7 @@ public class EventService {
 
 	public boolean saveImage(MultipartFile[] files, Long id) throws FileNotFoundException {
 		Optional<Event> optEvent = eventRepository.findById(id);
+		
 		StringBuilder sb = new StringBuilder();
 		//find event and save img
 		if(optEvent.isPresent()) {
@@ -178,6 +179,8 @@ public class EventService {
 					Files.write(fileNameAndPath, file.getBytes());
 					Frame f = new Frame();
 					sb.append("/uploads/");
+					sb.append(String.valueOf(id));
+					sb.append("/");
 					sb.append(file.getOriginalFilename());
 					System.out.println(sb.toString());
 					f.setUrl(sb.toString());
@@ -214,7 +217,6 @@ public class EventService {
 				frames.add(frame);
 			}
 		}else {
-			frames = null;
 			throw new DataException();
 		}
 		

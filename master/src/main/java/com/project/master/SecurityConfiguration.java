@@ -61,6 +61,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.antMatchers("/location/all").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/location/one").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
 		.antMatchers("/location/myLocations").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
+		.antMatchers("/register").permitAll()
 		.antMatchers("/login").permitAll().anyRequest()
 				.authenticated().and().exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);

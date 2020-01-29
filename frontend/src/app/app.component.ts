@@ -21,12 +21,19 @@ export class AppComponent implements OnInit{
 
   ngOnInit() {
     this.eventService.getAll().subscribe(success => {this.setEvents(success)});
-    this.image_slider.push(this.img_src);
-    this.image_slider.push("random_pic.jpeg");
     this.slide_count = 0;
   }
 
 
+  setImages(data){
+    console.log(data);
+    for(let i = 0;i < data.length;i++){
+      this.image_slider.push(data[i]);
+    }
+    console.log(this.image_slider);
+    $('#itemPreview').attr('src', `data:image/png;base64,${this.image_slider[0]}`);
+    
+  }
 
 
   async setEvents(data){
@@ -58,8 +65,9 @@ export class AppComponent implements OnInit{
     return (this.router.url === '/'); 
   }
 
-  info(){
+  info(id){
     var information  = document.getElementById("information");
+    this.eventService.getImages(id).subscribe(success=>{this.setImages(success)});
     $(function(){ 
       var $information = $("#information");
         if($('.more-info').css("display") == "none"){
@@ -68,9 +76,6 @@ export class AppComponent implements OnInit{
           $('.more-info').fadeOut('slow');
         };
         
-        $('#slider').on('click', function () {
-          $("#slider").fadeOut("100").fadeIn("100");
-         });
   });
   
   }
@@ -90,6 +95,7 @@ export class AppComponent implements OnInit{
       if(this.slide_count + val == this.image_slider.length){
         this.img_src = this.image_slider[0];
         this.slide_count = 0;
+        ;
       }else{
         this.slide_count++;
         this.img_src = this.image_slider[this.slide_count];
@@ -103,6 +109,7 @@ export class AppComponent implements OnInit{
         this.img_src = this.image_slider[this.slide_count];
       }
     }
+    $('#itemPreview').attr('src', `data:image/png;base64,${this.img_src}`);
 
   }
 

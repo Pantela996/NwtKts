@@ -127,11 +127,11 @@ public class EventController {
 
 	}
 
-	@RequestMapping(value = "/get-image")
-	public ResponseEntity<List<byte[]>> getImageWithMediaType(@RequestParam("event_id") String img_url) throws IOException {
+	@RequestMapping(value = "/get-images")
+	public ResponseEntity<List<byte[]>> getImageWithMediaType(@RequestParam("event_id") String event_id) throws IOException {
 		List<byte[]> frames;
 		try {
-			frames = eventService.getFrames(img_url);
+			frames = eventService.getFrames(event_id);
 			return new ResponseEntity<List<byte[]>>(frames,HttpStatus.OK);
 		} catch (DataException e) {
 			// TODO Auto-generated catch block

@@ -22,4 +22,9 @@ export class EventService {
     console.log(seatingObj.columnsP);
     return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'});
   }
+
+
+  getImages(id:String){
+    return this.http.get(this.basePath + "/get-image?" + "event_id=" + id, {responseType: 'json'});
+  }
 }

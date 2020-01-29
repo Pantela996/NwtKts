@@ -16,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.master.MyUserDetailsService;
+import com.project.master.dto.UserDTO;
+import com.project.master.exception.DataException;
+import com.project.master.repository.UserRepository;
+import com.project.master.service.UserService;
 import com.project.master.util.AuthenticationRequest;
 import com.project.master.util.AuthenticationResponse;
 import com.project.master.util.JwtUtil;
 
 @RestController
-public class LoginController {
+public class UserController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -31,6 +35,9 @@ public class LoginController {
 
 	@Autowired
 	private MyUserDetailsService userDetailsService;
+	
+	@Autowired
+	private UserService userService;
 
 
 
@@ -59,6 +66,22 @@ public class LoginController {
 			return new ResponseEntity<String>("Invalid login", HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO){
+		
+		try {
+			userService.registerUser(userDTO);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	
 
 	@PreAuthorize("permitAll()")
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
