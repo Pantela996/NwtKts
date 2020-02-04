@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.paypal.api.payments.Amount;
+import com.paypal.api.payments.Payee;
 import com.paypal.api.payments.Payer;
 import com.paypal.api.payments.Payment;
 import com.paypal.api.payments.PaymentExecution;
@@ -39,7 +40,7 @@ public class PaypalService {
 
 		Payer payer = new Payer();
 		payer.setPaymentMethod(method.toString());
-
+		
 		Payment payment = new Payment();
 		payment.setIntent(intent.toString());
 		payment.setPayer(payer);

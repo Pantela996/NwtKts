@@ -25,6 +25,6 @@ export class EventService {
 
 
   getImages(id:String){
-    return this.http.get(this.basePath + "/get-image?" + "event_id=" + id, {responseType: 'json'});
+    return this.http.get(this.basePath + "/get-images?" + "event_id=" + id, {responseType: 'json'});
   }
 }

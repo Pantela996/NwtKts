@@ -1,5 +1,7 @@
 package com.project.master.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +12,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.master.MyUserDetailsService;
+import com.project.master.domain.User;
 import com.project.master.dto.UserDTO;
 import com.project.master.exception.DataException;
 import com.project.master.repository.UserRepository;
@@ -72,7 +77,7 @@ public class UserController {
 	public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO){
 		
 		try {
-			userService.registerUser(userDTO);
+			userService.registerUser(userDTO, "REGULAR_USER_ROLE");
 		} catch (DataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,6 +86,98 @@ public class UserController {
 		
 		return new ResponseEntity<String>("Success", HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(value = "/delete_location_admin/{username}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteLocationEventAdminUser(@PathVariable String username){
+		
+		try {
+			userService.deleteUser(username);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/delete_user/{username}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deletenUser(@PathVariable String username){
+		
+		try {
+			userService.deleteUser(username);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/get_one_user/{username}", method = RequestMethod.GET)
+	public ResponseEntity<User> getOneUser(@PathVariable String username){
+		User user = new User();
+		try {
+			user = userService.getOneUser(username);
+		} catch (DataException e) {
+			e.printStackTrace();
+			return new ResponseEntity<User>(user, HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/get_all_users", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<User>> getAllUsers(){
+		ArrayList<User> users = new ArrayList<User>();
+		users = userService.getAllUsers("REGULAR_USER_ROLE");
+		return new ResponseEntity<ArrayList<User>>(users, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/create_location_admin", method = RequestMethod.POST)
+	public ResponseEntity<String> createLocationEventAdminUser(@RequestBody UserDTO userDTO){
+		
+		try {
+			userService.registerUser(userDTO, "LOCATION_EVENT_ADMIN_ROLE");
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
+		}
+		
+		return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	
+	
+	
+	@RequestMapping(value = "/get_all_event_admins", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<User>> getAllLocationEventAdminUser(){
+		ArrayList<User> users = new ArrayList<User>();
+		users = userService.getAllUsers("LOCATION_AND_EVENT_ADMIN_ROLE");
+		return new ResponseEntity<ArrayList<User>>(users, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "/delete_location/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteLocation(@PathVariable String id){
+		try {
+			userService.deleteLocation(id);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<String>("Failed", HttpStatus.OK);
+
+		}
+		return new ResponseEntity<String>("Success", HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
 	
 
 	@PreAuthorize("permitAll()")

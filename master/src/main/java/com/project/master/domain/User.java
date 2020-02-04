@@ -3,6 +3,7 @@ package com.project.master.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,7 +28,7 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
 
 	/*
@@ -40,8 +41,28 @@ public class User {
 		this.password = password;
 	}
 
+	public User(String username, String password, Set<UserAuthority> userAuthorities) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.userAuthorities = userAuthorities;
+	}
+
 	public User() {
 
+	}
+
+
+	public User(String username) {
+		super();
+		this.username = username;
+	}
+
+
+	public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
 	}
 
 	public String getUsername() {

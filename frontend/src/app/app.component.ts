@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './services/security/authentication-service.service';
 import { Router } from '@angular/router';
-import {EventService} from './services/event.service'
+import {EventService} from './services/event.service';
+import * as $ from "jquery";
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent implements OnInit{
   public events = []
   title = 'frontend';
   first_visit = true;
-  img_src = "fruit.jpg";
+  img_src = "";
   image_slider = [];
   slide_count = 0;
 

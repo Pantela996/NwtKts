@@ -4,6 +4,7 @@ import { DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 
+
 @Component({
   selector: 'app-seat-selection',
   templateUrl: './seat-selection.component.html',

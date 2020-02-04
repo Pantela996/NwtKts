@@ -122,10 +122,8 @@ public class EventController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
 		}
-
-		
-
 	}
+	
 
 	@RequestMapping(value = "/get-images")
 	public ResponseEntity<List<byte[]>> getImageWithMediaType(@RequestParam("event_id") String event_id) throws IOException {
