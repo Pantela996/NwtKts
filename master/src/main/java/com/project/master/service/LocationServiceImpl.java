@@ -6,10 +6,14 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.master.domain.Category;
+import com.project.master.domain.CategoryType;
 import com.project.master.domain.Event;
 import com.project.master.domain.EventLocation;
+import com.project.master.dto.CategoryDTO;
 import com.project.master.dto.LocationDTO;
 import com.project.master.exception.DataException;
+import com.project.master.repository.CategoryRepository;
 import com.project.master.repository.LocationRepository;
 
 @Service
@@ -17,15 +21,15 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Override
 	public String createLocation(String locationName, String locationCity, String user) throws DataException {
-		System.out.println("here");
 		Optional<EventLocation> location  = locationRepository.findByName(locationName);
-		if (locationName == null)
-			throw new DataException("Location is null");
-		if((location == null)) {
-			locationRepository.save(location.get());
+		if(location == null) {
+			locationRepository.save(new EventLocation(locationName, locationCity, user));
 		}else {
 			return "False";
 		}
@@ -93,6 +97,46 @@ public class LocationServiceImpl implements LocationService {
 			}
 		}
 		return myLocations;
+	}
+
+	public String createCategory(String name, int requiredRows, int requiredColumns) throws DataException {
+		Optional<Category> category  = categoryRepository.findByName(name);
+		
+		System.out.println("CAME HERE");
+		
+		if(!category.isPresent()) {
+			categoryRepository.save(new Category(name, requiredRows, requiredColumns, CategoryType.FAIRY));
+			return "Success";
+		}else {
+			throw new DataException("Category name alredy exists");
+		}
+		
+	}
+
+	public ArrayList<Category> getAllCategories() {
+		ArrayList<Category> categories = (ArrayList<Category>)categoryRepository.findAll();
+		return categories;
+	}
+
+	public Category updateCategory(CategoryDTO categoryDTO) {
+		Category c = new Category();
+		try {
+			Optional<Category> ce = categoryRepository.findById(Long.valueOf(categoryDTO.getId()));
+			if (ce.isPresent()) {
+				c = ce.get();
+				c.setName(categoryDTO.getName());
+				c.setCategoryType(categoryDTO.getCategoryType());
+				c.setRequiredRows(categoryDTO.getRequiredRows());
+				c.setRequiredColumns(categoryDTO.getRequiredColumns());
+				// this.createLocation(locationDTO);
+				categoryRepository.save(c);
+			} else {
+				throw new DataException("Location does not exist");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return c;
 	}
 
 }

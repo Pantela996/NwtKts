@@ -81,7 +81,7 @@ public class TicketService {
 
         Hall hall = null;
         for (int i = 0; i < halls.size(); i++) {
-            if (halls.get(i).getId() == event.getHallId()) {
+            if (halls.get(i) == event.getHall()) {
                 hall = halls.get(i);
                 break;
             }
@@ -115,7 +115,7 @@ public class TicketService {
 
 
         }else{
-            Category category = categoryRepository.findById(event.getCategoryId()).get();
+            Category category = categoryRepository.findById(event.getCategory().getId()).get();
             if(event.getNumberOfTakenPlaces() == category.getRequiredColumns()*category.getRequiredRows()){
                 return new MessageDTO(false, "Hall is full!");
             }

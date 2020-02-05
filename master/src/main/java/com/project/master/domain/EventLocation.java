@@ -1,10 +1,13 @@
 package com.project.master.domain;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 
 @Entity
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class EventLocation {
 
 	@Id

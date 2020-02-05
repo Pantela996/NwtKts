@@ -2,12 +2,9 @@ package com.project.master.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Seat {
@@ -23,6 +20,11 @@ public class Seat {
 
 	@Column
 	TypeOfSeat typeOfSeat;
+	
+	@Column
+	private Long event_id;
+	
+	
 
 	/*@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "hall_id", nullable = false)
@@ -61,6 +63,15 @@ public class Seat {
 		this.seat_column = seat_column;
 		this.typeOfSeat = typeOfSeat;
 	}
+	
+	public Seat(Long id, int seat_row, int seat_column, TypeOfSeat typeOfSeat, Long event_id) {
+		super();
+		this.id = id;
+		this.seat_row = seat_row;
+		this.seat_column = seat_column;
+		this.typeOfSeat = typeOfSeat;
+		this.event_id = event_id;
+	}
 
 	
 	public Seat(int seat_row, int seat_column, TypeOfSeat typeOfSeat) {
@@ -93,6 +104,16 @@ public class Seat {
 	public void setSeat_column(int seat_column) {
 		this.seat_column = seat_column;
 	}
+
+	public Long getEvent_id() {
+		return event_id;
+	}
+
+	public void setEvent_id(Long event_id) {
+		this.event_id = event_id;
+	}
+	
+	
 
 	/*public Hall getHall() {
 		return hall;

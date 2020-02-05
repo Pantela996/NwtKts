@@ -11,13 +11,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Event {
 
 	@Id
@@ -33,14 +34,14 @@ public class Event {
 	@Column(nullable = true)
 	private Date DateTo;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	private EventLocation location;
 
-	@Column
-	private Long hallId;
+	@OneToOne
+	private Hall hall;
 
-	@Column
-	private Long categoryId;
+	@OneToOne
+	private Category category;
 
 	@Column
 	private String description;
@@ -58,7 +59,7 @@ public class Event {
 
 	}
 
-	public Event(Long id, String name, Date dateFrom, Date dateTo, EventLocation location, Long hallId, Long categoryId,
+	public Event(Long id, String name, Date dateFrom, Date dateTo, EventLocation location, Hall hall, Category category,
 			String description, String user) {
 		super();
 		this.id = id;
@@ -66,39 +67,39 @@ public class Event {
 		this.dateFrom = dateFrom;
 		this.DateTo = dateTo;
 		this.location = location;
-		this.hallId = hallId;
-		this.categoryId = categoryId;
+		this.hall = hall;
+		this.category = category;
 		this.description = description;
 		this.user_id = user;
 		this.frames = new ArrayList<Frame>();
 	}
 	
 	
-	public Event(String name, Date dateFrom, Date dateTo, EventLocation location, Long hallId, Long categoryId,
+	public Event(String name, Date dateFrom, Date dateTo, EventLocation location, Hall hall, Category category,
 			String description, String user) {
 		super();
 		this.name = name;
 		this.dateFrom = dateFrom;
 		DateTo = dateTo;
 		this.location = location;
-		this.hallId = hallId;
-		this.categoryId = categoryId;
+		this.hall = hall;
+		this.category = category;
 		this.description = description;
 		this.user_id = user;
 		this.frames = new ArrayList<Frame>();
 	}
 
 
-	public Event(Long id, String name, Date dateFrom, Date dateTo, EventLocation locationId, Long hallId, Long categoryId, String description, String user_id, int numberOfTakenPlaces) {
+	public Event(Long id, String name, Date dateFrom, Date dateTo, EventLocation location, Hall hall, Category category, String description, String user, int numberOfTakenPlaces) {
 		this.id = id;
 		this.name = name;
 		this.dateFrom = dateFrom;
 		this.DateTo = dateTo;
-		this.location = locationId;
-		this.hallId = hallId;
-		this.categoryId = categoryId;
+		this.location = location;
+		this.hall = hall;
+		this.category = category;
 		this.description = description;
-		this.user_id = user_id;
+		this.user_id = user;
 		this.numberOfTakenPlaces = 0;
 		this.frames = new ArrayList<Frame>();
 	}
@@ -143,20 +144,20 @@ public class Event {
 		this.location = locationId;
 	}
 
-	public Long getHallId() {
-		return hallId;
+	public Hall getHall() {
+		return hall;
 	}
 
-	public void setHallId(Long hallId) {
-		this.hallId = hallId;
+	public void setHall(Hall hallId) {
+		this.hall = hallId;
 	}
 
-	public Long getCategoryId() {
-		return categoryId;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
+	public void setCategory(Category categoryId) {
+		this.category = categoryId;
 	}
 
 	public String getDescription() {
@@ -187,7 +188,7 @@ public class Event {
 		return frames;
 	}
 
-	public void setFrames(List<Frame> frame) {
+	public void setFrames(List<Frame> frames) {
 		this.frames = frames;
 	}
 

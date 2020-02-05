@@ -19,7 +19,7 @@ public class Hall {
 	@Column
 	private int totalColumns;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	private EventLocation location;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

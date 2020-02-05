@@ -111,6 +111,7 @@ public class HallServiceImpl implements HallService {
 			temp.setSeat_row(Integer.valueOf(arrOfStr[0]));
 			temp.setSeat_column(Integer.valueOf(arrOfStr[1]));
 			temp.setTypeOfSeat(TypeOfSeat.valueOf(s.getStatus().toUpperCase()));
+			temp.setEvent_id(s.getEvent_id());
 			seats.add(temp);
 		}
 		h.setTotalRows(seatsDTO.getRowsP());

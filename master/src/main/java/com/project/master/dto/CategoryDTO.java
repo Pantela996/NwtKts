@@ -1,62 +1,41 @@
-package com.project.master.domain;
+package com.project.master.dto;
 
+import com.project.master.domain.CategoryType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Category {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-
-	@Column
+public class CategoryDTO {
+	
 	private String name;
 
-	@Column
 	private int requiredRows;
 
-	@Column
 	private int requiredColumns;
 
-
-	@Column
+	private Long id;
+	
 	private CategoryType categoryType;
-
-	public Category() {
+	
+	public CategoryDTO() {
+		super();
 	}
 	
-	
-
-	public Category(Long id, String name, int requiredRows, int requiredColumns, CategoryType categoryType) {
+	public CategoryDTO(Long id, String name, int requiredRows, int requiredColumns, CategoryType categoryType) {
 		super();
-		this.id = id;
-		this.name = name;
+		this.name = name;	
 		this.requiredRows = requiredRows;
 		this.requiredColumns = requiredColumns;
+		this.id = id;
 		this.categoryType = categoryType;
 	}
+	
 
-	public Category(String name, int requiredRows, int requiredColumns, CategoryType fairy) {
+
+	public CategoryDTO(String name, int requiredRows, int requiredColumns) {
+		super();
 		this.name = name;
 		this.requiredRows = requiredRows;
 		this.requiredColumns = requiredColumns;
-		this.categoryType = fairy;
 	}
 
-
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -81,7 +60,16 @@ public class Category {
 	public void setRequiredColumns(int requiredColumns) {
 		this.requiredColumns = requiredColumns;
 	}
+	
+	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public CategoryType getCategoryType() {
 		return categoryType;
 	}
@@ -89,5 +77,9 @@ public class Category {
 	public void setCategoryType(CategoryType categoryType) {
 		this.categoryType = categoryType;
 	}
+
+
+	
+	
 
 }

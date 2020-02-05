@@ -1,6 +1,7 @@
 package com.project.master.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.master.domain.Category;
 import com.project.master.domain.EventLocation;
+import com.project.master.dto.CategoryDTO;
 import com.project.master.dto.LocationDTO;
 import com.project.master.exception.DataException;
 import com.project.master.service.LocationService;
@@ -97,5 +100,30 @@ public class LocationController {
 	}
 
 	// TO BE IMPLEMENTED : operacije nad halama u lokaciji
+	
+	@RequestMapping(value = "/category/create", method = RequestMethod.POST)
+	public ResponseEntity<String> createCategory(@RequestBody CategoryDTO categoryDTO) {
+
+		try {
+			String message = locationService.createCategory(categoryDTO.getName(), categoryDTO.getRequiredRows(), categoryDTO.getRequiredColumns());
+			return new ResponseEntity<String>(message, HttpStatus.OK);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			return new ResponseEntity<>("Failed null", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	@RequestMapping(value = "/category/get_all", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<Category>> getCategories() {
+			ArrayList<Category> categories = locationService.getAllCategories();
+			return new ResponseEntity<ArrayList<Category>>(categories, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/category/update", method = RequestMethod.PUT)
+	public ResponseEntity<Category> updateCategories(@RequestBody CategoryDTO categoryDTO) {
+			Category category = locationService.updateCategory(categoryDTO);
+			return new ResponseEntity<Category>(category, HttpStatus.OK);
+	}
 
 }

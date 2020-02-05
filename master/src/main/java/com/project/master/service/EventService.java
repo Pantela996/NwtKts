@@ -92,7 +92,7 @@ public class EventService {
 				throw new DataException("Location does not exist");
 			}
 			if (category == null )throw new DataException("Category does not exist");
-			Event event = new Event(eventDTO.getName(), Date.valueOf(eventDTO.getDate_from()), Date.valueOf(eventDTO.getDate_to()), el, hall.getId(), category.getId(), eventDTO.getDescription(), lea.getUsername());
+			Event event = new Event(eventDTO.getName(), Date.valueOf(eventDTO.getDate_from()), Date.valueOf(eventDTO.getDate_to()), el, hall, category, eventDTO.getDescription(), lea.getUsername());
 			eventRepository.save(event);
 			
 			
@@ -136,7 +136,7 @@ public class EventService {
 
 	public ArrayList<Event> getAll() {
 		ArrayList<Event> events = (ArrayList<Event>)eventRepository.findAll();
-		System.out.println(events.size());
+		System.out.println(events.size() + "nnnnn");
 		return events;
 	}
 
