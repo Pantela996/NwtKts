@@ -1,8 +1,10 @@
 package com.project.master.service;
 
 
+import com.paypal.api.payments.Event;
 import com.project.master.domain.Authority;
 import com.project.master.domain.EventLocation;
+import com.project.master.domain.LocationEventAdmin;
 import com.project.master.domain.RegularUser;
 import com.project.master.domain.User;
 import com.project.master.domain.UserAuthority;
@@ -35,6 +37,8 @@ public class UserService {
 	@Autowired
 	private AuthorityRepository authRepository;
 
+	@Autowired
+	private UserAuthorityRepository userAuthRepository;
 	
 	@Autowired
 	private LocationRepository locationRepository;
@@ -54,7 +58,15 @@ public class UserService {
 
 	public void registerUser(UserDTO userDTO, String typeOFUser) throws DataException{
 		
-		User user = new RegularUser();
+		User user = new User();
+		
+		if(typeOFUser.equalsIgnoreCase("REGULAR_USER")) {
+			user = new RegularUser();
+		}else {
+			user = new LocationEventAdmin();
+		}
+		
+		
 		
 		if(userDTO.getUsername() == null) throw new DataException("No username was given");
 		
@@ -94,11 +106,12 @@ public class UserService {
 		auth.getUserAuthorities().add(authority);
 		authority.setAuthority(auth);
 		authority.setUser(user);
+		System.out.println(authority.getAuthority().getName());
 		user.getUserAuthorities().add(authority);
 		BCryptPasswordEncoder enc = new BCryptPasswordEncoder();
 		user.setPassword(enc.encode(user.getPassword()));
 		userRepository.save(user);
-		
+		userAuthRepository.save(authority);
 		return;
 	}
 

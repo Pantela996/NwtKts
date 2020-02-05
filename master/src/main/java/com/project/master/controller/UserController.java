@@ -141,7 +141,7 @@ public class UserController {
 	public ResponseEntity<String> createLocationEventAdminUser(@RequestBody UserDTO userDTO){
 		
 		try {
-			userService.registerUser(userDTO, "LOCATION_EVENT_ADMIN_ROLE");
+			userService.registerUser(userDTO, "LOCATION_AND_EVENT_ADMIN_ROLE");
 		} catch (DataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
