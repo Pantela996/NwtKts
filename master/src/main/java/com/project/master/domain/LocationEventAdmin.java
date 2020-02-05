@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 public class LocationEventAdmin extends User {
 	
 	
-	public LocationEventAdmin(Long id, String username, String password) {
-		super(id,username,password);
+	public LocationEventAdmin(Long id, String username, String password, String name, String lastname, String email) {
+		super(id,username,password,name,lastname,email);
 		//this.type = UserType.LOCATIONEVENTADMIN;
 	}
 	

@@ -27,6 +27,16 @@ public class User {
 
 	@Column(nullable = false)
 	private String password;
+	
+	@Column(nullable=false) 
+	String name;
+	
+	@Column(nullable=false)
+	String lastName;
+	
+	@Column(nullable=false)
+	String email;
+
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
@@ -48,6 +58,27 @@ public class User {
 		this.userAuthorities = userAuthorities;
 	}
 
+	public User(String username, String password, String name, String lastName, String email,
+			Set<UserAuthority> userAuthorities) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.userAuthorities = userAuthorities;
+	}
+	
+	public User(long id, String username, String password, String name, String lastName, String email) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+	}
+
 	public User() {
 
 	}
@@ -64,6 +95,9 @@ public class User {
 		this.username = username;
 		this.password = password;
 	}
+
+
+
 
 	public String getUsername() {
 		return username;
@@ -88,5 +122,31 @@ public class User {
 	public void setUserAuthorities(Set<UserAuthority> userAuthorities) {
 		this.userAuthorities = userAuthorities;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	
 
 }

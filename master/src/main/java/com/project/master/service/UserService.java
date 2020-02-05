@@ -62,6 +62,11 @@ public class UserService {
 		
 		if(userDTO.getEmail() == null) throw new DataException("No email was given");
 		
+		if(userDTO.getName() == null) throw new DataException("No name was given");
+		
+		if(userDTO.getLastName() == null) throw new DataException("No lastname was given");
+		
+		
 		Optional<User> oUser = userRepository.findByUsername(userDTO.getUsername());
 				
 		
@@ -71,6 +76,10 @@ public class UserService {
 		
 		user.setUsername(userDTO.getUsername());
 		user.setPassword(userDTO.getPassword());
+		user.setEmail(userDTO.getEmail());
+		user.setName(userDTO.getName());
+		user.setLastName(userDTO.getLastName());
+		
 		
 		UserAuthority authority = new UserAuthority();
 		

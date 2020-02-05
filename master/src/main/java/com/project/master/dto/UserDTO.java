@@ -16,6 +16,7 @@ public class UserDTO {
 	
 	private Date date_of_creation;
 	
+	
 
 	public UserDTO(String username, String password, String email, String name, String lastName,
 			Date date_of_creation) {
