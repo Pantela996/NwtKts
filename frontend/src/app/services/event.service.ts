@@ -20,7 +20,7 @@ export class EventService {
     console.log(seatingObj.seatsP);
     console.log(seatingObj.rowsP);
     console.log(seatingObj.columnsP);
-    return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'});
+    return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'}).toPromise();
   }
 
 

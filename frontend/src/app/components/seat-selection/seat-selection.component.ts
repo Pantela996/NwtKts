@@ -30,10 +30,12 @@ export class SeatSelectionComponent implements OnInit {
   public seatsP;
   public rowsP;
   public columnsP;
+  private event_id;
   private available_seats = [];
   public selectedDocuments = [];
   private dragStart:number = 0;
   private dragOver:number = 0;
+  private seat_conf:any;
   private seatChartConfig = {
     showRowsLabel : false,
     showRowWisePricing : false,
@@ -207,7 +209,8 @@ export class SeatSelectionComponent implements OnInit {
               var seatObj = {
                 "key" : map_element.seat_label+"_"+totalItemCounter,
                 "price" : map_data[__counter]["seat_price"],
-                "status" :  this.status
+                "status" :  this.status,
+                "event_id" : 0
               };
                
               if( item == 'g')
@@ -462,7 +465,7 @@ export class SeatSelectionComponent implements OnInit {
   processBooking(){
    var exp="";
    var j = 0;
-   var seat_conf:any;
+  
    if(this.mode < 2){
      console.log(this.cart.selectedSeats);
      for(let i = 0; i < this.cart.selectedSeats.length;i++){
@@ -470,41 +473,45 @@ export class SeatSelectionComponent implements OnInit {
       a.classList.add("disabled");
      }
      if(this.mode == 1){
-      for (let i = 0; i < this.seats.length; i++){
-       
-        if(this.seats[i].status == "available"){
-           exp += "g";
-        }else if(this.seats[i].status == "vip"){
-           exp += "v";
-        }else{
-           exp += "x";
-        }
-        if(j == this.columns-1){
-         exp += "\n";
-           j = 0;
-         }else{
-           j += 1;
-         }
-    
-      }
-
-      seat_conf = this.createSeatMap(exp);
-      console.log(seat_conf);
-      this.seatmap = [];
-      this.processSeatChart(seat_conf);
+      exp  = this.generateExpression(exp,j, this.seats);
     }
     this.mode = this.mode + 1;
    }else{
+
       this.seatingObject.seatsP = this.seats;
       this.seatingObject.rowsP = this.rows;
       this.seatingObject.columnsP = this.columns;
-      this.eventService.createHallSeats(this.seatingObject).subscribe(success => {console.log(success);},
-      error => {console.log(error);});
-      alert("Successfully");
-      this.router.navigate(['/']);
-   }
- 
+      this.eventService.createHallSeats(this.seatingObject).then(() => {
+        alert("Successfully");
+        this.router.navigate(['/']);
+      });
 
-   
+   }
+  }
+
+  generateExpression(exp,j, seats){
+    for (let i = 0; i < seats.length; i++){
+       
+      if(seats[i].status == "available"){
+         exp += "g";
+      }else if(seats[i].status == "vip"){
+         exp += "v";
+      }else{
+         exp += "x";
+      }
+      if(j == this.columns-1){
+       exp += "\n";
+         j = 0;
+       }else{
+         j += 1;
+       }
+  
+    }
+
+    this.seat_conf = this.createSeatMap(exp);
+    console.log(this.seat_conf);
+    this.seatmap = [];
+    this.processSeatChart(this.seat_conf);
+    return exp;
   }
 }

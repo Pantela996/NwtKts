@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './services/security/authentication-service.service';
 import { Router } from '@angular/router';
 import {EventService} from './services/event.service';
+import { TicketReservationService } from './services/ticket-reservation.service';
 import * as $ from "jquery";
 
 @Component({
@@ -18,7 +19,7 @@ export class AppComponent implements OnInit{
   image_slider = [];
   slide_count = 0;
 
-  constructor(private authService:AuthenticationService, public router:Router, private eventService:EventService) { }
+  constructor(private authService:AuthenticationService, public router:Router, private eventService:EventService, private ticketService:TicketReservationService) { }
 
   ngOnInit() {
     this.eventService.getAll().subscribe(success => {this.setEvents(success)});
@@ -80,6 +81,12 @@ export class AppComponent implements OnInit{
   });
   
   }
+
+ reservation(event){
+  this.ticketService.setCurrent(event);
+  this.router.navigate(['/reservation']);
+
+ } 
 
  isLocationEventAdmin(){
   

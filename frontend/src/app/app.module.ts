@@ -21,6 +21,9 @@ import { LoginGuardGuard } from './services/security/login-guard.guard';
 import {EventService} from './services/event.service';
 import { SeatSelectionComponent } from './components/seat-selection/seat-selection.component';
 import { DragToSelectModule } from 'ngx-drag-to-select';
+import {TicketReservationComponent} from './components/ticket-reservation/ticket-reservation.component'
+import { TicketReservationService } from './services/ticket-reservation.service';
+
 const  appRoutes = [
   {
     path:'login',
@@ -30,6 +33,9 @@ const  appRoutes = [
   {
     path : 'seatmap',
     component : SeatSelectionComponent
+  },{
+    path : 'reservation',
+    component : TicketReservationComponent
   }
 
 ];
@@ -39,6 +45,7 @@ const  appRoutes = [
     AppComponent,
     LoginComponent,
     SeatSelectionComponent,
+    TicketReservationComponent
   ],
   imports: [
     FormsModule,
@@ -64,7 +71,8 @@ const  appRoutes = [
       multi: true
     },
     AuthenticationService,
-    EventService
+    EventService,
+    TicketReservationService
   ],
   bootstrap: [AppComponent]
 })
