@@ -1,6 +1,7 @@
 package com.project.master.service;
 
 
+import ch.qos.logback.core.CoreConstants;
 import com.paypal.api.payments.Event;
 import com.project.master.domain.Authority;
 import com.project.master.domain.EventLocation;
@@ -85,6 +86,18 @@ public class UserService {
 		if(oUser.isPresent()) {
 			throw new DataException("Username already exists");
 		}
+
+		oUser = userRepository.findByEmail(userDTO.getEmail());
+
+
+
+		if(oUser.isPresent()) {
+			throw new DataException("Email already exists");
+		}
+
+
+
+
 		
 		user.setUsername(userDTO.getUsername());
 		user.setPassword(userDTO.getPassword());

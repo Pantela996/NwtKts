@@ -51,7 +51,7 @@ public class Hall {
 		this.totalRows = hallDTO.getTotalRows();
 		this.totalColumns = hallDTO.getTotalColumns();
 
-		this.seats = new ArrayList<>(this.totalColumns*this.totalRows);
+		this.seats = new ArrayList<Seat>(this.totalColumns*this.totalRows);
 
 	}
 	public Long getId() {

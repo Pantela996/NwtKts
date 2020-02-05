@@ -23,6 +23,9 @@ import { SeatSelectionComponent } from './components/seat-selection/seat-selecti
 import { DragToSelectModule } from 'ngx-drag-to-select';
 import {TicketReservationComponent} from './components/ticket-reservation/ticket-reservation.component'
 import { TicketReservationService } from './services/ticket-reservation.service';
+import { CreateLocationAdminComponent } from './components/create-location-admin/create-location-admin.component';
+import { ReadDeleteLocationAdminComponent } from './components/read-delete-location-admin/read-delete-location-admin.component';
+import {SuperUserService} from './services/super-user.service'
 
 const  appRoutes = [
   {
@@ -36,6 +39,12 @@ const  appRoutes = [
   },{
     path : 'reservation',
     component : TicketReservationComponent
+  },{
+    path : 'create_location_admin',
+    component: CreateLocationAdminComponent
+  },{
+    path: 'read_delete_location_admin',
+    component: ReadDeleteLocationAdminComponent
   }
 
 ];
@@ -45,7 +54,9 @@ const  appRoutes = [
     AppComponent,
     LoginComponent,
     SeatSelectionComponent,
-    TicketReservationComponent
+    TicketReservationComponent,
+    CreateLocationAdminComponent,
+    ReadDeleteLocationAdminComponent
   ],
   imports: [
     FormsModule,
@@ -72,7 +83,8 @@ const  appRoutes = [
     },
     AuthenticationService,
     EventService,
-    TicketReservationService
+    TicketReservationService,
+    SuperUserService
   ],
   bootstrap: [AppComponent]
 })

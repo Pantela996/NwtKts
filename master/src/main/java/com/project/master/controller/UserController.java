@@ -144,8 +144,7 @@ public class UserController {
 			userService.registerUser(userDTO, "LOCATION_AND_EVENT_ADMIN_ROLE");
 		} catch (DataException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>( e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
 		return new ResponseEntity<String>("Success", HttpStatus.OK);
