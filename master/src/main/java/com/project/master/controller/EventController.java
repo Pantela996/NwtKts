@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,14 +40,10 @@ public class EventController {
 
 	// @PreAuthorize("hasAuthority('LOCATION_AND_EVENT_ADMIN_ROLE')")
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public ResponseEntity<String> createEvent(@RequestBody EventDTO eventDTO) {
-		try {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String message = eventService.createEvent(eventDTO, authentication.getName());
-			return new ResponseEntity<String>(message, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<String>("Invalid creation", HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<String> createEvent(@RequestBody EventDTO eventDTO) throws DataException {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String message = eventService.createEvent(eventDTO, authentication.getName());
+		return new ResponseEntity<String>(message, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -80,8 +77,8 @@ public class EventController {
 		}
 	}
 
-	@RequestMapping(value = "/one", method = RequestMethod.POST)
-	public ResponseEntity<Event> getOne(@RequestParam String event_id) {
+	@RequestMapping(value = "/one", method = RequestMethod.GET)
+	public ResponseEntity<Event> getOne(@RequestParam("event_id") String event_id) {
 		try {
 			Event event = eventService.getOne(event_id);
 			return new ResponseEntity<Event>(event, HttpStatus.OK);

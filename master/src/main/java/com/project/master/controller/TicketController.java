@@ -1,7 +1,6 @@
 package com.project.master.controller;
 
 
-import com.project.master.domain.User;
 import com.project.master.dto.MessageDTO;
 import com.project.master.dto.TicketDTO;
 import com.project.master.exception.UserNotFoundException;
@@ -11,13 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.MessagingException;
 
 @RestController
 @RequestMapping(value = "/ticket")

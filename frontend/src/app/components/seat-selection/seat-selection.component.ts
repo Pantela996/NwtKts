@@ -3,6 +3,8 @@ import { Inject }  from '@angular/core';
 import { DOCUMENT } from '@angular/common'; 
 import { Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
+import { TicketReservationService } from 'src/app/services/ticket-reservation.service';
+
 
 
 @Component({
@@ -11,6 +13,8 @@ import { EventService } from 'src/app/services/event.service';
   styleUrls: ['./seat-selection.component.css']
 })
 export class SeatSelectionComponent implements OnInit {
+
+  
   
 
   public eventService:any;
@@ -62,7 +66,7 @@ export class SeatSelectionComponent implements OnInit {
   }
   
 
-  constructor(@Inject(DOCUMENT) document, eventService:EventService, public router:Router,) {
+  constructor(@Inject(DOCUMENT) document, eventService:EventService, public router:Router,private ticketService:TicketReservationService) {
     this.eventService  = eventService;
     this.seatingObject = {seatsP:[],rowsP:0,columnsP:0};
    }
@@ -121,7 +125,6 @@ export class SeatSelectionComponent implements OnInit {
   }
   
   generateSeatConfig(map:any):any{
-
     var x = [];
     var temp = {};
     this.isEntered = true;
@@ -210,7 +213,7 @@ export class SeatSelectionComponent implements OnInit {
                 "key" : map_element.seat_label+"_"+totalItemCounter,
                 "price" : map_data[__counter]["seat_price"],
                 "status" :  this.status,
-                "event_id" : 0
+                "event_id" : 1
               };
                
               if( item == 'g')
@@ -410,20 +413,22 @@ export class SeatSelectionComponent implements OnInit {
     
   }
 
-  public createSeatMap(exp:string){
+  public createSeatMap(exp:string,columns,rows, add){
+
+
     var j:number  = 0;
     var temp = {};
     var start =0;
     var end:number;
-    end = this.columns;
+    end = columns;
     var map = [];
     exp = exp.replace(/\n/g, '')
     console.log("STRINGS");
     console.log(exp);
-    for(let i =0; i < this.columns + 1;i++){
+    for(let i =0; i < columns + add;i++){
       console.log("start "  + start);
       console.log("end "  + end);
-      console.log("columns" + this.columns);
+      console.log("columns" + columns);
       console.log("exp len" +  exp.length);
       temp = {
         "seat_label" : i,
@@ -431,14 +436,14 @@ export class SeatSelectionComponent implements OnInit {
       }
       map.push(temp);
       start = end;
-      var x:number = end +this.columns;
+      var x:number = end +columns;
 
-      if( (end + this.columns) > exp.length){
-        console.log("Modus " + exp.length%this.columns);
-        end  = end + (exp.length%this.columns) + 1;
+      if( (end + columns) > exp.length){
+        console.log("Modus " + exp.length%columns);
+        end  = end + (exp.length%columns) + 1;
       }else{
 
-        end = end + this.columns;
+        end = end + columns;
       }
       
     }
@@ -454,6 +459,14 @@ export class SeatSelectionComponent implements OnInit {
     }
   }
 
+  ifMode3Active(){
+    if(this.mode == 3){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
 
   deleteChoice(){
     this.isEntered =  false;
@@ -462,10 +475,10 @@ export class SeatSelectionComponent implements OnInit {
     this.columns  =0;
     this.seatmap = [];
   }
-  processBooking(){
+  processBooking(event = null){
    var exp="";
    var j = 0;
-  
+
    if(this.mode < 2){
      console.log(this.cart.selectedSeats);
      for(let i = 0; i < this.cart.selectedSeats.length;i++){
@@ -473,45 +486,87 @@ export class SeatSelectionComponent implements OnInit {
       a.classList.add("disabled");
      }
      if(this.mode == 1){
-      exp  = this.generateExpression(exp,j, this.seats);
+      exp  = this.generateExpression(this.seats, exp,j,0,this.rows,this.columns);
+      console.log(exp);
     }
-    this.mode = this.mode + 1;
-   }else{
-
+    this.mode= this.mode + 1;
+   }else if(this.mode== 2){
       this.seatingObject.seatsP = this.seats;
       this.seatingObject.rowsP = this.rows;
       this.seatingObject.columnsP = this.columns;
-      this.eventService.createHallSeats(this.seatingObject).then(() => {
-        alert("Successfully");
-        this.router.navigate(['/']);
-      });
-
+      console.log(this.seatingObject);
+      this.eventService.createHallSeats(this.seatingObject).subscribe(success =>{
+        this.router.navigate(['/'])
+      }, err => {
+        alert(err.error);
+      }); 
+   }else{
+      this.seats = event.hall.seats;
+      this.rows = event.hall.totalRows;
+      this.columns = event.hall.totalColumns;
+      this.generateExpression(event.hall.seats, "", 0, 1, event.hall.totalRows, event.hall.totalColumns);
    }
   }
 
-  generateExpression(exp,j, seats){
-    for (let i = 0; i < seats.length; i++){
-       
-      if(seats[i].status == "available"){
-         exp += "g";
-      }else if(seats[i].status == "vip"){
-         exp += "v";
-      }else{
-         exp += "x";
-      }
-      if(j == this.columns-1){
-       exp += "\n";
-         j = 0;
-       }else{
-         j += 1;
-       }
-  
-    }
 
-    this.seat_conf = this.createSeatMap(exp);
-    console.log(this.seat_conf);
+
+  createExpressionForCreationOfEvent(){
+    
+  }
+
+  generateExpression(seats,exp,j,context:number,rows, columns){
+    console.log("SEATS");
+    console.log(seats);
+    var add = 0;
+    for (let i = 0; i < seats.length; i++){
+      
+      if(context==0){
+        if(seats[i].status == "available"){
+          exp += "g";
+       }else if(seats[i].status == "vip"){
+          exp += "v";
+       }else{
+          exp += "x";
+       }
+       if(j == columns-1){
+        exp += "\n";
+          j = 0;
+        }else{
+          j += 1;
+        }
+        add = 1;
+      }else{
+        add = 0;
+        if(seats[i].typeOfSeat == "AVAILABLE"){
+          exp += "g";
+       }else if(seats[i].typeOfSeat == "VIP"){
+          exp += "v";
+       }else{
+          exp += "x";
+       }
+       if(j == columns-1){
+        exp += "\n";
+          j = 0;
+        }else{
+          j += 1;
+        }
+
+      } 
+    }
+    this.seat_conf = this.createSeatMap(exp,columns,rows,add);
+    console.log(this.seat_conf); 
     this.seatmap = [];
     this.processSeatChart(this.seat_conf);
+ 
     return exp;
+  }
+
+  buyingCheck(){
+    if(this.isEntered && this.forBuying && this.mode == 3){
+      alert("checking");
+      return true;
+    }else{
+      return false;
+    }
   }
 }

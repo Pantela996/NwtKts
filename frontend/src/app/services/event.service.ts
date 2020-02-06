@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { TicketReservationService } from './ticket-reservation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,16 @@ export class EventService {
     return this.http.get(this.basePath + "/all", {responseType: 'json'})
   }
 
+  getOne(event_id:String){
+    return this.http.get(this.basePath + "/one?" + "event_id=1", {responseType: 'json'}).toPromise();
+  }  
+
   createHallSeats(seatingObj:any){
     var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     console.log(seatingObj.seatsP);
-    console.log(seatingObj.rowsP);
-    console.log(seatingObj.columnsP);
-    return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'}).toPromise();
+    console.log("SEDISTA");
+    
+    return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'});
   }
 
 
