@@ -31,9 +31,19 @@ export class SuperUserService {
 
   }
 
+  getAllLocations(){
+    return this.http.get(this.basePath + "/location/all", {responseType: 'json'})
+  }
+
   deleteUser(username:string){
     return this.http.delete(this.basePath + "/delete_location_admin/" + username, {responseType: 'text'})
-
   }
+
+  deleteLocation(id:string){
+    console.log("tu sam")
+    return this.http.delete(this.basePath + "/delete_location/"+id, {responseType: 'text'})
+  }
+
+
 
 }

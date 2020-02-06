@@ -9,6 +9,9 @@
             <button class="btn" *ngIf="isSuperAdmin()"  (click) ="showEventAdmins()" id="eventAdmins">Event Admins</button>
         </li>
         <li class="navbar navbar-light bg-light">
+            <button class="btn" *ngIf="isSuperAdmin()"  (click) ="showLocations()" id="locations">Locations</button>
+        </li>
+        <li class="navbar navbar-light bg-light">
                 <a class="btn" *ngIf="isLocationEventAdmin()"  href ="/seatmap" id="c_seatmap">Creat seat map</a>
         </li>
         <li class="navbar navbar-light bg-light">

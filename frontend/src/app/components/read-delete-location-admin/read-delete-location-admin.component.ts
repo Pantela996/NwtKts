@@ -35,4 +35,5 @@ export class ReadDeleteLocationAdminComponent implements OnInit {
     this.superuserservice.deleteUser(username).subscribe();
   }
   
+  
 }
