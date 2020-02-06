@@ -28,7 +28,10 @@ export class SuperUserService {
 
   getAll(){
     return this.http.get(this.basePath + "/get_all_event_admins", {responseType: 'json'})
+  }
 
+  getAllUsers(){
+    return this.http.get(this.basePath + "/get_all_users", {responseType: 'json'})
   }
 
   getAllLocations(){
@@ -37,6 +40,10 @@ export class SuperUserService {
 
   deleteUser(username:string){
     return this.http.delete(this.basePath + "/delete_location_admin/" + username, {responseType: 'text'})
+  }
+
+  deleteRegularUser(username:string){
+    return this.http.delete(this.basePath + "/delete_user/" + username, {responseType: 'text'})
   }
 
   deleteLocation(id:string){

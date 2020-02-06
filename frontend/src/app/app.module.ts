@@ -26,7 +26,8 @@ import { TicketReservationService } from './services/ticket-reservation.service'
 import { CreateLocationAdminComponent } from './components/create-location-admin/create-location-admin.component';
 import { ReadDeleteLocationAdminComponent } from './components/read-delete-location-admin/read-delete-location-admin.component';
 import {SuperUserService} from './services/super-user.service';
-import { ReadDeleteLocationComponent } from './components/read-delete-location/read-delete-location.component'
+import { ReadDeleteLocationComponent } from './components/read-delete-location/read-delete-location.component';
+import { ReadDeleteUsersComponent } from './components/read-delete-users/read-delete-users.component'
 
 const  appRoutes = [
   {
@@ -49,7 +50,11 @@ const  appRoutes = [
   },{
     path: 'read_delete_location',
     component: ReadDeleteLocationComponent
+  },{
+    path: 'read_delete_users',
+    component: ReadDeleteUsersComponent
   }
+  
 
 ];
 
@@ -61,7 +66,8 @@ const  appRoutes = [
     TicketReservationComponent,
     CreateLocationAdminComponent,
     ReadDeleteLocationAdminComponent,
-    ReadDeleteLocationComponent
+    ReadDeleteLocationComponent,
+    ReadDeleteUsersComponent
   ],
   imports: [
     FormsModule,

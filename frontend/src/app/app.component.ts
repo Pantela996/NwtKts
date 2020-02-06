@@ -106,6 +106,10 @@ export class AppComponent implements OnInit{
   this.router.navigate(['/read_delete_location']);
  }
 
+ showAllUsers(){
+  this.router.navigate(['/read_delete_users']);
+ }
+
  isLocationEventAdmin(){
   
     var user = this.authService.getCurrentUser();
