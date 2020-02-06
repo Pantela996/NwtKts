@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {EventService} from './services/event.service';
 import { TicketReservationService } from './services/ticket-reservation.service';
 import * as $ from "jquery";
+import { TransferService } from 'src/app/services/transfer.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,7 @@ export class AppComponent implements OnInit{
   image_slider = [];
   slide_count = 0;
 
-  constructor(private authService:AuthenticationService, public router:Router, private eventService:EventService, private ticketService:TicketReservationService) { }
+  constructor(private authService:AuthenticationService, public router:Router, private eventService:EventService, private transferService:TransferService) { }
 
   ngOnInit() {
     this.eventService.getAll().subscribe(success => {this.setEvents(success)});
@@ -38,10 +39,11 @@ export class AppComponent implements OnInit{
   }
 
 
-  async setEvents(data){
+  setEvents(data){
     
     if(data.length != 0){
       this.events = data;
+      console.log(this.events);
       console.log(this.events[0].locationId);
     }
 
@@ -69,7 +71,7 @@ export class AppComponent implements OnInit{
 
   info(id){
     var information  = document.getElementById("information");
-    this.eventService.getImages(id).subscribe(success=>{this.setImages(success)});
+    this.eventService.getImages(id).subscribe(success=>{this.setImages(success)}, err => alert(err));
     $(function(){ 
       var $information = $("#information");
         if($('.more-info').css("display") == "none"){
@@ -83,10 +85,15 @@ export class AppComponent implements OnInit{
   }
 
  reservation(event){
-  this.ticketService.setCurrent(event);
+  alert(event);
+  //this.transferService.setCurrent(event);
   this.router.navigate(['/reservation']);
+ }
+ 
+ ngOnDestroy() {
+  alert("HEREEEEEE");
 
- } 
+}
 
  isLocationEventAdmin(){
   

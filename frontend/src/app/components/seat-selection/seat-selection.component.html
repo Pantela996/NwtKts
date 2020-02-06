@@ -24,7 +24,7 @@
         <div  class="container">
           <div class="col-lg-16 summary-bar">
       
-              <div class="col-lg-4"  *ngIf= "forBuying">
+              <div class="col-lg-4"  *ngIf= "buyingCheck()">
                       <div>
                           <h5>Total Selected : {{ cart?.selectedSeats?.length }}</h5>
                           <h5>Total Amount :&nbsp;&nbsp; {{cart.totalamount}} Rs</h5>
@@ -40,8 +40,9 @@
                 <h5 class="col-lg-12 no-padding">Select Passline Seats : </h5>
                 <span *ngFor="let seatLabel of passlineseats" class="badge badge-primary">{{seatLabel}}</span>
             </div>
+            
           <div class="col-rg-12 book-area" *ngIf= "isEntered">
-            <h5 *ngIf="ifMode2Active()" class="col-lg-12 no-padding">Do you want to keep choice?</h5>
+            <h5 *ngIf="ifMode2Active()||ifMode3Active()" class="col-lg-12 no-padding">Do you want to keep choice?</h5>
             <button [disabled]="cart?.selectedSeats?.length == 0" type="button" (click)="processBooking()" class="btn btn-primary" mdbWavesEffect>Confirm</button> &nbsp; 
             <button  *ngIf="ifMode2Active()" type="button" (click)="deleteChoice()" class="btn btn-danger" mdbWavesEffect>Cancel</button>
           </div>
@@ -81,5 +82,6 @@
             }).render('#paypal-button-container');
       </script>
 
-    </div>
+</div>
+    
  

@@ -45,7 +45,8 @@ const  appRoutes = [
   },{
     path: 'read_delete_location_admin',
     component: ReadDeleteLocationAdminComponent
-  }
+  },
+    {path: 'resevation/:id', component: TicketReservationComponent}
 
 ];
 
@@ -84,7 +85,8 @@ const  appRoutes = [
     AuthenticationService,
     EventService,
     TicketReservationService,
-    SuperUserService
+    SuperUserService,
+    SeatSelectionComponent
   ],
   bootstrap: [AppComponent]
 })
