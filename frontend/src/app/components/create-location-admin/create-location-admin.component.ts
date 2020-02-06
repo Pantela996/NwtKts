@@ -29,7 +29,7 @@ export class CreateLocationAdminComponent implements OnInit {
 
     this.superuserservice.createLocationAdmin(this.user).subscribe(success =>{
       alert("Successfully");
-      this.router.navigate(['/'])
+      this.router.navigate(['/read_delete_location_admin'])
     }, err => {
       alert(err.error);
       console.log(err);

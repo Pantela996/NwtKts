@@ -25,4 +25,15 @@ export class SuperUserService {
     return this.http.post(this.basePath + "/create_location_admin",JSON.stringify(createdLocationAdmin), {headers, responseType: 'text'});
 
   }
+
+  getAll(){
+    return this.http.get(this.basePath + "/get_all_event_admins", {responseType: 'json'})
+
+  }
+
+  deleteUser(username:string){
+    return this.http.delete(this.basePath + "/delete_location_admin/" + username, {responseType: 'text'})
+
+  }
+
 }

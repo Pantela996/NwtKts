@@ -1,5 +1,6 @@
 package com.project.master.domain;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,6 +37,9 @@ public class User {
 	
 	@Column(nullable=false)
 	String email;
+
+	@Column(nullable = true)
+	Date date_of_creation;
 
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
@@ -83,6 +87,23 @@ public class User {
 
 	}
 
+	public User(String username, String password, String name, String lastName, String email, Date date_of_creation){
+
+		this.username = username;
+		this.password = password;
+		this. name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.date_of_creation = date_of_creation;
+	}
+
+	public Date getDate_of_creation() {
+		return date_of_creation;
+	}
+
+	public void setDate_of_creation(Date date_of_creation) {
+		this.date_of_creation = date_of_creation;
+	}
 
 	public User(String username) {
 		super();

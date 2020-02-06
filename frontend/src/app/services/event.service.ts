@@ -28,3 +28,4 @@ export class EventService {
     return this.http.get(this.basePath + "/get-images?" + "event_id=" + id, {responseType: 'json'});
   }
 }
+

@@ -11,6 +11,7 @@ import * as $ from "jquery";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+  
 
   public events = []
   title = 'frontend';
@@ -88,6 +89,19 @@ export class AppComponent implements OnInit{
 
  } 
 
+ isSuperAdmin(){
+   var user = this.authService.getCurrentUser();
+   var roles = this.authService.getRoles();
+   if(roles.includes("ADMIN_ROLE")){
+     return true;
+   }else{
+     return false;
+   }
+ }
+ showEventAdmins(){
+  this.router.navigate(['/read_delete_location_admin']);
+ }
+
  isLocationEventAdmin(){
   
     var user = this.authService.getCurrentUser();
@@ -123,3 +137,4 @@ export class AppComponent implements OnInit{
 
 
 }
+
