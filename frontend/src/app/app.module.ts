@@ -25,7 +25,9 @@ import {TicketReservationComponent} from './components/ticket-reservation/ticket
 import { TicketReservationService } from './services/ticket-reservation.service';
 import { CreateLocationAdminComponent } from './components/create-location-admin/create-location-admin.component';
 import { ReadDeleteLocationAdminComponent } from './components/read-delete-location-admin/read-delete-location-admin.component';
-import {SuperUserService} from './services/super-user.service'
+import {SuperUserService} from './services/super-user.service';
+import { ReadDeleteLocationComponent } from './components/read-delete-location/read-delete-location.component';
+import { ReadDeleteUsersComponent } from './components/read-delete-users/read-delete-users.component'
 
 const  appRoutes = [
   {
@@ -45,8 +47,19 @@ const  appRoutes = [
   },{
     path: 'read_delete_location_admin',
     component: ReadDeleteLocationAdminComponent
+<<<<<<< HEAD
   },
     {path: 'resevation/:id', component: TicketReservationComponent}
+=======
+  },{
+    path: 'read_delete_location',
+    component: ReadDeleteLocationComponent
+  },{
+    path: 'read_delete_users',
+    component: ReadDeleteUsersComponent
+  }
+  
+>>>>>>> branch 'master' of https://github.com/Pantela996/NwtKts.git
 
 ];
 
@@ -57,7 +70,9 @@ const  appRoutes = [
     SeatSelectionComponent,
     TicketReservationComponent,
     CreateLocationAdminComponent,
-    ReadDeleteLocationAdminComponent
+    ReadDeleteLocationAdminComponent,
+    ReadDeleteLocationComponent,
+    ReadDeleteUsersComponent
   ],
   imports: [
     FormsModule,

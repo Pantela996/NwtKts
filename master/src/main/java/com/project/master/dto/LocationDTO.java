@@ -13,6 +13,7 @@ public class LocationDTO {
 		this.locationCity = locationCity;
 	}
 
+
 	public String getName() {
 		return name;
 	}

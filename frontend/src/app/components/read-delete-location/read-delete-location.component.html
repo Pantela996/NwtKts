@@ -1,0 +1,26 @@
+<div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h2 class="form-signin-heading">List Of Locations</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>  </th>
+                    <th>Name</th>
+                    <th>City Location</th>
+                    <th>Admin</th>
+
+                    <th>  </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let location of locations; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ location.name}}</td>
+                    <td>{{ location.locationCity }}</td>
+                    <td>{{ location.user }}</td>
+                    <td><button type="button" class="btn btn-primary"  id="delete" (click) = "onDelete(location.id)"><i class="far fa-eye">X</i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    

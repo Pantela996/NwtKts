@@ -25,4 +25,32 @@ export class SuperUserService {
     return this.http.post(this.basePath + "/create_location_admin",JSON.stringify(createdLocationAdmin), {headers, responseType: 'text'});
 
   }
+
+  getAll(){
+    return this.http.get(this.basePath + "/get_all_event_admins", {responseType: 'json'})
+  }
+
+  getAllUsers(){
+    return this.http.get(this.basePath + "/get_all_users", {responseType: 'json'})
+  }
+
+  getAllLocations(){
+    return this.http.get(this.basePath + "/location/all", {responseType: 'json'})
+  }
+
+  deleteUser(username:string){
+    return this.http.delete(this.basePath + "/delete_location_admin/" + username, {responseType: 'text'})
+  }
+
+  deleteRegularUser(username:string){
+    return this.http.delete(this.basePath + "/delete_user/" + username, {responseType: 'text'})
+  }
+
+  deleteLocation(id:string){
+    console.log("tu sam")
+    return this.http.delete(this.basePath + "/delete_location/"+id, {responseType: 'text'})
+  }
+
+
+
 }

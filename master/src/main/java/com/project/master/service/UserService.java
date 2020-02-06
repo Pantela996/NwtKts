@@ -158,7 +158,7 @@ public class UserService {
 				System.out.println(a.getAuthority().getName());
 				if(a.getAuthority().getName().equalsIgnoreCase(typeOFUsers)) {
 					System.out.println(u.getUserAuthorities().size());
-					finalUsers.add(new User(u.getUsername()));
+					finalUsers.add(new User(u.getUsername(), u.getPassword(), u.getName(), u.getLastName(), u.getEmail(), u.getDate_of_creation()));
 				}
 			}
 		}

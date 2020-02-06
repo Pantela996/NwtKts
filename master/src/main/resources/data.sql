@@ -6,6 +6,14 @@ insert into kts.user (username,password, dtype,name, last_name, email) values ('
 
 insert into kts.user (username,password, dtype,name, last_name, email) values ('miki', '$2a$04$Amda.Gm4Q.ZbXz9wcohDHOhOBaNQAkSS1QO26Eh8Hovu3uzEpQvcq', 'Admin', 'Milos', 'Pantic', 'milospantic96@hotmail.com');
 
+insert into kts.user (username,password, dtype,name, last_name, email) values ('u1', '$2a$04$Amda.Gm4Q.ZbXz9wcohDHOhOBaNQAkSS1QO26Eh8Hovu3uzEpQvcq', 'User', 'Mm', 'Pantic', 'mm.pantic@hotmail.com');
+
+insert into kts.user (username,password, dtype,name, last_name, email) values ('u2', '$2a$04$Amda.Gm4Q.ZbXz9wcohDHOhOBaNQAkSS1QO26Eh8Hovu3uzEpQvcq', 'User', 'Milos', 'Jj', 'milos.jj@hotmail.com');
+
+insert into kts.user_authority (user_id, authority_id) values (3,2);
+
+insert into kts.user_authority (user_id, authority_id) values (4,2);
+
 insert into kts.user_authority (user_id, authority_id) values (1,3);
 
 insert into kts.user_authority (user_id, authority_id) values (2,1);

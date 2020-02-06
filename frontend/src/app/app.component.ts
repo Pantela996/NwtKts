@@ -12,6 +12,7 @@ import { TransferService } from 'src/app/services/transfer.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+  
 
   public events = []
   title = 'frontend';
@@ -95,6 +96,27 @@ export class AppComponent implements OnInit{
 
 }
 
+ isSuperAdmin(){
+   var user = this.authService.getCurrentUser();
+   var roles = this.authService.getRoles();
+   if(roles.includes("ADMIN_ROLE")){
+     return true;
+   }else{
+     return false;
+   }
+ }
+ showEventAdmins(){
+  this.router.navigate(['/read_delete_location_admin']);
+ }
+
+ showLocations(){
+  this.router.navigate(['/read_delete_location']);
+ }
+
+ showAllUsers(){
+  this.router.navigate(['/read_delete_users']);
+ }
+
  isLocationEventAdmin(){
   
     var user = this.authService.getCurrentUser();
@@ -130,3 +152,4 @@ export class AppComponent implements OnInit{
 
 
 }
+
