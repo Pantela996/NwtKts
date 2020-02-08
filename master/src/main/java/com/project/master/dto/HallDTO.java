@@ -7,6 +7,11 @@ public class HallDTO {
     private int totalColumns;
     private String eventLocation;
 
+
+    public HallDTO(){
+
+    }
+
     public HallDTO(int totalRows, int totalColumns, String eventLocation) {
         this.totalRows = totalRows;
         this.totalColumns = totalColumns;

@@ -2,6 +2,7 @@ package com.project.master.domain;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
@@ -23,7 +24,12 @@ public class EventLocation {
 	@Column(nullable = false)
 	private String user;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@Column(nullable = false)
+	private int numberOfHalls;
+
+	@Column
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "location")
+	@JsonBackReference
 	private List<Hall> hallList;
 
 	
@@ -32,19 +38,29 @@ public class EventLocation {
 		super();
 	}
 
+	public int getNumberOfHalls() {
+		return numberOfHalls;
+	}
+
+	public void setNumberOfHalls(int numberOfHalls) {
+		this.numberOfHalls = numberOfHalls;
+	}
+
 	public EventLocation(Long id, String name, String locationCity) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.locationCity = locationCity;
+
 	}
 	
 	
-	public EventLocation(String name, String locationCity, String user) {
+	public EventLocation(String name, String locationCity, String user, int numberOfHalls) {
 		super();
 		this.name = name;
 		this.locationCity = locationCity;
 		this.user = user;
+		this.numberOfHalls = numberOfHalls;
 	}
 
 	public Long getId() {

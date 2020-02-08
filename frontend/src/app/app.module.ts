@@ -27,7 +27,12 @@ import { CreateLocationAdminComponent } from './components/create-location-admin
 import { ReadDeleteLocationAdminComponent } from './components/read-delete-location-admin/read-delete-location-admin.component';
 import {SuperUserService} from './services/super-user.service';
 import { ReadDeleteLocationComponent } from './components/read-delete-location/read-delete-location.component';
-import { ReadDeleteUsersComponent } from './components/read-delete-users/read-delete-users.component'
+import { ReadDeleteUsersComponent } from './components/read-delete-users/read-delete-users.component';
+import { CreateLocationComponent } from './components/create-location/create-location.component'
+import { ReadUpdateLocationComponent } from './components/read-update-location/read-update-location.component';
+import { CreateEventComponent } from './components/create-event/create-event.component';
+import { componentFactoryName } from '@angular/compiler';
+import { RegisterComponent } from './components/register/register.component';
 
 const  appRoutes = [
   {
@@ -47,19 +52,28 @@ const  appRoutes = [
   },{
     path: 'read_delete_location_admin',
     component: ReadDeleteLocationAdminComponent
-<<<<<<< HEAD
   },
-    {path: 'resevation/:id', component: TicketReservationComponent}
-=======
+    {path: 'resevation/:id', component: TicketReservationComponent
   },{
     path: 'read_delete_location',
     component: ReadDeleteLocationComponent
   },{
     path: 'read_delete_users',
     component: ReadDeleteUsersComponent
+  },{
+    path: 'create_location',
+    component: CreateLocationComponent
+  },{
+    path: 'read_update_location',
+    component: ReadUpdateLocationComponent
+  },{
+    path: 'create_event',
+    component: CreateEventComponent
+  },{
+    path: 'register',
+    component: RegisterComponent
   }
   
->>>>>>> branch 'master' of https://github.com/Pantela996/NwtKts.git
 
 ];
 
@@ -72,7 +86,11 @@ const  appRoutes = [
     CreateLocationAdminComponent,
     ReadDeleteLocationAdminComponent,
     ReadDeleteLocationComponent,
-    ReadDeleteUsersComponent
+    ReadDeleteUsersComponent,
+    CreateLocationComponent,
+    ReadUpdateLocationComponent,
+    CreateEventComponent,
+    RegisterComponent
   ],
   imports: [
     FormsModule,

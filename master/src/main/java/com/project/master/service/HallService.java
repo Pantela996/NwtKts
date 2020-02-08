@@ -13,6 +13,7 @@ public interface HallService {
     public ArrayList<Hall> getAll();
     public Hall findById(long id);
 
+
     public List<Hall> findByLocation(String name);
 
 

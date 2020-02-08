@@ -2,22 +2,14 @@ package com.project.master.service;
 
 
 import ch.qos.logback.core.CoreConstants;
-import com.paypal.api.payments.Event;
-import com.project.master.domain.Authority;
-import com.project.master.domain.EventLocation;
-import com.project.master.domain.LocationEventAdmin;
-import com.project.master.domain.RegularUser;
-import com.project.master.domain.User;
-import com.project.master.domain.UserAuthority;
+import com.project.master.domain.*;
 import com.project.master.dto.UserDTO;
 import com.project.master.exception.DataException;
 import com.project.master.exception.UserNotFoundException;
-import com.project.master.repository.AuthorityRepository;
-import com.project.master.repository.LocationRepository;
-import com.project.master.repository.UserAuthorityRepository;
-import com.project.master.repository.UserRepository;
+import com.project.master.repository.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.xml.crypto.Data;
 
 
 @Service
@@ -43,6 +37,9 @@ public class UserService {
 	
 	@Autowired
 	private LocationRepository locationRepository;
+
+	@Autowired
+	private EventRepository eventRepository;
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public Optional<User> getLoggedUser() throws UserNotFoundException {
@@ -61,7 +58,7 @@ public class UserService {
 		
 		User user = new User();
 		
-		if(typeOFUser.equalsIgnoreCase("REGULAR_USER")) {
+		if(typeOFUser.equalsIgnoreCase("REGULAR_USER_ROLE")) {
 			user = new RegularUser();
 		}else {
 			user = new LocationEventAdmin();
@@ -169,7 +166,14 @@ public class UserService {
 	public void deleteLocation(String id) throws DataException {
 		
 		Optional<EventLocation> oloc = locationRepository.findById(Long.valueOf(id));
-		
+
+		List<Event> events = eventRepository.findAll();
+		for (Event event:events){
+			if(event.getLocation().getName() == oloc.get().getName()){
+				throw new DataException("There is an event on this location");
+			}
+		}
+
 		if(!oloc.isPresent()) {
 			throw new DataException("Location does not exists");
 		}

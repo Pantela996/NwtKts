@@ -1,0 +1,93 @@
+<div class="row">
+    <div class="col-md-9">
+        <form id="user-profile-form" class="has-validation-callback" (ngSubmit)="createEvent()">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="field-required">
+                            <label for="admin">Name</label>
+                            <input type="text" id="name" [(ngModel)] = "event.name" name ="name" class="form-control" data-validation="required" data-validation-error-msg="Ovo je obavezno polje">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Date From</label>
+                        <input type="date" data-validation="required" id="dateFrom" [(ngModel)] = "event.dateFrom" name ="dateFrom" class="form-control" data-validation-error-msg="Ovo je obavezno polje">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cityLocation">Date To</label>
+                        <input type="date" data-validation="required" id="dateTo" [(ngModel)] = "event.dateTo" name ="dateTo" class="form-control" data-validation-error-msg="Ovo je obavezno polje">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="field-required">
+                            <label for="admin">Location</label><br>
+                            <select [(ngModel)]="event.event_location"(change)="locationChosen()" name="event.event_location" >
+                                <option *ngFor="let l of locations" [ngValue]="l">{{l.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="field-required" >
+                            <label for="admin" *ngIf="locChosen">Hall</label><br>
+                            <select [(ngModel)]="event.location_hall" (change)="hallChosen()" name="event.location_hall" *ngIf="locChosen">
+                                <option *ngFor="let h of halls; let i = index;" [ngValue]="h">Hall {{i+1}} Rows:{{h.totalRows}} Columns:{{h.totalColumns}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class= "col-md-6">
+                    <div class="seats">
+                        <app-seat-selection *ngIf="halChosen">
+                            
+                        </app-seat-selection>
+                    </div>
+                </div>
+             </div>  
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="field-required">
+                            <label for="admin">Description</label>
+                            <textarea type="text" id="description" [(ngModel)] = "event.description" name ="description" class="form-control" data-validation="required" data-validation-error-msg="Ovo je obavezno polje"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="field-required">
+                            <label for="admin">User</label>
+                            <input type="text" id="user" [(ngModel)] = "event.user" name ="user" class="form-control" data-validation="required" data-validation-error-msg="Ovo je obavezno polje">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" name="submit" id="create_button" class="btn btn-primary btn-block">
+                    Create                   </button>
+                </div>
+            </div>
+        </form>
+    </div>

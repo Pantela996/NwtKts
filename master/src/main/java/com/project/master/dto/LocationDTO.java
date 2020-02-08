@@ -2,16 +2,33 @@ package com.project.master.dto;
 
 public class LocationDTO {
 
-	String name;
-	String locationCity;
-	String user_id;
+	private String name;
+	private String locationCity;
+	private String user_id;
+	private int numberOfHalls;
 
-	public LocationDTO(String name, String locationCity, String user) {
+	public LocationDTO(){
+
+	}
+
+	public LocationDTO(String name, String locationCity, String user, int numberOfHalls) {
 		super();
 		this.user_id = user;
 		this.name = name;
 		this.locationCity = locationCity;
+		this.numberOfHalls = numberOfHalls;
+
 	}
+
+
+	public int getNumberOfHalls() {
+		return numberOfHalls;
+	}
+
+	public void setNumberOfHalls(int numberOfHalls) {
+		this.numberOfHalls = numberOfHalls;
+	}
+
 
 
 	public String getName() {

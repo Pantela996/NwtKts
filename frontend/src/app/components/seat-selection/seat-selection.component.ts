@@ -1,9 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { Inject }  from '@angular/core';
+import { Inject, Input }  from '@angular/core';
 import { DOCUMENT } from '@angular/common'; 
 import { Router } from '@angular/router';
 import { EventService } from 'src/app/services/event.service';
 import { TicketReservationService } from 'src/app/services/ticket-reservation.service';
+import { LocationService } from 'src/app/services/location.service'
 
 
 
@@ -66,15 +67,16 @@ export class SeatSelectionComponent implements OnInit {
   }
   
 
-  constructor(@Inject(DOCUMENT) document, eventService:EventService, public router:Router,private ticketService:TicketReservationService) {
+  constructor(@Inject(DOCUMENT) document, eventService:EventService, public router:Router,private ticketService:TicketReservationService, private locationService:LocationService) {
     this.eventService  = eventService;
     this.seatingObject = {seatsP:[],rowsP:0,columnsP:0};
+
    }
 
   ngOnInit() {
     this.mode = 0;
     this.start = true;
-    this.isEntered = false;
+    this.isEntered = true;
     this.rows = 0;
     this.columns = 0;
     this.cart.selectedSeats = [];
@@ -83,11 +85,13 @@ export class SeatSelectionComponent implements OnInit {
     
   }
  
-  initializeSeatMap(){
+  initializeSeatMap(rows, columns){
     this.cart.selectedSeats = [];
-    this.mode = 0;
+    this.mode = 1;
     this.start = true;
     this.isEntered = true;
+    this.rows = rows;
+    this.columns = columns; 
     this.seatConfig = this.generateSeatConfig([]);
     this.seats = [];
     this.passlineseats = [];
@@ -141,10 +145,14 @@ export class SeatSelectionComponent implements OnInit {
           "layout" :  setup
         }
         x.push(temp);
+        console.log("MAP");
+        console.log(x);
         this.start = false;
       }
     }else{
+      alert("here");
       x = map;
+
     }
    
     
@@ -154,6 +162,7 @@ export class SeatSelectionComponent implements OnInit {
         "seat_map":x
       }
       ]
+    console.log("SEAT CONFIG");
     console.log(this.seatConfig);
     return this.seatConfig;   
   }
@@ -420,15 +429,15 @@ export class SeatSelectionComponent implements OnInit {
     var temp = {};
     var start =0;
     var end:number;
-    end = columns;
+    end = this.columns;
     var map = [];
     exp = exp.replace(/\n/g, '')
     console.log("STRINGS");
     console.log(exp);
-    for(let i =0; i < columns + add;i++){
+    for(let i =0; i < this.columns + add;i++){
       console.log("start "  + start);
       console.log("end "  + end);
-      console.log("columns" + columns);
+      console.log("columns" + this.columns);
       console.log("exp len" +  exp.length);
       temp = {
         "seat_label" : i,
@@ -436,17 +445,18 @@ export class SeatSelectionComponent implements OnInit {
       }
       map.push(temp);
       start = end;
-      var x:number = end +columns;
+      var x:number = end +this.columns;
 
-      if( (end + columns) > exp.length){
-        console.log("Modus " + exp.length%columns);
-        end  = end + (exp.length%columns) + 1;
+      if( (end + this.columns) > exp.length){
+        console.log("Modus " + exp.length%this.columns);
+        end  = end + (exp.length%this.columns) + 1;
       }else{
 
-        end = end + columns;
+        end = end + this.columns;
       }
       
     }
+    console.log("MPTINA");
     console.log(map);
     return this.generateSeatConfig(map);
   }
@@ -475,10 +485,11 @@ export class SeatSelectionComponent implements OnInit {
     this.columns  =0;
     this.seatmap = [];
   }
-  processBooking(event = null){
+  processBooking(rows,columns,event = null,){
    var exp="";
    var j = 0;
-
+   alert(this.mode);
+   this.mode = 1;   
    if(this.mode < 2){
      console.log(this.cart.selectedSeats);
      for(let i = 0; i < this.cart.selectedSeats.length;i++){
@@ -486,7 +497,10 @@ export class SeatSelectionComponent implements OnInit {
       a.classList.add("disabled");
      }
      if(this.mode == 1){
-      exp  = this.generateExpression(this.seats, exp,j,0,this.rows,this.columns);
+       alert("here");
+       alert(rows);
+       alert(columns);
+      exp  = this.generateExpression(this.seats, exp,j,0,rows,columns);
       console.log(exp);
     }
     this.mode= this.mode + 1;
@@ -553,7 +567,11 @@ export class SeatSelectionComponent implements OnInit {
 
       } 
     }
-    this.seat_conf = this.createSeatMap(exp,columns,rows,add);
+    console.log(exp);
+    console.log(columns);
+    console.log(rows);
+    console.log(add);
+    this.seat_conf = this.createSeatMap(exp,this.columns,this.rows,add);
     console.log(this.seat_conf); 
     this.seatmap = [];
     this.processSeatChart(this.seat_conf);
