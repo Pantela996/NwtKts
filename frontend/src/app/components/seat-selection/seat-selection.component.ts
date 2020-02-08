@@ -218,6 +218,7 @@ export class SeatSelectionComponent implements OnInit {
                
               if( item == 'g')
               {
+                seatObj["price"] = "250";
                 seatObj["seatLabel"] = map_element.seat_label+" "+seatNoCounter;
                 if(seatNoCounter < 10)
                 { seatObj["seatNo"] = "0"+seatNoCounter; }
@@ -225,6 +226,7 @@ export class SeatSelectionComponent implements OnInit {
                 
                 seatNoCounter++;
               }else if(item == 'v'){
+                seatObj["price"] = "500";
                 seatObj["seatLabel"] = map_element.seat_label+" "+seatNoCounter;
                 if(seatNoCounter < 10){ seatObj["seatNo"] = "0"+seatNoCounter; }
                 else { seatObj["seatNo"] = ""+seatNoCounter; }
@@ -494,6 +496,11 @@ export class SeatSelectionComponent implements OnInit {
       this.seatingObject.seatsP = this.seats;
       this.seatingObject.rowsP = this.rows;
       this.seatingObject.columnsP = this.columns;
+      for(let i = 0; i < this.seatingObject.seatsP.length;i++){
+        if(this.seatingObject.seatsP[i].status == "vip"){
+          this.seatingObject.seatsP[i].price = 500;
+        }
+      }
       console.log(this.seatingObject);
       this.eventService.createHallSeats(this.seatingObject).subscribe(success =>{
         this.router.navigate(['/'])

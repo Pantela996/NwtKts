@@ -47,10 +47,9 @@ const  appRoutes = [
   },{
     path: 'read_delete_location_admin',
     component: ReadDeleteLocationAdminComponent
-<<<<<<< HEAD
   },
-    {path: 'resevation/:id', component: TicketReservationComponent}
-=======
+  {path: 'resevation/:id', 
+    component: TicketReservationComponent
   },{
     path: 'read_delete_location',
     component: ReadDeleteLocationComponent
@@ -59,7 +58,6 @@ const  appRoutes = [
     component: ReadDeleteUsersComponent
   }
   
->>>>>>> branch 'master' of https://github.com/Pantela996/NwtKts.git
 
 ];
 

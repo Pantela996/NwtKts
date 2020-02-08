@@ -7,8 +7,10 @@ import { TicketReservationService } from './ticket-reservation.service';
 })
 export class EventService {
   private readonly basePath = 'http://localhost:8081/event';
-
-  constructor(private http: HttpClient) { 
+  
+  ticketObject:any;
+  constructor(private http: HttpClient) {
+    this.ticketObject = {event:null,rowsP:0,columnsP:0}; 
     this.http = http;
   }
 
@@ -26,6 +28,20 @@ export class EventService {
     console.log("SEDISTA");
     
     return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'});
+  }
+
+  updateHallSeats(seatingObj:any, event=null){
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    console.log(seatingObj.seatsP);
+    console.log("SEDISTA");
+    seatingObj.event = event;
+    console.log(seatingObj.event);
+    return this.http.post(this.basePath+'/make/payment',JSON.stringify(seatingObj)  ,{headers, responseType: 'json'});
+  }
+
+  completePayment(paymentId, payerId,token) {
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json','Authorization': `Bearer`+token});
+    return this.http.post(this.basePath + '/complete/payment?paymentId=' + paymentId + '&PayerID=' + payerId , {headers, responseType: 'text'})
   }
 
 

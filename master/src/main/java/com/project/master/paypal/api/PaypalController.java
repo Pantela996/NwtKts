@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
@@ -37,7 +36,8 @@ public class PaypalController {
 		System.out.println("start");
 		return "home";
 	}
-
+	
+	/*
 	@PostMapping("/pay")
 	public String payment(@ModelAttribute("order") Order order) {
 		try {
@@ -46,6 +46,8 @@ public class PaypalController {
 					"http://localhost:8081/paypal/" + SUCCESS_URL);
 			for (Links link : payment.getLinks()) {
 				if (link.getRel().equals("approval_url")) {
+					System.out.println("REDIRECT JE OVDE");
+					System.out.println(link.getHref());
 					return "redirect:" + link.getHref();
 				}
 			}
@@ -56,6 +58,7 @@ public class PaypalController {
 		}
 		return "redirect:/";
 	}
+	*/
 
 	@GetMapping(value = CANCEL_URL)
 	public String cancelPay() {
@@ -65,6 +68,7 @@ public class PaypalController {
 	@GetMapping(value = SUCCESS_URL)
 	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
 		try {
+			System.out.println("HERE IS PAYPAL");
 			Payment payment = service.executePayment(paymentId, payerId);
 			System.out.println(payment.toJSON());
 			if (payment.getState().equals("approved")) {

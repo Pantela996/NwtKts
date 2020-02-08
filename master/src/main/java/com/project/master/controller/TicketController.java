@@ -37,9 +37,9 @@ public class TicketController {
     @RequestMapping(value = "/reserveTicket", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageDTO> reserveTicket(@RequestBody TicketDTO ticketDTO) throws UserNotFoundException {
 
-        MessageDTO messageDTO = ticketService.reserveTicket(ticketDTO);
+        //MessageDTO messageDTO = ticketService.reserveTicket(ticketDTO);
 
-        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+        return null;
     }
 
 }

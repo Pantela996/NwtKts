@@ -2,16 +2,28 @@ package com.project.master.controller;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,12 +31,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
 import com.project.master.domain.Event;
+import com.project.master.domain.Seat;
 import com.project.master.dto.EventDTO;
 import com.project.master.dto.SeatInfoDTO;
+import com.project.master.dto.SelectedSeatInfoDTO;
+import com.project.master.dto.TicketDTO;
 import com.project.master.exception.DataException;
+import com.project.master.exception.UserNotFoundException;
+import com.project.master.paypal.api.Order;
+import com.project.master.paypal.api.PaypalService;
 import com.project.master.service.EventService;
 import com.project.master.service.HallService;
+import com.project.master.service.TicketService;
 
 @RestController
 @RequestMapping("event")
@@ -35,7 +57,15 @@ public class EventController {
 
 	@Autowired
 	private HallService hallService;
+	
+	@Autowired
+	PaypalService paypalService;
+	
+	public static final String SUCCESS_URL = "pay/success";
+	public static final String CANCEL_URL = "pay/cancel";
 
+	@Autowired
+	TicketService ticketService; 
 	
 
 	// @PreAuthorize("hasAuthority('LOCATION_AND_EVENT_ADMIN_ROLE')")
@@ -81,6 +111,7 @@ public class EventController {
 	public ResponseEntity<Event> getOne(@RequestParam("event_id") String event_id) {
 		try {
 			Event event = eventService.getOne(event_id);
+			Collections.reverse(event.getHall().getSeats());
 			return new ResponseEntity<Event>(event, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Event>(new Event(), HttpStatus.BAD_REQUEST);
@@ -108,7 +139,26 @@ public class EventController {
 			return new ResponseEntity<String>("Bad request", HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/make/payment", method = RequestMethod.POST)
+	public Map<String, Object> makePayment(@RequestBody SelectedSeatInfoDTO seatInfo) throws PayPalRESTException, UserNotFoundException{
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			hallService.updateSeats(seatInfo, authentication.getName());
+			ticketService.reserveTicket(seatInfo);
+			double price = hallService.getPrice(seatInfo);
 
+	        return paypalService.createPayment(String.valueOf(price));
+	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/complete/payment", method = RequestMethod.POST)
+	public Map<String, Object> completePayment(HttpServletRequest request){
+		System.out.println("HERE");
+	    return paypalService.completePayment(request);
+	}
+	
 	@RequestMapping(value = "/upload-frame", method = RequestMethod.POST)
 	public ResponseEntity<String> upload(@RequestParam("files") MultipartFile[] files, @RequestParam("id") Long id) {
 		
@@ -138,5 +188,6 @@ public class EventController {
 	
 	
 	
+
 	
 }

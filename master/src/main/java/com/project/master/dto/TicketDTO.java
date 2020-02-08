@@ -1,51 +1,44 @@
 package com.project.master.dto;
 
 public class TicketDTO {
-    String eventId;
-    String x;
-    String y;
-    boolean hasSeats;
+
+    EventDTO event;
+	private int rowsP;
+	private int columnsP;
 
     public TicketDTO(){
 
     }
 
-    public TicketDTO(String eventId, String x, String y, boolean hasSeats) {
-        this.eventId = eventId;
-        this.x = x;
-        this.y = y;
-        this.hasSeats = hasSeats;
-    }
+	public TicketDTO(EventDTO event, int rowsP, int columnsP) {
+		super();
+		this.event = event;
+		this.rowsP = rowsP;
+		this.columnsP = columnsP;
+	}
 
-    public String getEventId() {
-        return eventId;
-    }
+	public EventDTO getEvent() {
+		return event;
+	}
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
+	public void setEvent(EventDTO event) {
+		this.event = event;
+	}
 
-    public String getX() {
-        return x;
-    }
+	public int getRowsP() {
+		return rowsP;
+	}
 
-    public void setX(String x) {
-        this.x = x;
-    }
+	public void setRowsP(int rowsP) {
+		this.rowsP = rowsP;
+	}
 
-    public String getY() {
-        return y;
-    }
+	public int getColumnsP() {
+		return columnsP;
+	}
 
-    public void setY(String y) {
-        this.y = y;
-    }
-
-    public boolean isHasSeats() {
-        return hasSeats;
-    }
-
-    public void setHasSeats(boolean hasSeats) {
-        this.hasSeats = hasSeats;
-    }
+	public void setColumnsP(int columnsP) {
+		this.columnsP = columnsP;
+	}
+    
 }
