@@ -26,9 +26,23 @@ export class SuperUserService {
 
   }
 
+  createUser(createdUser){
+    var headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
+    console.log(createdUser.username);
+    console.log(createdUser.password);
+    console.log(createdUser.email);
+    console.log(createdUser.name);
+    console.log(createdUser.lastName);
+    console.log(createdUser.date_of_creation);
+
+    return this.http.post(this.basePath + '/register', JSON.stringify(createdUser), {headers, responseType: 'text'})
+   
+  }
+
   getAll(){
     return this.http.get(this.basePath + "/get_all_event_admins", {responseType: 'json'})
   }
+  
 
   getAllUsers(){
     return this.http.get(this.basePath + "/get_all_users", {responseType: 'json'})

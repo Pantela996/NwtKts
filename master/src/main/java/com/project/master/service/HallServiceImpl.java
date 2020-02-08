@@ -44,7 +44,8 @@ public class HallServiceImpl implements HallService {
     @Override
     public List<Hall> findByLocation(String name){
         EventLocation location = locationRepository.findByName(name).get();
-        return location.getHallList();
+        List<Hall> halls = location.getHallList();
+        return halls;
     }
 
     @Override

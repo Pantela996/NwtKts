@@ -5,16 +5,15 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 
+import com.project.master.domain.Event;
+import com.project.master.domain.Hall;
+import com.project.master.service.HallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.project.master.domain.Category;
 import com.project.master.domain.EventLocation;
@@ -30,13 +29,16 @@ public class LocationController {
 	@Autowired
 	private LocationService locationService;
 
+	@Autowired
+	private HallService hallService;
+
 	@PermitAll()
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ResponseEntity<String> createLocation(@RequestBody LocationDTO locationDTO) {
 
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String message = locationService.createLocation(locationDTO.getName(), locationDTO.getLocationCity(), locationDTO.getUser_id());
+			String message = locationService.createLocation(locationDTO.getName(), locationDTO.getLocationCity(), locationDTO.getUser_id(), locationDTO.getNumberOfHalls());
 			return new ResponseEntity<String>(message, HttpStatus.OK);
 		} catch (DataException e) {
 			// TODO Auto-generated catch block
@@ -70,12 +72,17 @@ public class LocationController {
 
 	@RequestMapping(value = "/all", method = RequestMethod.GET)
 	public ResponseEntity<ArrayList<EventLocation>> getAll() {
-		try {
-			ArrayList<EventLocation> events = locationService.getAll();
-			return new ResponseEntity<ArrayList<EventLocation>>(events, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<ArrayList<EventLocation>>(new ArrayList<EventLocation>(), HttpStatus.BAD_REQUEST);
-		}
+		ArrayList<EventLocation> events = new ArrayList<EventLocation>();
+		events = locationService.getAll();
+		return new ResponseEntity<ArrayList<EventLocation>>(events, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/halls/{location}", method = RequestMethod.GET)
+	public ResponseEntity<List<Hall>> getHalls(@PathVariable String location){
+		System.out.println("Usao sam u controller za sve hale");
+		List<Hall> halls =  hallService.findByLocation(location);
+		return new ResponseEntity<List<Hall>>(halls, HttpStatus.OK);
+
 	}
 
 	@RequestMapping(value = "/one", method = RequestMethod.POST)

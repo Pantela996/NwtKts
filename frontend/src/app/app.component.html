@@ -18,6 +18,12 @@
                 <a class="btn" *ngIf="isLocationEventAdmin()"  href ="/seatmap" id="c_seatmap">Creat seat map</a>
         </li>
         <li class="navbar navbar-light bg-light">
+            <button class="btn" *ngIf="isLocationEventAdmin()"  (click) ="createLocations()" id="createLocations">Create Locations</button>
+        </li>
+        <li class="navbar navbar-light bg-light">
+            <button class="btn" *ngIf="isLocationEventAdmin()"  (click) ="createEvent()" id="createEvent">Create Event</button>
+        </li>
+        <li class="navbar navbar-light bg-light">
               <button class="btn" *ngIf="!loggedIn()"  (click) ="login()" id="login">Login</button>
           </li>
         <br/>
@@ -37,7 +43,7 @@
     </div>
     </div>
 </nav>
-<div class="row" *ngIf="loggedIn() && isMainPageRoute() ">
+<div class="row" *ngIf=" isMainPageRoute() ">
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <h2 class="form-signin-heading">Upcoming events</h2>

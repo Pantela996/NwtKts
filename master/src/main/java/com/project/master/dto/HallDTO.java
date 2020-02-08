@@ -9,9 +9,11 @@ public class HallDTO {
 
     
 
-	public HallDTO() {
+
+    public HallDTO(){
+
     }
-    
+
 	public HallDTO(int totalRows, int totalColumns, LocationDTO eventLocation) {
         this.totalRows = totalRows;
         this.totalColumns = totalColumns;

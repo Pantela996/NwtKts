@@ -30,4 +30,5 @@ export class ReadDeleteLocationComponent implements OnInit {
   }
 
 
+  
 }

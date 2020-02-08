@@ -1,15 +1,14 @@
 package com.project.master.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import com.project.master.domain.*;
+import com.project.master.repository.HallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.project.master.domain.Category;
-import com.project.master.domain.CategoryType;
-import com.project.master.domain.Event;
-import com.project.master.domain.EventLocation;
 import com.project.master.dto.CategoryDTO;
 import com.project.master.dto.LocationDTO;
 import com.project.master.exception.DataException;
@@ -25,13 +24,30 @@ public class LocationServiceImpl implements LocationService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	@Autowired
+	private HallRepository hallRepository;
+
 	@Override
-	public String createLocation(String locationName, String locationCity, String user) throws DataException {
+	public String createLocation(String locationName, String locationCity, String user, int numberOfHalls) throws DataException {
 		Optional<EventLocation> location  = locationRepository.findByName(locationName);
-		if(location == null) {
-			locationRepository.save(new EventLocation(locationName, locationCity, user));
+		System.out.println("Usao sam u create");
+		if(!location.isPresent()) {
+			System.out.println("Usao sam u createLocation");
+			EventLocation result  = new EventLocation(locationName, locationCity, user, 1);
+			List<Hall> halls = new ArrayList<Hall>();
+			for (int i=0; i<numberOfHalls; ++i){
+				Hall h = new Hall(10,10, result);
+				halls.add(h);
+				hallRepository.save(h);
+
+			}
+			result.setHallList(halls);
+			result.setNumberOfHalls(halls.size());
+			System.out.println(halls.size());
+
+			locationRepository.save(result);
 		}else {
-			return "False";
+			return "Location already exists";
 		}
 		
 		return "Success";
@@ -69,6 +85,7 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	public ArrayList<EventLocation> getAll() {
+		System.out.println("Usao sam u servis");
 		ArrayList<EventLocation> locations = (ArrayList<EventLocation>) locationRepository.findAll();
 		return locations;
 	}

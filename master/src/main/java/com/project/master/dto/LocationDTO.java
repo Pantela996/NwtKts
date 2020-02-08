@@ -2,22 +2,33 @@ package com.project.master.dto;
 
 public class LocationDTO {
 
+
 	Long id;
 	String name;
 	String locationCity;
 	String user_id;
+	private int numberOfHalls;
+
+
 
 	public LocationDTO(String name, String locationCity, String user,Long id) {
-		super();
 		this.user_id = user;
 		this.name = name;
 		this.locationCity = locationCity;
-		this.id = id;
+	}
+
+	public LocationDTO(){
+
+	}
+
+	public LocationDTO(String name, String locationCity, String user, int numberOfHalls) {
+		this.user_id = user;
+		this.name = name;
+		this.locationCity = locationCity;
+		this.numberOfHalls = numberOfHalls;
 	}
 
 	
-	public LocationDTO() {
-	}
 
 
 	public Long getId() {
@@ -28,6 +39,16 @@ public class LocationDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
+	public int getNumberOfHalls() {
+		return numberOfHalls;
+	}
+
+	public void setNumberOfHalls(int numberOfHalls) {
+		this.numberOfHalls = numberOfHalls;
+	}
+
 
 
 	public String getName() {

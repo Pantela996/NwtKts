@@ -31,7 +31,7 @@ public class Hall {
 		super();
 	}
 
-	public Hall(Long id, int totalRows, int totalColumns, EventLocation location) {
+	public Hall( int totalRows, int totalColumns, EventLocation location) {
 		super();
 		this.id = id;
 		this.totalRows = totalRows;
@@ -39,7 +39,7 @@ public class Hall {
 		this.location = location;
 	}
 
-	public Hall(Long id, int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
+	public Hall( int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
 		this.id = id;
 		this.totalRows = totalRows;
 		this.totalColumns = totalColumns;

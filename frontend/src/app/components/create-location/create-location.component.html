@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-md-9">
+        <form id="user-profile-form" class="has-validation-callback" (ngSubmit)="createLocation()">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" data-validation="required" id="name" [(ngModel)] = "location.name" name ="name" class="form-control" data-validation-error-msg="Ovo je obavezno polje">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cityLocation">City Location</label>
+                        <input type="text" data-validation="required" id="cityLocation" [(ngModel)] = "location.locationCity" name ="cityLocation" class="form-control" data-validation-error-msg="Ovo je obavezno polje">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="field-required">
+                            <label for="admin">Admin</label>
+                            <input type="text" id="admin" [(ngModel)] = "location.user_id" name ="admin" class="form-control" data-validation="required" data-validation-error-msg="Potrebno nam je vaše korisničko ime">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="numberOfHalls">Number Of Halls</label>
+                        <input type="number" id="email" [(ngModel)] = "location.numberOfHalls" name ="numberOfHalls" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" name="submit" id="create_button" class="btn btn-primary btn-block">
+                    Create                   </button>
+                </div>
+            </div>
+        </form>
+    </div>

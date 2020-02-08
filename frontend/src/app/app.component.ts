@@ -136,6 +136,12 @@ export class AppComponent implements OnInit{
  showAllUsers(){
   this.router.navigate(['/read_delete_users']);
  }
+ createLocations(){
+   this.router.navigate(['/read_update_location'])
+ }
+ createEvent(){
+   this.router.navigate(['/create_event'])
+ }
 
  isRegularUser(){
   var user = this.authService.getCurrentUser();

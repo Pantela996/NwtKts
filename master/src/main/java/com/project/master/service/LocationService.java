@@ -10,7 +10,7 @@ import com.project.master.exception.DataException;
 
 public interface LocationService {
 
-	String createLocation(String name, String city, String user) throws DataException;
+	String createLocation(String name, String city, String user, int numberOfHalls) throws DataException;
 
 	String deleteLocation(String location_id);
 
