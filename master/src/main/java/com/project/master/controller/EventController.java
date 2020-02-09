@@ -72,6 +72,7 @@ public class EventController {
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public ResponseEntity<String> createEvent(@RequestBody EventDTO eventDTO) throws DataException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("KREIRAJ HALU");
 		String message = eventService.createEvent(eventDTO, authentication.getName());
 		return new ResponseEntity<String>(message, HttpStatus.OK);
 	}
@@ -143,7 +144,7 @@ public class EventController {
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(value = "/make/payment", method = RequestMethod.POST)
-	public Map<String, Object> makePayment(@RequestBody SelectedSeatInfoDTO seatInfo) throws PayPalRESTException, UserNotFoundException{
+	public Map<String, Object> makePayment(@RequestBody SelectedSeatInfoDTO seatInfo) throws PayPalRESTException, UserNotFoundException, DataException{
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			hallService.updateSeats(seatInfo, authentication.getName());
 			ticketService.reserveTicket(seatInfo);

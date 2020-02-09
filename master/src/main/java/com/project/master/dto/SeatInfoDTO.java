@@ -5,14 +5,37 @@ import java.util.List;
 
 public class SeatInfoDTO {
 	
+	private Long id;
+
+
 	private List<SeatDTO> seatsP;
 	private int rowsP;
 	private int columnsP;
 	private EventDTO event;
 	
 	
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	
 	public EventDTO getEvent() {
 		return event;
+	}
+
+
+	public SeatInfoDTO(Long id, List<SeatDTO> seatsP, int rowsP, int columnsP, EventDTO event) {
+		super();
+		this.id = id;
+		this.seatsP = seatsP;
+		this.rowsP = rowsP;
+		this.columnsP = columnsP;
+		this.event = event;
 	}
 
 

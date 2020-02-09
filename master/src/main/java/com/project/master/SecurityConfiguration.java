@@ -32,49 +32,43 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
+		
+		auth
+				.userDetailsService(this.userDetailsService).passwordEncoder(
+						passwordEncoder());
+        auth.inMemoryAuthentication().withUser("user").password("user").authorities("LOCATION_AND_EVENT_ADMIN_ROLE, REGULAR_USER_ROLE,ADMIN_ROLE");
 	}
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.csrf().disable()
-		.authorizeRequests()
-		
-		.antMatchers("/ticket/buy").permitAll()
-		.antMatchers("/paypal/start").permitAll()
-		.antMatchers("/paypal/pay").permitAll()
-		.antMatchers("/paypal/pay/success").permitAll()
-		.antMatchers("/paypal/pay/cancel").permitAll()
-		.antMatchers("/paypal/greeting").permitAll()
-		.antMatchers("/event/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/event/delete").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/event/update").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/event/all").permitAll()
-		.antMatchers("/event/one").permitAll()
-		.antMatchers("/event/upload-frame").permitAll()
-		.antMatchers("/event/get-image").permitAll()
-		.antMatchers("/event/make/payment").permitAll()
-		.antMatchers("/event/complete/payment").permitAll()
-		.antMatchers("/event/createEventHallMap").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/event/myEvents").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/delete/{username}").hasAuthority("ADMIN_ROLE")
-		//.antMatchers("/location/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/location/create").permitAll()
-		.antMatchers("/location/update").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/location/all").hasAnyAuthority("ADMIN_ROLE", "LOCATION_AND_EVENT_ADMIN_ROLE" )
-		.antMatchers("/location/one").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/location/myLocations").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/location/category/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/location/category/get_all").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
-		.antMatchers("/create_location_admin").hasAuthority("ADMIN_ROLE")
-		.antMatchers("/get_all_event_admins").hasAuthority("ADMIN_ROLE")
-		.antMatchers("/delete_location/{id}").hasAuthority("ADMIN_ROLE")
-		.antMatchers("/get_all_users").hasAuthority("ADMIN_ROLE")
-		.antMatchers("/delete_user/{username}").hasAuthority("ADMIN_ROLE")
-		.antMatchers("/get_one_user/{id}").hasAuthority("ADMIN_ROLE")
-		.antMatchers("/register").permitAll()
-		.antMatchers("/login").permitAll().anyRequest()
-				.authenticated().and().exceptionHandling().and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+		httpSecurity.csrf().disable().authorizeRequests()
+
+				.antMatchers("/ticket/buy").permitAll().antMatchers("/paypal/start").permitAll()
+				.antMatchers("/paypal/pay").permitAll().antMatchers("/paypal/pay/success").permitAll()
+				.antMatchers("/paypal/pay/cancel").permitAll().antMatchers("/paypal/greeting").permitAll()
+				.antMatchers("/event/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/event/delete")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/event/update")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/event/all").permitAll()
+				.antMatchers("/event/one").permitAll().antMatchers("/event/upload-frame").permitAll()
+				.antMatchers("/event/get-image").permitAll().antMatchers("/event/make/payment").permitAll()
+				.antMatchers("/event/complete/payment").permitAll().antMatchers("/event/createEventHallMap")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/event/myEvents")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/delete/{username}")
+				.hasAuthority("ADMIN_ROLE")
+				// .antMatchers("/location/create").hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE")
+				.antMatchers("/location/create").permitAll().antMatchers("/location/update")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/location/all")
+				.hasAnyAuthority("ADMIN_ROLE", "LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/location/one")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/location/myLocations")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/location/category/create")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/location/category/get_all")
+				.hasAuthority("LOCATION_AND_EVENT_ADMIN_ROLE").antMatchers("/create_location_admin")
+				.hasAuthority("ADMIN_ROLE").antMatchers("/get_all_event_admins").hasAuthority("ADMIN_ROLE")
+				.antMatchers("/delete_location/{id}").hasAuthority("ADMIN_ROLE").antMatchers("/get_all_users")
+				.hasAuthority("ADMIN_ROLE").antMatchers("/delete_user/{username}").hasAuthority("ADMIN_ROLE")
+				.antMatchers("/get_one_user/{id}").hasAuthority("ADMIN_ROLE").antMatchers("/register").permitAll()
+				.antMatchers("/login").permitAll().anyRequest().authenticated().and().exceptionHandling().and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 		httpSecurity.cors();
 		httpSecurity.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
@@ -103,7 +97,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		authenticationTokenFilter.setAuthenticationManager(authenticationManagerBean());
 		return authenticationTokenFilter;
 	}
-	
+
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
@@ -116,7 +110,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return source;
 	}
 
+
+
 	/*
+	 * 
 	 * @Bean public PasswordEncoder passwordEncoder() { System.out.println();
 	 * System.out.println(NoOpPasswordEncoder.getInstance().toString()); return
 	 * NoOpPasswordEncoder.getInstance(); }

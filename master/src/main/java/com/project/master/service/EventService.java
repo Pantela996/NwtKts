@@ -24,7 +24,10 @@ import com.project.master.domain.EventLocation;
 import com.project.master.domain.Frame;
 import com.project.master.domain.Hall;
 import com.project.master.domain.LocationEventAdmin;
+import com.project.master.domain.Seat;
+import com.project.master.domain.User;
 import com.project.master.dto.EventDTO;
+import com.project.master.dto.SeatDTO;
 import com.project.master.exception.DataException;
 import com.project.master.repository.CategoryRepository;
 import com.project.master.repository.EventRepository;
@@ -54,83 +57,88 @@ public class EventService {
 	@Autowired 
 	UserRepository userRepository;
 	
+	@Autowired 
+	HallServiceImpl hallService;
+	
 	private static String uploadDirectory = System.getProperty("user.dir") + "/src/main/resources/uploads";
 
-	public String createEvent(EventDTO eventDTO, String currentUser) {
-		try {
+	public String createEvent(EventDTO eventDTO, String currentUser) throws DataException {
 			
+		
+			System.out.println("here1");
 			if (eventDTO == null) throw new DataException("Event is null");
-			LocationEventAdmin lea = (LocationEventAdmin) userRepository.findByUsername(currentUser).get();
-			if (lea == null) throw new DataException("User does not exist");
-			
+			Optional<User> olea =  userRepository.findByUsername(currentUser);
+			if (!olea.isPresent()) throw new DataException("User does not exist");
+			LocationEventAdmin lea = (LocationEventAdmin)olea.get();
+			System.out.println("here2");
 			EventLocation el;
 			Hall hall;
 			Category category;
+			System.out.println("here3");
 			
-			Optional<EventLocation> ol = locationRepository.findById(Long.valueOf(eventDTO.getLocation().getId()));
+			Optional<EventLocation> ol = locationRepository.findById(Long.valueOf(eventDTO.getEvent_location().getId()));
+			
+			System.out.println("here4");
 
-			if (ol.isPresent()) {
-				el = ol.get();
-			}else {
+			if (!ol.isPresent()) {
+				
 				throw new DataException("Location does not exist");
 			}
+			el = ol.get();
+
 			Optional<Hall> ohall = hallRepository.findById(Long.valueOf(eventDTO.getHall().getId()));
-			if (ohall.isPresent()) {
-				hall = ohall.get();
-			}else {
+			if (!ohall.isPresent()) {
 				throw new DataException("Hall does not exist");
+				
 			}
+
+			hall = ohall.get();
 			if (!(hall.getLocation().getId().equals(el.getId()))) {
 				throw new DataException("Hall is not at this location!");
 			}
 			
 			
-			Optional<Category> ocategory = categoryRepository.findById(Long.valueOf(eventDTO.getCategory().getId()));
-			if (ocategory.isPresent()) {
-				category = ocategory.get();
-			}else {
+			Optional<Category> ocategory = categoryRepository.findById(Long.valueOf(1));
+			if (!ocategory.isPresent()) {
 				throw new DataException("Location does not exist");
 			}
-			if (category == null )throw new DataException("Category does not exist");
+
+			category = ocategory.get();
 			Event event = new Event(eventDTO.getName(), Date.valueOf(eventDTO.getDateFrom()), Date.valueOf(eventDTO.getDateTo()), el, hall, category, eventDTO.getDescription(), lea.getUsername());
-			eventRepository.save(event);
+			Event savedEvent = eventRepository.save(event);
+			for(SeatDTO s:eventDTO.getHall().getSeatsP()) {
+				s.setEvent_id(savedEvent.getId());
+			}
+			hallService.saveSeats(eventDTO.getHall());
 			
 			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			
+		
 
 		return "Success";
 	}
 
-	public String deleteEvent(String event_id) {
-		try {
+	public String deleteEvent(String event_id) throws DataException {
 			Optional<Event> oe = eventRepository.findById(Long.valueOf(event_id));
 			if(oe.isPresent()) {
 				eventRepository.deleteById(Long.valueOf(event_id));
 			}else {
 				throw new DataException("Event does not exist");
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+
 		
 		
 		return "Success";
 	}
 
-	public String updateEvent(String event_id, EventDTO eventDTO,String currentUser) {
-		try {
+	public String updateEvent(String event_id, EventDTO eventDTO,String currentUser) throws DataException {
 			Optional<Event> oe = eventRepository.findById(Long.valueOf(event_id));
-			if(oe.isPresent()) {
-				eventRepository.deleteById(Long.valueOf(event_id));
-				this.createEvent(eventDTO, currentUser);
-			}else {
+			if(!oe.isPresent()) {
 				throw new DataException("Event does not exist");
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+			
+			eventRepository.deleteById(Long.valueOf(event_id));
+			this.createEvent(eventDTO, currentUser);
 		return "Success";
 	}
 
@@ -140,18 +148,16 @@ public class EventService {
 		return events;
 	}
 
-	public Event getOne(String event_id) {
+	public Event getOne(String event_id) throws DataException {
 		Event event = null;
-		try {
+
 			Optional<Event> oe = eventRepository.findById(Long.valueOf(event_id));
 			if(oe.isPresent()) {
 				event = oe.get();
 			}else {
 				throw new DataException("Event does not exist");
 			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		
 		return event;
 	}
 

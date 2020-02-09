@@ -8,6 +8,7 @@ import com.project.master.dto.HallDTO;
 import com.project.master.dto.SeatDTO;
 import com.project.master.dto.SeatInfoDTO;
 import com.project.master.dto.SelectedSeatInfoDTO;
+import com.project.master.exception.DataException;
 import com.project.master.paypal.api.Order;
 import com.project.master.repository.HallRepository;
 import com.project.master.repository.LocationRepository;
@@ -37,21 +38,34 @@ public class HallServiceImpl implements HallService {
     }
 
     @Override
-    public Hall findById(long id){
-        return hallRepository.findById(id).get();
+    public Hall findById(long id) throws DataException{
+    	Optional<Hall> ohall = hallRepository.findById(id);
+    	if(!ohall.isPresent()) {
+    		throw new DataException("Hall does not exists");
+    	}
+    	Hall hall = ohall.get();
+        return hall;
     }
 
     @Override
-    public List<Hall> findByLocation(String name){
-        EventLocation location = locationRepository.findByName(name).get();
+    public List<Hall> findByLocation(String name) throws DataException{
+        Optional<EventLocation> olocation = locationRepository.findByName(name);
+        if(!olocation.isPresent()) {
+        	throw new DataException("No location found");
+        }
+        EventLocation location = olocation.get();
         List<Hall> halls = location.getHallList();
         return halls;
     }
 
     @Override
-    public Hall saveHall(HallDTO hallDTO){
+    public Hall saveHall(HallDTO hallDTO) throws DataException{
         String locationName = hallDTO.getEvent_location();
-        EventLocation eventLocation = locationRepository.findByName(locationName).get();
+        Optional<EventLocation> olocation = locationRepository.findByName(locationName);
+        if(!olocation.isPresent()) {
+        	throw new DataException("No location found");
+        }
+        EventLocation eventLocation = olocation.get();
         Hall hall = new Hall(hallDTO);
         hall.setLocation(eventLocation);
 
@@ -65,10 +79,10 @@ public class HallServiceImpl implements HallService {
     }
 
     @Override
-    public Hall updateHall(HallDTO hallDTO){
+    public Hall updateHall(HallDTO hallDTO) throws DataException{
         Optional<Hall> optionalHall = hallRepository.findById(hallDTO.getId());
 
-        if(!(optionalHall.isPresent()))  return null;
+        if(!(optionalHall.isPresent()))  throw new DataException("No hall");
 
 
         Hall hall = optionalHall.get();
@@ -88,19 +102,22 @@ public class HallServiceImpl implements HallService {
     }
 
     @Override
-    public void deleteHall(HallDTO hallDTO){
+    public void deleteHall(HallDTO hallDTO) throws DataException{
         Optional<Hall> optionalHall = hallRepository.findById(hallDTO.getId());
 
-        if(!(optionalHall.isPresent())) return;
+        if(!(optionalHall.isPresent())) throw new DataException("No hall is present");
 
 
         hallRepository.delete(optionalHall.get());
     }
 
 	@Override
-	public String saveSeats(SeatInfoDTO seatsDTO) {
-		Optional<Hall> optionalHall = hallRepository.findById(1);
+	public String saveSeats(SeatInfoDTO seatsDTO) throws DataException {
+		Optional<Hall> optionalHall = hallRepository.findById(seatsDTO.getId());
 		List<Seat> seats = new ArrayList<Seat>();
+		if(!optionalHall.isPresent()) {
+			throw new DataException("Hall does not exists");
+		}
 		Hall h = optionalHall.get();
 		System.out.println(seatsDTO.getSeatsP().size());
 		
@@ -123,8 +140,11 @@ public class HallServiceImpl implements HallService {
 	}
 
 	@Override
-	public void updateSeats(SelectedSeatInfoDTO seatsDTO, String buyerUsername) {
-		Optional<Hall> optionalHall = hallRepository.findById(1);
+	public void updateSeats(SelectedSeatInfoDTO seatsDTO, String buyerUsername) throws DataException {
+		Optional<Hall> optionalHall = hallRepository.findById(seatsDTO.getEvent().getHall().getId());
+		if(!optionalHall.isPresent()) {
+			throw new DataException("Hall does not exists");
+		}
 		List<Seat> seats = new ArrayList<Seat>();
 		Hall h = optionalHall.get();
 		System.out.println(seatsDTO.getSeatsP().size());

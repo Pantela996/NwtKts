@@ -45,6 +45,7 @@
                             <label for="admin" *ngIf="locChosen">Hall</label><br>
                             <select [(ngModel)]="event.location_hall" (change)="hallChosen()" name="event.location_hall" *ngIf="locChosen">
                                 <option *ngFor="let h of halls; let i = index;" [ngValue]="h">Hall {{i+1}} Rows:{{h.totalRows}} Columns:{{h.totalColumns}}</option>
+
                             </select>
                         </div>
                     </div>
@@ -71,21 +72,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <div class="field-required">
-                            <label for="admin">User</label>
-                            <input type="text" id="user" [(ngModel)] = "event.user" name ="user" class="form-control" data-validation="required" data-validation-error-msg="Ovo je obavezno polje">
-                        </div>
-                    </div>
-                </div>
-            </div>
             
             <br>
             <div class="row">
                 <div class="col-md-6">
-                    <button type="submit" name="submit" id="create_button" class="btn btn-primary btn-block">
+                    <p *ngIf="!isDateGreater()">Date not well formatted</p>
+                    <button *ngIf = "isDateGreater()" type="submit" name="submit" id="create_button" class="btn btn-primary btn-block">
                     Create                   </button>
                 </div>
             </div>

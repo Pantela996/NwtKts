@@ -40,6 +40,13 @@ public class Hall {
 	}
 
 	public Hall( int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
+		this.totalRows = totalRows;
+		this.totalColumns = totalColumns;
+		this.location = location;
+		this.seats = seats;
+	}
+	
+	public Hall(Long id, int totalRows, int totalColumns, EventLocation location, List<Seat> seats) {
 		this.id = id;
 		this.totalRows = totalRows;
 		this.totalColumns = totalColumns;

@@ -15,9 +15,6 @@
             <button class="btn" *ngIf="isSuperAdmin()"  (click) ="showLocations()" id="locations">Locations</button>
         </li>
         <li class="navbar navbar-light bg-light">
-                <a class="btn" *ngIf="isLocationEventAdmin()"  href ="/seatmap" id="c_seatmap">Creat seat map</a>
-        </li>
-        <li class="navbar navbar-light bg-light">
             <button class="btn" *ngIf="isLocationEventAdmin()"  (click) ="createLocations()" id="createLocations">Create Locations</button>
         </li>
         <li class="navbar navbar-light bg-light">
@@ -38,7 +35,7 @@
         Profile Options
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" >
-            <button class="dropdown-item" *ngIf="loggedIn()" (click)="getMyCartItems()" id="myCart">Logout</button>
+            <button class="dropdown-item" *ngIf="isRegularUser()" (click)="getMyCartItems()" id="myCart">My cart</button>
             <button class="dropdown-item" *ngIf="loggedIn()" (click)="logout()" id="logout">Logout</button>
     </div>
     </div>
@@ -70,7 +67,8 @@
                     <td>{{ event.dateTo | date }}</td>
                     <td>{{ event.description }}</td> 
                     <td><button type="button" class="btn btn-primary"  id="information" (click) = "info(event.id)"><i class="far fa-eye">i</i></button></td>
-                    <td><button type="button" class="btn btn-warning" id="reservation" *ngIf = "isRegularUser()" (click) = "reservation(event)"><i class="far fa-eye">r</i></button></td>
+                    <td><a type="button" class="btn btn-warning"   id="reservation" *ngIf = "isRegularUser()" (click) = "reservation(event)"><i class="far fa-eye">r</i></a></td>
+                   
                 </tr>
                 <tr class="more-info" id="more-info">
                     <td colspan="8">

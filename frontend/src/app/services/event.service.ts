@@ -19,7 +19,8 @@ export class EventService {
   }
 
   getOne(event_id:String){
-    return this.http.get(this.basePath + "/one?" + "event_id=1", {responseType: 'json'}).toPromise();
+
+    return this.http.get(this.basePath + "/one?" + "event_id=" + event_id, {responseType: 'json'}).toPromise();
   }  
 
   createHallSeats(seatingObj:any){
@@ -28,6 +29,12 @@ export class EventService {
     console.log("SEDISTA");
     
     return this.http.post(this.basePath + "/createEventHallMap",JSON.stringify(seatingObj), {headers, responseType: 'text'});
+  }
+
+
+  createEvent(event){
+    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(this.basePath + "/create",JSON.stringify(event), {headers, responseType: 'text'});
   }
 
   updateHallSeats(seatingObj:any, event=null){

@@ -20,7 +20,7 @@ public class LocationServiceImpl implements LocationService {
 
 	@Autowired
 	private LocationRepository locationRepository;
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -28,59 +28,51 @@ public class LocationServiceImpl implements LocationService {
 	private HallRepository hallRepository;
 
 	@Override
-	public String createLocation(String locationName, String locationCity, String user, int numberOfHalls) throws DataException {
-		Optional<EventLocation> location  = locationRepository.findByName(locationName);
+	public String createLocation(String locationName, String locationCity, String user, int numberOfHalls)
+			throws DataException {
+		Optional<EventLocation> location = locationRepository.findByName(locationName);
 		System.out.println("Usao sam u create");
-		if(!location.isPresent()) {
-			System.out.println("Usao sam u createLocation");
-			EventLocation result  = new EventLocation(locationName, locationCity, user, 1);
-			List<Hall> halls = new ArrayList<Hall>();
-			for (int i=0; i<numberOfHalls; ++i){
-				Hall h = new Hall(10,10, result);
-				halls.add(h);
-				hallRepository.save(h);
-
-			}
-			result.setHallList(halls);
-			result.setNumberOfHalls(halls.size());
-			System.out.println(halls.size());
-
-			locationRepository.save(result);
-		}else {
-			return "Location already exists";
+		if (location.isPresent()) {
+			throw new DataException("Already exists");
 		}
-		
+		System.out.println("Usao sam u createLocation");
+		EventLocation result = new EventLocation(locationName, locationCity, user, numberOfHalls);
+		List<Hall> halls = new ArrayList<Hall>();
+		for (int i = 0; i < numberOfHalls; ++i) {
+			Hall h = new Hall(10, 10, result);
+			halls.add(h);
+			hallRepository.save(h);
+
+		}
+		result.setHallList(halls);
+		result.setNumberOfHalls(halls.size());
+		System.out.println(halls.size());
+
+		locationRepository.save(result);
+
 		return "Success";
 
 	}
 
-	public String deleteLocation(String location_id) {
-		try {
-			Optional<EventLocation> oe = locationRepository.findById(Long.valueOf(location_id));
-			if (oe.isPresent()) {
-				locationRepository.deleteById(Long.valueOf(location_id));
-			} else {
-				throw new DataException("Location does not exist");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public String deleteLocation(String location_id) throws DataException {
+		Optional<EventLocation> oe = locationRepository.findById(Long.valueOf(location_id));
+		if (!oe.isPresent()) {
+			throw new DataException("Location does not exist");
+
 		}
+		locationRepository.deleteById(Long.valueOf(location_id));
 
 		return "Success";
 	}
 
-	public String updateLocation(String location_id, LocationDTO locationDTO, String currentUser) {
-		try {
-			Optional<EventLocation> oe = locationRepository.findById(Long.valueOf(location_id));
-			if (oe.isPresent()) {
-				locationRepository.deleteById(Long.valueOf(location_id));
-				// this.createLocation(locationDTO);
-			} else {
-				throw new DataException("Location does not exist");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+	public String updateLocation(String location_id, LocationDTO locationDTO, String currentUser) throws DataException {
+		Optional<EventLocation> oe = locationRepository.findById(Long.valueOf(location_id));
+		if (!oe.isPresent()) {
+			throw new DataException("Location does not exist");
+			// this.createLocation(locationDTO);
 		}
+		locationRepository.deleteById(Long.valueOf(location_id));
+
 		return "Success";
 	}
 
@@ -90,18 +82,15 @@ public class LocationServiceImpl implements LocationService {
 		return locations;
 	}
 
-	public EventLocation getOne(String location_id) {
+	public EventLocation getOne(String location_id) throws DataException {
 		EventLocation location = null;
-		try {
-			Optional<EventLocation> oe = locationRepository.findById(Long.valueOf(location_id));
-			if (oe.isPresent()) {
-				location = oe.get();
-			} else {
-				throw new DataException("Event does not exist");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Optional<EventLocation> oe = locationRepository.findById(Long.valueOf(location_id));
+		if (!oe.isPresent()) {
+
+			throw new DataException("Event does not exist");
 		}
+		location = oe.get();
+
 		return location;
 	}
 
@@ -117,42 +106,39 @@ public class LocationServiceImpl implements LocationService {
 	}
 
 	public String createCategory(String name, int requiredRows, int requiredColumns) throws DataException {
-		Optional<Category> category  = categoryRepository.findByName(name);
-		
+		Optional<Category> category = categoryRepository.findByName(name);
+
 		System.out.println("CAME HERE");
-		
-		if(!category.isPresent()) {
+
+		if (!category.isPresent()) {
 			categoryRepository.save(new Category(name, requiredRows, requiredColumns, CategoryType.FAIRY));
 			return "Success";
-		}else {
+		} else {
 			throw new DataException("Category name alredy exists");
 		}
-		
+
 	}
 
 	public ArrayList<Category> getAllCategories() {
-		ArrayList<Category> categories = (ArrayList<Category>)categoryRepository.findAll();
+		ArrayList<Category> categories = (ArrayList<Category>) categoryRepository.findAll();
 		return categories;
 	}
 
-	public Category updateCategory(CategoryDTO categoryDTO) {
+	public Category updateCategory(CategoryDTO categoryDTO) throws DataException {
 		Category c = new Category();
-		try {
-			Optional<Category> ce = categoryRepository.findById(Long.valueOf(categoryDTO.getId()));
-			if (ce.isPresent()) {
-				c = ce.get();
-				c.setName(categoryDTO.getName());
-				c.setCategoryType(categoryDTO.getCategoryType());
-				c.setRequiredRows(categoryDTO.getRequiredRows());
-				c.setRequiredColumns(categoryDTO.getRequiredColumns());
-				// this.createLocation(locationDTO);
-				categoryRepository.save(c);
-			} else {
-				throw new DataException("Location does not exist");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		Optional<Category> ce = categoryRepository.findById(Long.valueOf(categoryDTO.getId()));
+		if (!ce.isPresent()) {
+			throw new DataException("Location does not exist");
 		}
+		
+		c = ce.get();
+		c.setName(categoryDTO.getName());
+		c.setCategoryType(categoryDTO.getCategoryType());
+		c.setRequiredRows(categoryDTO.getRequiredRows());
+		c.setRequiredColumns(categoryDTO.getRequiredColumns());
+		// this.createLocation(locationDTO);
+		categoryRepository.save(c);
+
 		return c;
 	}
 

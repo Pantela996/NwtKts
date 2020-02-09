@@ -12,13 +12,13 @@ public interface LocationService {
 
 	String createLocation(String name, String city, String user, int numberOfHalls) throws DataException;
 
-	String deleteLocation(String location_id);
+	String deleteLocation(String location_id) throws DataException;
 
-	String updateLocation(String location_id, LocationDTO locationDTO, String name);
+	String updateLocation(String location_id, LocationDTO locationDTO, String name) throws DataException;
 
 	ArrayList<EventLocation> getAll();
 
-	EventLocation getOne(String location_id);
+	EventLocation getOne(String location_id)  throws DataException;
 
 	ArrayList<EventLocation> getMyLocations(String name);
 
@@ -26,6 +26,6 @@ public interface LocationService {
 
 	ArrayList<Category> getAllCategories();
 
-	Category updateCategory(CategoryDTO categoryDTO);
+	Category updateCategory(CategoryDTO categoryDTO) throws DataException;
 
 }

@@ -7,8 +7,9 @@ public class EventDTO {
 	String name;
 	String dateFrom;
 	String dateTo;
-	LocationDTO location;
-	HallDTO hall;
+	LocationDTO event_location;
+	HallDTO seatInfo;
+	SeatInfoDTO hall;
 	CategoryDTO category;
 	String description;
 	
@@ -16,16 +17,39 @@ public class EventDTO {
 	public EventDTO() {
 		
 	}
+	
+	public EventDTO(String name, String dateFrom, String dateTo, LocationDTO location, SeatInfoDTO hall,
+			HallDTO seatInfo, CategoryDTO category, String description,Long id) {
+		super();
+		this.name = name;
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+		this.event_location = location;
+		this.hall = hall;
+		this.seatInfo = seatInfo;
+		this.category = category;
+		this.description = description;
+		this.id = id;
+	}
+	
+	public HallDTO getSeatInfo() {
+		return seatInfo;
+	}
 
-	public EventDTO(String name, String date_from, String date_to, LocationDTO location, HallDTO location_hall,
+	public void setSeatInfo(HallDTO seatInfo) {
+		this.seatInfo = seatInfo;
+	}
+
+
+	public EventDTO(String name, String date_from, String date_to, LocationDTO location, HallDTO seatInfo,
 			CategoryDTO event_category, String description,Long id) {
 		super();
 		this.name = name;
 		this.id = id;
 		this.dateFrom = date_from;
 		this.dateTo = date_to;
-		this.location = location;
-		this.hall = location_hall;
+		this.event_location = location;
+		//this.hall = location_hall;
 		this.category = event_category;
 		this.description = description;
 	}
@@ -40,11 +64,11 @@ public class EventDTO {
 
 
 
-	public HallDTO getHall() {
+	public SeatInfoDTO getHall() {
 		return hall;
 	}
 
-	public void setHall(HallDTO location_hall) {
+	public void setHall(SeatInfoDTO location_hall) {
 		this.hall = location_hall;
 	}
 
@@ -88,13 +112,15 @@ public class EventDTO {
 		this.dateTo = dateTo;
 	}
 
-	public LocationDTO getLocation() {
-		return location;
+	public LocationDTO getEvent_location() {
+		return event_location;
 	}
 
-	public void setLocation(LocationDTO location) {
-		this.location = location;
+	public void setEvent_location(LocationDTO event_location) {
+		this.event_location = event_location;
 	}
+
+
 
 
 }

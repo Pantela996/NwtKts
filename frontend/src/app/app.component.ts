@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from './services/security/authentication-service.service';
-import { Router } from '@angular/router';
+import { Router, NavigationStart, NavigationEnd } from '@angular/router';
 import {EventService} from './services/event.service';
 import { TicketReservationService } from './services/ticket-reservation.service';
 import * as $ from "jquery";
@@ -37,8 +37,15 @@ export class AppComponent implements OnInit{
    }
 
   ngOnInit() {
+    console.log('asdas')
     this.eventService.getAll().subscribe(success => {this.setEvents(success)});
     this.slide_count = 0;
+
+    this.router.events.subscribe(event => {
+      if(event instanceof NavigationEnd && this.router.url === '/') {
+        this.eventService.getAll().subscribe(success => {this.setEvents(success)});
+        }
+      })
   }
 
 
@@ -57,7 +64,7 @@ export class AppComponent implements OnInit{
 
 
   setEvents(data){
-    
+    console.log(data)
     if(data.length != 0){
       this.events = data;
       console.log(this.events);
@@ -108,7 +115,7 @@ export class AppComponent implements OnInit{
 
  reservation(event){
   //this.transferService.setCurrent(event);
-  this.router.navigate(['/reservation']);
+  this.router.navigate(['/reservation', event.id]);
  }
  
  ngOnDestroy() {

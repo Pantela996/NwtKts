@@ -27,6 +27,14 @@ public class LocationDTO {
 		this.locationCity = locationCity;
 		this.numberOfHalls = numberOfHalls;
 	}
+	
+	public LocationDTO(Long id,String name, String locationCity, String user, int numberOfHalls) {
+		this.id = id;
+		this.user_id = user;
+		this.name = name;
+		this.locationCity = locationCity;
+		this.numberOfHalls = numberOfHalls;
+	}
 
 	
 

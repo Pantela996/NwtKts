@@ -38,7 +38,7 @@ public class LocationController {
 
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String message = locationService.createLocation(locationDTO.getName(), locationDTO.getLocationCity(), locationDTO.getUser_id(), locationDTO.getNumberOfHalls());
+			String message = locationService.createLocation(locationDTO.getName(), locationDTO.getLocationCity(), authentication.getName(), locationDTO.getNumberOfHalls());
 			return new ResponseEntity<String>(message, HttpStatus.OK);
 		} catch (DataException e) {
 			// TODO Auto-generated catch block
@@ -78,7 +78,7 @@ public class LocationController {
 	}
 
 	@RequestMapping(value = "/halls/{location}", method = RequestMethod.GET)
-	public ResponseEntity<List<Hall>> getHalls(@PathVariable String location){
+	public ResponseEntity<List<Hall>> getHalls(@PathVariable String location) throws DataException{
 		System.out.println("Usao sam u controller za sve hale");
 		List<Hall> halls =  hallService.findByLocation(location);
 		return new ResponseEntity<List<Hall>>(halls, HttpStatus.OK);
@@ -128,7 +128,7 @@ public class LocationController {
 	}
 	
 	@RequestMapping(value = "/category/update", method = RequestMethod.PUT)
-	public ResponseEntity<Category> updateCategories(@RequestBody CategoryDTO categoryDTO) {
+	public ResponseEntity<Category> updateCategories(@RequestBody CategoryDTO categoryDTO) throws DataException {
 			Category category = locationService.updateCategory(categoryDTO);
 			return new ResponseEntity<Category>(category, HttpStatus.OK);
 	}
