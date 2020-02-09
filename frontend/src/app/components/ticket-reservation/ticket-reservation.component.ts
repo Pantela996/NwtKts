@@ -15,6 +15,7 @@ export class TicketReservationComponent implements OnInit {
 
   constructor(private transferService:TransferService, private _Activatedroute:ActivatedRoute, private router:Router, private eventService:EventService) {
     this.seatingObject = {seatsP:[],rowsP:0,columnsP:0};
+    
    }
   private event;
   private id;
@@ -29,7 +30,8 @@ export class TicketReservationComponent implements OnInit {
 
   setCurrent(event_id:string){
     this.eventService.getOne(event_id).then(
-      event => { this.event = event;
+      event => { 
+      this.event = event;
       this.goOn();
       },
       err => console.log(err),
@@ -40,7 +42,20 @@ export class TicketReservationComponent implements OnInit {
     this.mode = 3;
     this.context = 1;
     this.start = false;
-    this.processBooking(this.event);
+
+    this.f1().then(res=>this.f2());
+
+  }
+
+
+  f1() {
+    return new Promise((resolve, reject) => {
+      this.processBooking(this.event);
+    });
+  } 
+
+  f2(){
+    this.router.navigate(['/']);
   }
 
 
@@ -70,8 +85,6 @@ export class TicketReservationComponent implements OnInit {
   public seatsP;
   public rowsP;
   public columnsP;
-  private event_id;
-  private available_seats = [];
   public selectedDocuments = [];
   private dragStart:number = 0;
   private dragOver:number = 0;
@@ -189,6 +202,7 @@ export class TicketReservationComponent implements OnInit {
     var a:string = "A";
       if( map_data.length > 0 )
       {
+        this.seats = [];
         var seatNoCounter = 1;
         for (let __counter = 0; __counter < map_data.length; __counter++) {
           var row_label = "";
@@ -227,6 +241,8 @@ export class TicketReservationComponent implements OnInit {
                 this.status = "available";
               }else if(item == "v"){
                 this.status = "vip";
+              }else if(item=="r"){
+                this.status = "reserved";
               }else{
                 this.status = "passline";
               }
@@ -239,6 +255,7 @@ export class TicketReservationComponent implements OnInit {
                
               if( item == 'g')
               {
+                seatObj["price"] = 250;
                 seatObj["seatLabel"] = map_element.seat_label+" "+seatNoCounter;
                 if(seatNoCounter < 10)
                 { seatObj["seatNo"] = "0"+seatNoCounter; }
@@ -246,6 +263,13 @@ export class TicketReservationComponent implements OnInit {
                 
                 seatNoCounter++;
               }else if(item == 'v'){
+                seatObj["price"] = 500;
+                seatObj["seatLabel"] = map_element.seat_label+" "+seatNoCounter;
+                if(seatNoCounter < 10){ seatObj["seatNo"] = "0"+seatNoCounter; }
+                else { seatObj["seatNo"] = ""+seatNoCounter; }
+                seatNoCounter++;
+              }else if(item=="r"){
+                seatObj["price"] = 500;
                 seatObj["seatLabel"] = map_element.seat_label+" "+seatNoCounter;
                 if(seatNoCounter < 10){ seatObj["seatNo"] = "0"+seatNoCounter; }
                 else { seatObj["seatNo"] = ""+seatNoCounter; }
@@ -255,7 +279,7 @@ export class TicketReservationComponent implements OnInit {
                 seatObj["seatLabel"] = "";
               }
               totalItemCounter++;
-              if(this.mode == 0){
+              if(this.mode == 3){
                 this.seats.push(seatObj);
               }
               
@@ -330,7 +354,7 @@ export class TicketReservationComponent implements OnInit {
       this.status = "passline";
       this.selectSeat(seatObject);  
     }else{
-      this.status = "reserved";
+      this.status = "to_be_reserved";
       this.selectSeat(seatObject);
     }
 
@@ -362,6 +386,7 @@ export class TicketReservationComponent implements OnInit {
     console.log( "Seat to block: " , seatObject );
     if(seatObject.status == "available")
     {
+
       seatObject.prev_state = seatObject.status;
       seatObject.status = this.status;
       if(seatObject.status == "passline"){
@@ -387,7 +412,7 @@ export class TicketReservationComponent implements OnInit {
         }
       }else{
         seatObject.prev_state = seatObject.status;
-        seatObject.status ="reserved";
+        seatObject.status ="to_be_reserved";
         this.cart.selectedSeats.push(seatObject.seatLabel);
         this.selectedSeat.push(seatObject.seatLabel);
         this.cart.seatstoStore.push(seatObject.key);
@@ -412,7 +437,7 @@ export class TicketReservationComponent implements OnInit {
         
       }
       
-    }else if(seatObject.status == "reserved"){
+    }else if(seatObject.status == "to_be_reserved"){
       seatObject.status = seatObject.prev_state;
       var seatIndex = this.cart.selectedSeats.indexOf(seatObject.seatLabel);
       var seatIndex2 = this.passlineseats.indexOf(seatObject.seatLabel);
@@ -516,43 +541,18 @@ export class TicketReservationComponent implements OnInit {
 
 
   deleteChoice(){
-    this.isEntered =  false;
-    this.start = true;
-    this.rows = 0;
-    this.columns  =0;
-    this.seatmap = [];
+    this.router.navigate(['/']);
   }
   processBooking(event = null){
    var exp="";
    var j = 0;
+   console.log(event);
+    this.seats = event.hall.seats;
+    this.rows = event.hall.totalRows;
+    this.columns = event.hall.totalColumns;
+    this.generateExpression("", 0,  event.hall.totalRows, event.hall.totalColumns);
 
-   if(this.mode < 2){
-     console.log(this.cart.selectedSeats);
-     for(let i = 0; i < this.cart.selectedSeats.length;i++){
-      var a = document.getElementById("s_seat"+this.cart.selectedSeats[i]);
-      a.classList.add("disabled");
-     }
-     if(this.mode == 1){
-      exp  = this.generateExpression(this.seats, exp,j,this.rows,this.columns);
-      console.log(exp);
-    }
-    this.mode= this.mode + 1;
-   }else if(this.mode== 2){
-      this.seatingObject.seatsP = this.seats;
-      this.seatingObject.rowsP = this.rows;
-      this.seatingObject.columnsP = this.columns;
-      console.log(this.seatingObject);
-      this.eventService.createHallSeats(this.seatingObject).subscribe(success =>{
-        this.router.navigate(['/'])
-      }, err => {
-        alert(err.error);
-      }); 
-   }else{
-      this.seats = event.hall.seats;
-      this.rows = event.hall.totalRows;
-      this.columns = event.hall.totalColumns;
-      this.generateExpression(event.hall.seats, "", 0,  event.hall.totalRows, event.hall.totalColumns);
-   }
+
   }
 
 
@@ -561,17 +561,19 @@ export class TicketReservationComponent implements OnInit {
     
   }
 
-  generateExpression(seats,exp,j,rows, columns){
+  generateExpression(exp,j,rows, columns){
     console.log("SEATS");
-    console.log(seats);
+    console.log(this.seats);
     var add = 0;
-    for (let i = 0; i < seats.length; i++){
+    for (let i = 0; i < this.seats.length; i++){
       
       if(this.context==0){
-        if(seats[i].status == "available"){
+        if(this.seats[i].status == "available"){
           exp += "g";
-       }else if(seats[i].status == "vip"){
+       }else if(this.seats[i].status == "vip"){
           exp += "v";
+       }else if(this.seats[i].status == "reserved"){
+         exp += "r";
        }else{
           exp += "x";
        }
@@ -584,10 +586,12 @@ export class TicketReservationComponent implements OnInit {
         add = 1;
       }else{
         add = 0;
-        if(seats[i].typeOfSeat == "AVAILABLE"){
+        if(this.seats[i].typeOfSeat == "AVAILABLE"){
           exp += "g";
-       }else if(seats[i].typeOfSeat == "VIP"){
+       }else if(this.seats[i].typeOfSeat == "VIP"){
           exp += "v";
+       }else if(this.seats[i].typeOfSeat == "RESERVED"){
+        exp += "r";
        }else{
           exp += "x";
        }
@@ -617,5 +621,38 @@ export class TicketReservationComponent implements OnInit {
     }
   }
 
+  sendOrder(){
+    this.seatingObject.seatsP = this.seats;
+    this.seatingObject.rowsP = this.rows;
+    this.seatingObject.columnsP = this.columns;
+    this.seatingObject.reservedSeats = [];
+    for(let i = 0; i < this.cart.selectedSeats.length;i++){
+      for(let j = 0; j < this.seats.length;j++){
+        if(this.cart.selectedSeats[i] == this.seats[j].seatLabel){
+          this.seatingObject.reservedSeats.push(this.seats[j]);
+        }
+      }
+    }
+    console.log(this.seatingObject.reservedSeats);
+    for(let i = 0; i < this.seats.length;i++){
+      if(this.seats[i].status == "to_be_reserved"){
+        this.seats[i].status = "reserved";
+      }
+    }
+    this.eventService.updateHallSeats(this.seatingObject,this.event).subscribe(success =>{
+      this.setRedirect(success);
+      
+    });
+  }
+
+  setRedirect(data){
+    window.location.href=data.redirect_url;
+
+  }
+
+  getData(data){
+    console.log("DATA IS HERE");
+    console.log(data);
+  }
 
 }

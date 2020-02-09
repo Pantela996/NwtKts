@@ -5,18 +5,27 @@ public class HallDTO {
     private long id;
     private int totalRows;
     private int totalColumns;
-    private String eventLocation;
+    private String event_location;
+
+    
 
 
     public HallDTO(){
 
     }
 
-    public HallDTO(int totalRows, int totalColumns, String eventLocation) {
+	public HallDTO(int totalRows, int totalColumns, LocationDTO eventLocation) {
         this.totalRows = totalRows;
         this.totalColumns = totalColumns;
-        this.eventLocation = eventLocation;
     }
+	
+    public String getEvent_location() {
+		return event_location;
+	}
+
+	public void setEvent_location(String event_location) {
+		this.event_location = event_location;
+	}
 
     public long getId() {
         return id;
@@ -42,11 +51,4 @@ public class HallDTO {
         this.totalColumns = totalColumns;
     }
 
-    public String getEventLocation() {
-        return eventLocation;
-    }
-
-    public void setEventLocation(String eventLocation) {
-        this.eventLocation = eventLocation;
-    }
 }

@@ -1,14 +1,16 @@
 package com.project.master.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class SeatInfoDTO {
+public class SelectedSeatInfoDTO {
 	
+	private List<SeatDTO> reservedSeats;
 	private List<SeatDTO> seatsP;
 	private int rowsP;
 	private int columnsP;
-	private EventDTO event;
+	EventDTO event;
 	
 	
 	public EventDTO getEvent() {
@@ -50,18 +52,28 @@ public class SeatInfoDTO {
 		this.columnsP = columnsP;
 	}
 
+	
+	public List<SeatDTO> getReservedSeats() {
+		return reservedSeats;
+	}
 
-	public SeatInfoDTO() {
+
+	public void setReservedSeats(List<SeatDTO> reservedSeats) {
+		this.reservedSeats = reservedSeats;
+	}
+
+	
+	public SelectedSeatInfoDTO() {
 		super();
 	}
 
 
-	public SeatInfoDTO(List<SeatDTO> seatsP, int rowsP, int columnsP, EventDTO eventhtelp) {
+	public SelectedSeatInfoDTO(List<SeatDTO> seatsP, int rowsP, int columnsP, List<SeatDTO> reservedSeats) {
 		super();
 		this.seatsP = seatsP;
 		this.rowsP = rowsP;
 		this.columnsP = columnsP;
-		this.event = eventhtelp;
+		this.reservedSeats = reservedSeats;
 	}
 	
 	

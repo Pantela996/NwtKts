@@ -5,6 +5,7 @@ import {EventService} from './services/event.service';
 import { TicketReservationService } from './services/ticket-reservation.service';
 import * as $ from "jquery";
 import { TransferService } from 'src/app/services/transfer.service';
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,19 @@ export class AppComponent implements OnInit{
   image_slider = [];
   slide_count = 0;
 
-  constructor(private authService:AuthenticationService, public router:Router, private eventService:EventService, private transferService:TransferService) { }
+  constructor(private activatedRoute: ActivatedRoute,private authService:AuthenticationService, public router:Router, private eventService:EventService, private transferService:TransferService) {
+      this.activatedRoute.queryParams.subscribe(params => {
+      let payerId = params['PayerID'];
+      let paymentId = params['paymentId'];
+      let token = params['token'];
+      this.eventService.completePayment(paymentId, payerId,token).subscribe(success =>{
+      }, err => {
+        alert(err.error);
+      });   
+      console.log(payerId); // Print the parameter to the console. 
+      console.log(paymentId);
+  });
+   }
 
   ngOnInit() {
     this.eventService.getAll().subscribe(success => {this.setEvents(success)});
@@ -35,7 +48,10 @@ export class AppComponent implements OnInit{
       this.image_slider.push(data[i]);
     }
     console.log(this.image_slider);
-    $('#itemPreview').attr('src', `data:image/png;base64,${this.image_slider[0]}`);
+    if(this.image_slider.length > 0){
+      $('#itemPreview').attr('src', `data:image/png;base64,${this.image_slider[0]}`);
+    }
+   
     
   }
 
@@ -67,26 +83,30 @@ export class AppComponent implements OnInit{
   }
 
   isMainPageRoute(){
-    return (this.router.url === '/'); 
+
+    return (this.router.url === '/' || this.router.url.startsWith('/?paymentId')); 
   }
 
   info(id){
     var information  = document.getElementById("information");
-    this.eventService.getImages(id).subscribe(success=>{this.setImages(success)}, err => alert(err));
-    $(function(){ 
-      var $information = $("#information");
-        if($('.more-info').css("display") == "none"){
-          $('.more-info').fadeIn('slow');
-        }else{
-          $('.more-info').fadeOut('slow');
-        };
-        
-  });
+    //, err => alert(err.message)
+    this.eventService.getImages(id).subscribe(success=>{this.setImages(success)});
+    if(this.image_slider.length > 0){
+      $(function(){ 
+        var $information = $("#information");
+          if($('.more-info').css("display") == "none"){
+            $('.more-info').fadeIn('slow');
+          }else{
+            $('.more-info').fadeOut('slow');
+          };
+          
+    });
+    }
+   
   
   }
 
  reservation(event){
-  alert(event);
   //this.transferService.setCurrent(event);
   this.router.navigate(['/reservation']);
  }
@@ -123,6 +143,16 @@ export class AppComponent implements OnInit{
    this.router.navigate(['/create_event'])
  }
 
+ isRegularUser(){
+  var user = this.authService.getCurrentUser();
+  var roles = this.authService.getRoles();
+  if(roles.includes("REGULAR_USER_ROLE")){
+    return true;
+  }else{
+    return false;
+  }
+ }
+
  isLocationEventAdmin(){
   
     var user = this.authService.getCurrentUser();
@@ -154,6 +184,10 @@ export class AppComponent implements OnInit{
     }
     $('#itemPreview').attr('src', `data:image/png;base64,${this.img_src}`);
 
+  }
+
+  getMyCartItems(){
+    
   }
 
 

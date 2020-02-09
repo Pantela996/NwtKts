@@ -53,25 +53,13 @@ const  appRoutes = [
     path: 'read_delete_location_admin',
     component: ReadDeleteLocationAdminComponent
   },
-    {path: 'resevation/:id', component: TicketReservationComponent
+  	{path: 'resevation/:id', component: TicketReservationComponent
   },{
     path: 'read_delete_location',
     component: ReadDeleteLocationComponent
   },{
     path: 'read_delete_users',
     component: ReadDeleteUsersComponent
-  },{
-    path: 'create_location',
-    component: CreateLocationComponent
-  },{
-    path: 'read_update_location',
-    component: ReadUpdateLocationComponent
-  },{
-    path: 'create_event',
-    component: CreateEventComponent
-  },{
-    path: 'register',
-    component: RegisterComponent
   }
   
 

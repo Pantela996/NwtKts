@@ -2,25 +2,31 @@ package com.project.master.dto;
 
 public class EventDTO {
 	
+	
 	Long id;
 	String name;
-	String date_from;
-	String date_to;
-	String event_location;
-	String location_hall;
-	String event_category;
+	String dateFrom;
+	String dateTo;
+	LocationDTO location;
+	HallDTO hall;
+	CategoryDTO category;
 	String description;
+	
+	
+	public EventDTO() {
+		
+	}
 
-	public EventDTO(String name, String date_from, String date_to, String event_location, String location_hall,
-			String event_category, String description,Long id) {
+	public EventDTO(String name, String date_from, String date_to, LocationDTO location, HallDTO location_hall,
+			CategoryDTO event_category, String description,Long id) {
 		super();
 		this.name = name;
 		this.id = id;
-		this.date_from = date_from;
-		this.date_to = date_to;
-		this.event_location = event_location;
-		this.location_hall = location_hall;
-		this.event_category = event_category;
+		this.dateFrom = date_from;
+		this.dateTo = date_to;
+		this.location = location;
+		this.hall = location_hall;
+		this.category = event_category;
 		this.description = description;
 	}
 
@@ -32,44 +38,22 @@ public class EventDTO {
 		this.name = name;
 	}
 
-	public String getDate_from() {
-		return date_from;
+
+
+	public HallDTO getHall() {
+		return hall;
 	}
 
-	public void setDate_from(String date_from) {
-		this.date_from = date_from;
+	public void setHall(HallDTO location_hall) {
+		this.hall = location_hall;
 	}
 
-	public String getDate_to() {
-		return date_to;
+	public CategoryDTO getCategory() {
+		return category;
 	}
 
-	public void setDate_to(String date_to) {
-		this.date_to = date_to;
-	}
-
-	public String getEvent_location() {
-		return event_location;
-	}
-
-	public void setEvent_location(String event_location) {
-		this.event_location = event_location;
-	}
-
-	public String getLocation_hall() {
-		return location_hall;
-	}
-
-	public void setLocation_hall(String location_hall) {
-		this.location_hall = location_hall;
-	}
-
-	public String getEvent_category() {
-		return event_category;
-	}
-
-	public void setEvent_category(String event_category) {
-		this.event_category = event_category;
+	public void setCategory(CategoryDTO event_category) {
+		this.category = event_category;
 	}
 
 	public String getDescription() {
@@ -78,6 +62,38 @@ public class EventDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getDateFrom() {
+		return dateFrom;
+	}
+
+	public void setDateFrom(String dateFrom) {
+		this.dateFrom = dateFrom;
+	}
+
+	public String getDateTo() {
+		return dateTo;
+	}
+
+	public void setDateTo(String dateTo) {
+		this.dateTo = dateTo;
+	}
+
+	public LocationDTO getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationDTO location) {
+		this.location = location;
 	}
 
 

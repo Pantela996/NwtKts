@@ -55,6 +55,10 @@ public class Event {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Frame> frames;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Ticket> tickets;
+
+
 	public Event() {
 
 	}
@@ -72,6 +76,7 @@ public class Event {
 		this.description = description;
 		this.user_id = user;
 		this.frames = new ArrayList<Frame>();
+		this.tickets = new ArrayList<Ticket>();
 	}
 	
 	
@@ -87,6 +92,7 @@ public class Event {
 		this.description = description;
 		this.user_id = user;
 		this.frames = new ArrayList<Frame>();
+		this.tickets = new ArrayList<Ticket>();
 	}
 
 
@@ -102,6 +108,7 @@ public class Event {
 		this.user_id = user;
 		this.numberOfTakenPlaces = 0;
 		this.frames = new ArrayList<Frame>();
+		this.tickets = new ArrayList<Ticket>();
 	}
 
 	public Long getId() {
@@ -190,6 +197,15 @@ public class Event {
 
 	public void setFrames(List<Frame> frames) {
 		this.frames = frames;
+	}
+	
+	
+	public List<Ticket> getTickets() {
+		return tickets;
+	}
+
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
 	}
 
 

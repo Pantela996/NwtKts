@@ -2,6 +2,7 @@ package com.project.master.domain;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -41,6 +42,10 @@ public class User {
 	@Column(nullable = true)
 	Date date_of_creation;
 
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+	List<Ticket> ticket;
+	
+	
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
 	private Set<UserAuthority> userAuthorities = new HashSet<UserAuthority>();
@@ -167,6 +172,32 @@ public class User {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public List<Ticket> getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(List<Ticket> ticket) {
+		this.ticket = ticket;
+	}
+
+	public User(long id, String username, String password, String name, String lastName, String email,
+			Date date_of_creation, List<Ticket> ticket, Set<UserAuthority> userAuthorities) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.date_of_creation = date_of_creation;
+		this.ticket = ticket;
+		this.userAuthorities = userAuthorities;
+	}
+
+
+	
+	
 	
 	
 

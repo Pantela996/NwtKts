@@ -1,13 +1,14 @@
 package com.project.master.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Ticket {
@@ -17,45 +18,60 @@ public class Ticket {
 	private Long id;
 
 	@Column
-	private int price;
+	private double price;
+	
+	@Column
+	private int seat_row;
+	
+	@Column
+	private int seat_column;
 
-	@Column(nullable = false)
-	private Long seat_id;
-
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "event_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade=CascadeType.ALL)
 	private Event event;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
 
 	public Ticket() {
 
 	}
 
-	public Ticket(Long id, int price, Long seat, Event event, User user) {
+	public Ticket(Long id, double price, Event event) {
 		super();
 		this.id = id;
 		this.price = price;
-		this.seat_id = seat;
 		this.event = event;
-		this.user = user;
 	}
 
-	public Ticket(Long seat, Event event, User user) {
+
+
+	public Ticket(double price, int row, int column, Event event) {
 		super();
-		this.id = id;
-		this.seat_id = seat;
+		this.price = price;
+		this.seat_row = row;
+		this.seat_column = column;
 		this.event = event;
-		this.user = user;
 	}
 
-	public int getPrice() {
+	public int getSeat_row() {
+		return seat_row;
+	}
+
+	public void setSeat_row(int seat_row) {
+		this.seat_row = seat_row;
+	}
+
+	public int getSeat_column() {
+		return seat_column;
+	}
+
+	public void setSeat_column(int seat_column) {
+		this.seat_column = seat_column;
+	}
+
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -75,21 +91,6 @@ public class Ticket {
 		this.event = event;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Long getSeat() {
-		return seat_id;
-	}
-
-	public void setSeat(Long seat) {
-		this.seat_id = seat;
-	}
 	
 	
 

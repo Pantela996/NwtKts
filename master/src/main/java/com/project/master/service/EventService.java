@@ -67,14 +67,14 @@ public class EventService {
 			Hall hall;
 			Category category;
 			
-			Optional<EventLocation> ol = locationRepository.findById(Long.valueOf(eventDTO.getEvent_location()));
+			Optional<EventLocation> ol = locationRepository.findById(Long.valueOf(eventDTO.getLocation().getId()));
 
 			if (ol.isPresent()) {
 				el = ol.get();
 			}else {
 				throw new DataException("Location does not exist");
 			}
-			Optional<Hall> ohall = hallRepository.findById(Long.valueOf(eventDTO.getLocation_hall()));
+			Optional<Hall> ohall = hallRepository.findById(Long.valueOf(eventDTO.getHall().getId()));
 			if (ohall.isPresent()) {
 				hall = ohall.get();
 			}else {
@@ -85,14 +85,14 @@ public class EventService {
 			}
 			
 			
-			Optional<Category> ocategory = categoryRepository.findById(Long.valueOf(eventDTO.getEvent_category()));
+			Optional<Category> ocategory = categoryRepository.findById(Long.valueOf(eventDTO.getCategory().getId()));
 			if (ocategory.isPresent()) {
 				category = ocategory.get();
 			}else {
 				throw new DataException("Location does not exist");
 			}
 			if (category == null )throw new DataException("Category does not exist");
-			Event event = new Event(eventDTO.getName(), Date.valueOf(eventDTO.getDate_from()), Date.valueOf(eventDTO.getDate_to()), el, hall, category, eventDTO.getDescription(), lea.getUsername());
+			Event event = new Event(eventDTO.getName(), Date.valueOf(eventDTO.getDateFrom()), Date.valueOf(eventDTO.getDateTo()), el, hall, category, eventDTO.getDescription(), lea.getUsername());
 			eventRepository.save(event);
 			
 			

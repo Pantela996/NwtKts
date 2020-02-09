@@ -67,13 +67,31 @@
     font-weight: bolder;
     background-color: #a0a0a0;
     border: 1px solid white;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
 }
+
+.to_be_seat_reserved{
+    color: brown;
+    font-weight: bolder;
+    background-color: #a0a0a0;
+    border: 1px solid white;
+
+}
+
 
 .disabled{
     color: black;
     pointer-events:none;
     visibility: hidden;
 }
+
 
 
 .seat-item:hover {
