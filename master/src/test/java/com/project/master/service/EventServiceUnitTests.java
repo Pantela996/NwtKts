@@ -1,5 +1,6 @@
 package com.project.master.service;
 
+<<<<<<< HEAD
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
@@ -240,4 +241,7 @@ public class EventServiceUnitTests {
 
         assertEquals(2, myEvents.size());
     }
+=======
+public class EventServiceUnitTests {
+>>>>>>> branch 'master' of https://github.com/Pantela996/NwtKts.git
 }
