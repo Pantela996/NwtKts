@@ -1,0 +1,41 @@
+<div class="row" >
+    <div class="col-md-3"></div>
+    <div class="col-md-5">
+        <div class="col-md-18">
+           <h1> Total profit: {{totalProfit}} </h1>
+        </div>
+        <h2>Sold tickets:</h2>
+        <table class="table table-striped">
+            <thead>
+                <div *ngIf = "isLocationEventAdmin()">
+                    <select id="select-type-basic" [(ngModel)]="locationName" name="locationName"  (change)="onEditClick($event.target.value)">
+                        <option *ngFor="let location of locations">
+                            <br/>
+                            {{location.name}}
+                            <br/>
+                        </option>
+                    </select>
+                </div>
+                <tr>
+                    <th>  </th>
+                    <th>Id</th>
+                    <th>Price</th>
+                    <th>Seat row</th>
+                    <th>Seat column</th>
+                    <th>Event name</th>
+                    <th>  </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ticket of tickets; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ ticket.id}}</td>
+                    <td>{{ ticket.price}}</td>
+                    <td>{{ ticket.seat_row }}</td>
+                    <td>{{ ticket.seat_column}}</td>
+                    <td>{{ ticket.event.name}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

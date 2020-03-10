@@ -11,18 +11,18 @@ export class TicketReservationService {
   public  event;
 
 
-  constructor(private http: HttpClient, private eventService:EventService) {
+  constructor(private http: HttpClient, private eventService: EventService) {
     this.http = http;
    }
 
 
 
-  setEvent(data){
+  setEvent(data) {
     console.log(data);
     this.event = data;
   }
 
-  getCurrent(){
+  getCurrent() {
     return this.event.asObservable();
   }
 }

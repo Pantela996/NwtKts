@@ -195,6 +195,29 @@ public class User {
 		this.userAuthorities = userAuthorities;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public User(long id, String username, String password, String name, String lastName, String email,
+			Date date_of_creation, List<Ticket> ticket) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.email = email;
+		this.date_of_creation = date_of_creation;
+		this.ticket = ticket;
+	}
+
+	
+
 
 	
 	

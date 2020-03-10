@@ -11,32 +11,31 @@ export class RegisterComponent implements OnInit {
 
   private user;
 
-  constructor(private superUserService:SuperUserService, private router:Router) {
-    this.user= {
-      username: "",
-      password: "",
-      email: "",
-      name: "",
-      lastName:"",
+  constructor(private superUserService: SuperUserService, private router: Router) {
+    this.user = {
+      username: '',
+      password: '',
+      email: '',
+      name: '',
+      lastName: '',
       date_of_creation: new Date(),
-    }
+    };
    }
 
   ngOnInit() {
   }
 
-  createUser(){
+  createUser() {
 
-    this.superUserService.createUser(this.user).subscribe(success =>{
-      alert("Successfully");
-      this.router.navigate(['/'])
+    this.superUserService.createUser(this.user).subscribe(success => {
+      this.router.navigate(['/']);
     }, err => {
       alert(err.error);
       console.log(err);
-    }); 
+    });
 
 
-    
+
   }
 
 

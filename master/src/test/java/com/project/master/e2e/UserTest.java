@@ -1,8 +1,11 @@
 package com.project.master.e2e;
 
+import com.project.master.constants.UserConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -23,7 +26,7 @@ public class UserTest {
     @BeforeMethod
     public void setupSelenium(){
 
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\mihaj\\Desktop\\chromedriver_win32\\chromedriver.exe");
+    	System.setProperty("webdriver.chrome.driver", "C:\\Users\\Korisnik\\Desktop\\chromedriver.exe");
         browser = new ChromeDriver();
 
         browser.manage().window().maximize();;
@@ -32,21 +35,30 @@ public class UserTest {
 
         mainPage = PageFactory.initElements(browser, MainPage.class);
         loginPage = PageFactory.initElements(browser, LogInPage.class);
+        registerPage = PageFactory.initElements(browser, RegisterPage.class);
     }
 
     @Test
     public void testLogin(){
-        //mainPage.ensureIsDisplayed();
 
-        if (mainPage.getLogoutButton() == null) {
-            mainPage.getLogoutButton().click();
-        }
+        //ensure main page is displayed
+        WebDriverWait wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(mainPage.getMainPageLink()));
+
+        assertEquals("http://localhost:4200/", browser.getCurrentUrl());
+
+        //ensure login button is displayed
+        wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(mainPage.getLogInButton()));
 
         mainPage.getLogInButton().click();
 
         assertEquals("http://localhost:4200/login", browser.getCurrentUrl());
 
-        loginPage.ensureIsDisplyed();
+        //ensure signIn button is displayed
+        wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(loginPage.getSingInButton()));
+
         //entering empty credentials
         loginPage.getSingInButton().click();
         loginPage.ensureErrorIsDisplayed();
@@ -56,53 +68,60 @@ public class UserTest {
         loginPage.getUsernameInput().sendKeys("miki");
         loginPage.getPasswordInput().sendKeys("m");
         loginPage.getSingInButton().click();
-
-        loginPage.ensureErrorIsDisplayed();
         assertEquals("Wrong username or password.", loginPage.getErrorMessage().getText());
 
+        //entering right credentials
         loginPage.getPasswordInput().clear();
         loginPage.getPasswordInput().sendKeys("user");
         loginPage.getSingInButton().click();
 
+        //ensure main page is displayed
+        wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(mainPage.getMainPageLink()));
 
-       // mainPage.ensureIsDisplayed();
-        assertEquals("http://localhost:4200/login", browser.getCurrentUrl());
+        assertEquals("http://localhost:4200/", browser.getCurrentUrl());
     }
 
     @Test
     public void testRegister(){
 
-        if(mainPage.getLogoutButton() == null) {
-            mainPage.getLogoutButton().click();
-        }
+        //ensure main page is displayed
+        WebDriverWait wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(mainPage.getMainPageLink()));
 
-        //mainPage.ensureLoginIsDisplayed();
+        assertEquals("http://localhost:4200/", browser.getCurrentUrl());
+
+        //ensure login button is displayed
+        wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(mainPage.getLogInButton()));
 
         mainPage.getLogInButton().click();
 
         assertEquals("http://localhost:4200/login", browser.getCurrentUrl());
 
-       // loginPage.ensureIsDisplyed();
+        //ensure signUp button is displayed
+        wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(loginPage.getSignUpButton()));
+
         loginPage.getSignUpButton().click();
-
-        browser.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        //registerPage.getUsernameInput().clear();
-        registerPage.getUsernameInput().sendKeys("Test1");
-        //registerPage.getPasswordInput().clear();
-        registerPage.getPasswordInput().sendKeys("TestPass");
-        //registerPage.getEmailInput().clear();
-        registerPage.getEmailInput().sendKeys("test@test@gmail.com");
-        //registerPage.getNameInput().clear();
-        registerPage.getNameInput().sendKeys("TestName1");
-        //registerPage.getLastNameInput().clear();
-        registerPage.getLastNameInput().sendKeys("TestLastName1");
-        registerPage.getCreateButton().click();
-
         assertEquals("http://localhost:4200/register", browser.getCurrentUrl());
 
+        wait = new WebDriverWait(browser, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(registerPage.getCreateButton()));
 
+        registerPage.getUsernameInput().sendKeys(UserConstants.NEW_USERNAME);
+        registerPage.getPasswordInput().sendKeys(UserConstants.NEW_PASSWORD);
+        registerPage.getEmailInput().sendKeys(UserConstants.NEW_EMAIL);
+        registerPage.getNameInput().sendKeys(UserConstants.NEW_NAME);
+        registerPage.getLastNameInput().sendKeys(UserConstants.NEW_PASSWORD);
 
+        registerPage.getCreateButton().click();
 
+        //ensure main page is displayed
+        //wait = new WebDriverWait(browser, 15);
+        //wait.until(ExpectedConditions.elementToBeClickable(mainPage.getMainPageLink()));
+
+        //assertEquals("http://localhost:4200/", browser.getCurrentUrl());
 
     }
 

@@ -1,6 +1,7 @@
 package com.project.master.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.master.MyUserDetailsService;
+import com.project.master.domain.Ticket;
 import com.project.master.domain.User;
+import com.project.master.dto.TicketDTO;
 import com.project.master.dto.UserDTO;
 import com.project.master.exception.DataException;
 import com.project.master.service.UserService;
@@ -135,6 +139,29 @@ public class UserController {
 		return new ResponseEntity<ArrayList<User>>(users, HttpStatus.OK);
 	}
 	
+	
+	@RequestMapping(value = "/my_tickets", method = RequestMethod.GET)
+	public ResponseEntity<List<Ticket>> getMyTickets() throws DataException{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		 List<Ticket> tickets = userService.getMyTickets(auth.getName());
+		return new ResponseEntity<List<Ticket>>(tickets, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/deleted", method = RequestMethod.POST)
+	public ResponseEntity<Ticket> deleteTicket(@RequestBody TicketDTO ticketDTO){
+		
+		Ticket ticket = new Ticket();
+		try {
+			ticket = userService.deleteTicket(ticketDTO);
+			return new ResponseEntity<Ticket>(ticket, HttpStatus.OK);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new ResponseEntity<Ticket>(ticket, HttpStatus.BAD_REQUEST);
+		}
+		
+	}
+	
 	@RequestMapping(value = "/create_location_admin", method = RequestMethod.POST)
 	public ResponseEntity<String> createLocationEventAdminUser(@RequestBody UserDTO userDTO){
 		
@@ -158,6 +185,16 @@ public class UserController {
 	}
 	
 	
+	@RequestMapping(value = "/get_all_profit", method = RequestMethod.GET)
+	public ResponseEntity<ArrayList<User>> getAllProfit(){
+		ArrayList<User> users = new ArrayList<User>();
+		users = userService.getAllUsers("REGULAR_USER_ROLE");
+		System.out.println(users.size());
+		return new ResponseEntity<ArrayList<User>>(users, HttpStatus.OK);
+	}
+	
+	
+	
 	@RequestMapping(value = "/delete_location/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteLocation(@PathVariable String id){
 		try {
@@ -165,12 +202,13 @@ public class UserController {
 		} catch (DataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return new ResponseEntity<String>("Failed", HttpStatus.OK);
+			return new ResponseEntity<String>("Success", HttpStatus.OK);
 
 		}
-		return new ResponseEntity<String>("Success", HttpStatus.OK);
+		return new ResponseEntity<String>("Failed", HttpStatus.BAD_REQUEST);
 	}
 	
+
 	
 	
 	

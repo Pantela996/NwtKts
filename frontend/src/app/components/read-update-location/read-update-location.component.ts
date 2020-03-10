@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationService } from 'src/app/services/location.service'
+import { LocationService } from 'src/app/services/location.service';
 import { Router } from '@angular/router';
 
 
@@ -10,29 +10,29 @@ import { Router } from '@angular/router';
 })
 export class ReadUpdateLocationComponent implements OnInit {
 
-  public locations = []
+  public locations = [];
 
-  constructor(private locationService: LocationService, private router:Router) { }
+  constructor(private locationService: LocationService, private router: Router) { }
 
   ngOnInit() {
     this.locationService.getAll().subscribe(success => {
-      this.setLocations(success)
+      this.setLocations(success);
     });
   }
 
-  setLocations(data){
-    if(data.length != 0){
+  setLocations(data) {
+    if (data.length !== 0) {
       this.locations = data;
 
     }
   }
 
-  addNewLocation(){
+  addNewLocation() {
     this.router.navigate(['/create_location']);
   }
 
-  onUpdate(name:string){
-    //this.locationService.updateLocation(name).subscribe();
+  onUpdate(name: string) {
+    // this.locationService.updateLocation(name).subscribe();
 
   }
 

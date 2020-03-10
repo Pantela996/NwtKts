@@ -8,12 +8,12 @@ export class JwtUtilsService {
   constructor() { }
 
   getRoles(token: string) {
-    if(token == ""){
+    if (token === '') {
       return [];
     }
-    let jwtData = token.split('.')[1];
-    let decodedJwtJsonData = window.atob(jwtData);
-    let decodedJwtData = JSON.parse(decodedJwtJsonData);
+    const jwtData = token.split('.')[1];
+    const decodedJwtJsonData = window.atob(jwtData);
+    const decodedJwtData = JSON.parse(decodedJwtJsonData);
     return decodedJwtData.roles.split(',');
   }
 

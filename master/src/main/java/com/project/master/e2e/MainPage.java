@@ -20,9 +20,6 @@ public class MainPage {
     @FindBy(id = "locations")
     private WebElement locationsButton;
 
-    @FindBy(id = "c_seatmap")
-    private WebElement cSeatMapButton;
-
     @FindBy(id = "createLocations")
     private WebElement createLocationsButton;
 
@@ -84,14 +81,6 @@ public class MainPage {
         this.locationsButton = locationsButton;
     }
 
-    public WebElement getcSeatMapButton() {
-        return cSeatMapButton;
-    }
-
-    public void setcSeatMapButton(WebElement cSeatMapButton) {
-        this.cSeatMapButton = cSeatMapButton;
-    }
-
     public WebElement getCreateLocationsButton() {
         return createLocationsButton;
     }
@@ -117,8 +106,8 @@ public class MainPage {
     }
 
     public void ensureIsDisplayed() {
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"main_page_link\"]") ));
+        WebDriverWait wait = new WebDriverWait(driver, 15);
+        wait.until(ExpectedConditions.elementToBeClickable(mainPageLink));
     }
 
     public void ensureLoginIsDisplayed() {

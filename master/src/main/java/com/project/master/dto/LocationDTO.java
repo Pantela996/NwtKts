@@ -72,7 +72,12 @@ public class LocationDTO {
 	}
 
 	public void setLocationCity(String locationCity) {
-		this.locationCity = locationCity;
+		if(locationCity.equalsIgnoreCase("nullValue")) {
+			this.locationCity = null;
+		}else {
+			this.locationCity = locationCity;
+		}
+		
 	}
 
 	public String getUser_id() {

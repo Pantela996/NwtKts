@@ -13,6 +13,14 @@ import javax.persistence.OneToOne;
 @Entity
 public class Ticket {
 
+	public Boolean getIs_payed() {
+		return is_payed;
+	}
+
+	public void setIs_payed(Boolean is_payed) {
+		this.is_payed = is_payed;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,8 +33,11 @@ public class Ticket {
 	
 	@Column
 	private int seat_column;
+	
+	@Column
+	private Boolean is_payed;
 
-	@ManyToOne(fetch = FetchType.EAGER, optional = false, cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	private Event event;
 
 
@@ -42,6 +53,14 @@ public class Ticket {
 	}
 
 
+	public Ticket(Boolean is_payed, double price, int row, int column, Event event) {
+		super();
+		this.is_payed = is_payed;
+		this.price = price;
+		this.seat_row = row;
+		this.seat_column = column;
+		this.event = event;
+	}
 
 	public Ticket(double price, int row, int column, Event event) {
 		super();

@@ -28,18 +28,45 @@ public class LocationServiceImpl implements LocationService {
 	private HallRepository hallRepository;
 
 	@Override
-	public String createLocation(String locationName, String locationCity, String user, int numberOfHalls)
+	public String createLocation(LocationDTO locationDTO,String user)
 			throws DataException {
-		Optional<EventLocation> location = locationRepository.findByName(locationName);
+	
+		
+		if (locationDTO.getName() == null){
+			throw new DataException("Name is null");
+		}
+		if (locationDTO.getLocationCity() == null){
+			System.out.println("LOCATION IS NULL");
+			throw new DataException("Location is null");
+		}
+		
+		if(user == null) {
+			throw new DataException("User is null");
+		}
+		
+		Optional<EventLocation> location = locationRepository.findByName(locationDTO.getName());
+		
+		int size = 0;
+		int j = 0;
 		System.out.println("Usao sam u create");
 		if (location.isPresent()) {
 			throw new DataException("Already exists");
 		}
 		System.out.println("Usao sam u createLocation");
-		EventLocation result = new EventLocation(locationName, locationCity, user, numberOfHalls);
+		EventLocation result = new EventLocation(locationDTO.getName(), locationDTO.getLocationCity(), user, locationDTO.getNumberOfHalls());
 		List<Hall> halls = new ArrayList<Hall>();
-		for (int i = 0; i < numberOfHalls; ++i) {
-			Hall h = new Hall(10, 10, result);
+		for (int i = 0; i < locationDTO.getNumberOfHalls(); ++i) {
+			if(j == 0) {
+				size = 10;
+				j++;
+			}else if(j==1) {
+				size = 20;
+				j++;
+			}else {
+				size = 30;
+				j = 0;
+			}
+			Hall h = new Hall(size, size, result);
 			halls.add(h);
 			hallRepository.save(h);
 
@@ -54,6 +81,7 @@ public class LocationServiceImpl implements LocationService {
 
 	}
 
+	
 	public String deleteLocation(String location_id) throws DataException {
 		Optional<EventLocation> oe = locationRepository.findById(Long.valueOf(location_id));
 		if (!oe.isPresent()) {

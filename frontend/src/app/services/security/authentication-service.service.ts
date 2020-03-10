@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable,throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { JwtUtilsService } from './jwt-utils.service';
 import { catchError } from 'rxjs/operators';
@@ -13,16 +13,16 @@ export class AuthenticationService {
   }
 
   login(name: string, password: string, callback) {
-    var headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-    var _this = this;
-    
-    var observer = {
+    const headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const sthis = this;
+
+    const observer = {
       next(value) {
         console.log(value);
-        if (value !== "Invalid login") {
-          localStorage.setItem('currentUser', JSON.stringify({ 
+        if (value !== 'Invalid login') {
+          localStorage.setItem('currentUser', JSON.stringify({
                                     username: name,
-                                    roles: _this.jwtUtilsService.getRoles(value), 
+                                    roles: sthis.jwtUtilsService.getRoles(value),
                                     token: value
                                   }));
           callback.handleLogin(true);
@@ -31,11 +31,11 @@ export class AuthenticationService {
         error(msg) {
           callback.handleLogin(false);
         }
-    }
+    };
 
-    this.http.post(this.loginPath, JSON.stringify({ 
-      username : name, 
-      password : password })
+    this.http.post(this.loginPath, JSON.stringify({
+      username : name,
+      password })
     , { headers , responseType : 'text' as 'json'})
           // pipe hvata los zahtev i baca error koji subscribe obradjuje
           .pipe(catchError(err => {
@@ -44,10 +44,10 @@ export class AuthenticationService {
           .subscribe(observer);
   }
 
-  getToken(): String {
-    var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    var token = currentUser && currentUser.token;
-    return token ? token : "";
+  getToken(): string {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const token = currentUser && currentUser.token;
+    return token ? token : '';
   }
 
   logout(): void {
@@ -55,21 +55,19 @@ export class AuthenticationService {
   }
 
   isLoggedIn(): boolean {
-    if (this.getToken() != '') return true;
-    else return false;
+    if (this.getToken() !== '') { return true; } else { return false; }
   }
 
   getCurrentUser() {
     if (localStorage.currentUser) {
       return JSON.parse(localStorage.currentUser);
-    }
-    else {
+    } else {
       return undefined;
     }
   }
 
-  getRoles(){
-    var token = this.getToken().toString();
+  getRoles() {
+    const token = this.getToken().toString();
     return this.jwtUtilsService.getRoles(token);
   }
 }

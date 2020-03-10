@@ -3,6 +3,7 @@ package com.project.master.service;
 
 import ch.qos.logback.core.CoreConstants;
 import com.project.master.domain.*;
+import com.project.master.dto.TicketDTO;
 import com.project.master.dto.UserDTO;
 import com.project.master.exception.DataException;
 import com.project.master.exception.UserNotFoundException;
@@ -40,6 +41,11 @@ public class UserService {
 
 	@Autowired
 	private EventRepository eventRepository;
+	
+
+	@Autowired
+	private TicketRepository ticketRepository;
+
 
     @Transactional(readOnly = true, propagation = Propagation.REQUIRED)
     public Optional<User> getLoggedUser() throws UserNotFoundException {
@@ -76,6 +82,14 @@ public class UserService {
 		
 		if(userDTO.getLastName() == null) throw new DataException("No lastname was given");
 		
+		if(userDTO.getUsername().length() < 3 || userDTO.getUsername().length() > 20)
+			throw new DataException("Username format");
+		if(userDTO.getPassword().length() < 3 || userDTO.getPassword().length() > 20)
+			throw new DataException("Password format");
+		if(userDTO.getName().length() < 3 || userDTO.getName().length() > 20)
+			throw new DataException("Name format");
+		if(userDTO.getLastName().length() < 3 || userDTO.getLastName().length() > 20)
+			throw new DataException("Surname format");
 		
 		Optional<User> oUser = userRepository.findByUsername(userDTO.getUsername());
 				
@@ -155,7 +169,7 @@ public class UserService {
 				System.out.println(a.getAuthority().getName());
 				if(a.getAuthority().getName().equalsIgnoreCase(typeOFUsers)) {
 					System.out.println(u.getUserAuthorities().size());
-					finalUsers.add(new User(u.getUsername(), u.getPassword(), u.getName(), u.getLastName(), u.getEmail(), u.getDate_of_creation()));
+					finalUsers.add(new User(u.getId(), u.getUsername(), u.getPassword(), u.getName(), u.getLastName(), u.getEmail(), u.getDate_of_creation(), u.getTicket()));
 				}
 			}
 		}
@@ -167,6 +181,10 @@ public class UserService {
 		
 		Optional<EventLocation> oloc = locationRepository.findById(Long.valueOf(id));
 
+		if(!oloc.isPresent()) {
+			throw new DataException("Location does not exists");
+		}
+		
 		List<Event> events = eventRepository.findAll();
 		for (Event event:events){
 			if(event.getLocation().getName() == oloc.get().getName()){
@@ -201,5 +219,58 @@ public class UserService {
 		
 		return user;
 	}
+
+
+	public List<Ticket> getMyTickets(String username) throws DataException {
+		Optional<User> ouser = userRepository.findByUsername(username);
+		
+		if(!ouser.isPresent()) {
+			throw new DataException("User does not exists");
+		}
+		
+		User user = ouser.get();
+		
+		
+		return user.getTicket();
+	}
+
+
+	public Ticket deleteTicket(TicketDTO ticketDTO) throws DataException {
+		Optional<Ticket> oticket = ticketRepository.findById(ticketDTO.getId());
+		
+		if(!oticket.isPresent()) {
+			throw new DataException("Ticket does not exists");
+		}
+		
+		Ticket ticket = oticket.get();
+		
+		Optional<Event> oevent = eventRepository.findById(ticket.getEvent().getId());
+		
+		if(!oevent.isPresent()) {
+			throw new DataException("Event does not exists");
+		}
+		
+		Event event= oevent.get();
+		
+		for(Seat p:event.getHall().getSeats()) {
+			if(p.getSeat_row() == ticket.getSeat_row() && p.getSeat_column() == ticket.getSeat_column()) {
+				p.setTypeOfSeat(TypeOfSeat.AVAILABLE);
+			}
+		}	
+		
+		
+		
+		eventRepository.save(event);
+		
+
+		
+		ticketRepository.delete(ticket);
+		
+
+
+		
+		return ticket;
+	}
+
 
 }

@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
   <a class="navbar-brand abs" href="" [(ngModel)] =  'main_page_link' id="main_page_link">Ticket Master</a>
+  <input type="text" *ngIf = "isRegularUser()" (change)="searchBox($event.target.value)">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -13,6 +14,9 @@
         </li>
         <li class="navbar navbar-light bg-light">
             <button class="btn" *ngIf="isSuperAdmin()"  (click) ="showLocations()" id="locations">Locations</button>
+        </li>
+        <li class="navbar navbar-light bg-light">
+            <button class="btn" *ngIf="isSuperAdmin() || isLocationEventAdmin()"  (click) ="profitReview()" id="review">Profit Review</button>
         </li>
         <li class="navbar navbar-light bg-light">
             <button class="btn" *ngIf="isLocationEventAdmin()"  (click) ="createLocations()" id="createLocations">Create Locations</button>
@@ -67,7 +71,7 @@
                     <td>{{ event.dateTo | date }}</td>
                     <td>{{ event.description }}</td> 
                     <td><button type="button" class="btn btn-primary"  id="information" (click) = "info(event.id)"><i class="far fa-eye">i</i></button></td>
-                    <td><a type="button" class="btn btn-warning"   id="reservation" *ngIf = "isRegularUser()" (click) = "reservation(event)"><i class="far fa-eye">r</i></a></td>
+                    <td><a type="button" class="btn btn-warning"   id="reservation" *ngIf = "isRegularUser()&&isBefore(event.dateTo)" (click) = "reservation(event)"><i class="far fa-eye">r</i></a></td>
                    
                 </tr>
                 <tr class="more-info" id="more-info">

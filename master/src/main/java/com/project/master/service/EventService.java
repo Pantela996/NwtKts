@@ -1,5 +1,6 @@
 package com.project.master.service;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -177,20 +178,27 @@ public class EventService {
 		
 		StringBuilder sb = new StringBuilder();
 		//find event and save img
+		
+		File dir = new File(uploadDirectory + "/" + id);
+		dir.mkdirs();
+		
 		if(optEvent.isPresent()) {
 			Event event = optEvent.get();
 			for (MultipartFile file : files) {
-				Path fileNameAndPath = Paths.get(uploadDirectory, file.getOriginalFilename());
+
+				Path fileNameAndPath = Paths.get(uploadDirectory + "/" + id, file.getOriginalFilename());
 				try {
 					Files.write(fileNameAndPath, file.getBytes());
 					Frame f = new Frame();
 					sb.append("/uploads/");
+
 					sb.append(String.valueOf(id));
 					sb.append("/");
 					sb.append(file.getOriginalFilename());
 					System.out.println(sb.toString());
 					f.setUrl(sb.toString());
 					event.getFrames().add(f);
+	
 					frameRepository.save(f);
 					eventRepository.save(event);
 					

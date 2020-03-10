@@ -42,6 +42,7 @@ public class PaypalService {
 	    List<Transaction> transactions = new ArrayList<Transaction>();
 	    transactions.add(transaction);
 
+
 	    Payer payer = new Payer();
 	    payer.setPaymentMethod("paypal");
 
@@ -73,6 +74,7 @@ public class PaypalService {
 	    } catch (PayPalRESTException e) {
 	        System.out.println("Error happened during payment creation!");
 	    }
+		System.out.println(sum+ "CENA");
 	    return response;
 	}
 	

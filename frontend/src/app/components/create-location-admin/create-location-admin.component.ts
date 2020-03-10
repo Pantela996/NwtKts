@@ -11,32 +11,31 @@ export class CreateLocationAdminComponent implements OnInit {
 
   private user;
 
-  constructor(private superuserservice: SuperUserService, public router: Router) { 
+  constructor(private superuserservice: SuperUserService, public router: Router) {
     this.user = {
-      firstname: "",
-      lastname: "",
-      username: "",
-      password: "",
-      email: ""
-    }
+      firstname: '',
+      lastname: '',
+      username: '',
+      password: '',
+      email: ''
+    };
 
   }
 
   ngOnInit() {
   }
 
-  createLocationAdmin(){
+  createLocationAdmin() {
 
-    this.superuserservice.createLocationAdmin(this.user).subscribe(success =>{
-      alert("Successfully");
-      this.router.navigate(['/read_delete_location_admin'])
+    this.superuserservice.createLocationAdmin(this.user).subscribe(success => {
+      this.router.navigate(['/read_delete_location_admin']);
     }, err => {
       alert(err.error);
       console.log(err);
-    }); 
+    });
 
 
-    
+
   }
 
 }

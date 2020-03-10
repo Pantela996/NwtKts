@@ -36,6 +36,7 @@ import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import com.project.master.domain.Event;
 import com.project.master.domain.Seat;
+import com.project.master.domain.Ticket;
 import com.project.master.dto.EventDTO;
 import com.project.master.dto.SeatInfoDTO;
 import com.project.master.dto.SelectedSeatInfoDTO;
@@ -86,6 +87,8 @@ public class EventController {
 			return new ResponseEntity<String>("Invalid delete", HttpStatus.BAD_REQUEST);
 		}
 	}
+	
+	
 
 	@RequestMapping(value = "/update", method = RequestMethod.PUT)
 	public ResponseEntity<String> updateEvent(@RequestParam String event_id, @RequestBody EventDTO eventDTO) {
@@ -142,16 +145,22 @@ public class EventController {
 	}
 	
 	
-	@CrossOrigin(origins = "http://localhost:4200")
-	@RequestMapping(value = "/make/payment", method = RequestMethod.POST)
-	public Map<String, Object> makePayment(@RequestBody SelectedSeatInfoDTO seatInfo) throws PayPalRESTException, UserNotFoundException, DataException{
+	@RequestMapping(value = "/update_seat_hall", method = RequestMethod.POST)
+	public ResponseEntity<String> updateSeatHall(@RequestBody SelectedSeatInfoDTO seatInfo) throws PayPalRESTException, UserNotFoundException, DataException{
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			hallService.updateSeats(seatInfo, authentication.getName());
 			ticketService.reserveTicket(seatInfo);
-			double price = hallService.getPrice(seatInfo);
 
-	        return paypalService.createPayment(String.valueOf(price));
+			return new ResponseEntity<String>("Success", HttpStatus.OK);
 	}
+	
+	@CrossOrigin(origins = "http://localhost:4200")
+	@RequestMapping(value = "/make/payment", method = RequestMethod.POST)
+	public Map<String, Object> makePayment(@RequestBody TicketDTO ticketInfoDTO) throws PayPalRESTException, UserNotFoundException, DataException{
+			Ticket ticket = ticketService.buyTicket(ticketInfoDTO);
+	        return paypalService.createPayment(String.valueOf(ticket.getPrice()));
+	}
+	
 	
 	@CrossOrigin(origins = "http://localhost:4200")
 	@RequestMapping(value = "/complete/payment", method = RequestMethod.POST)
@@ -173,11 +182,14 @@ public class EventController {
 	}
 	
 
-	@RequestMapping(value = "/get-images")
+	@RequestMapping(value = "/get-image")
 	public ResponseEntity<List<byte[]>> getImageWithMediaType(@RequestParam("event_id") String event_id) throws IOException {
 		List<byte[]> frames;
 		try {
 			frames = eventService.getFrames(event_id);
+			
+			
+			
 			return new ResponseEntity<List<byte[]>>(frames,HttpStatus.OK);
 		} catch (DataException e) {
 			// TODO Auto-generated catch block

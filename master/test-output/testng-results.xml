@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results total="4" passed="4" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2020-02-10T12:46:17Z" name="Default suite" finished-at="2020-02-10T12:47:23Z" duration-ms="66169">
+    <groups>
+    </groups>
+    <test started-at="2020-02-10T12:46:17Z" name="Default test" finished-at="2020-02-10T12:47:23Z" duration-ms="66169">
+      <class name="com.project.master.e2e.MainPageSuperAdminTest">
+        <test-method is-config="true" signature="setupSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:46:17Z" name="setupSelenium" finished-at="2020-02-10T13:46:30Z" duration-ms="12924" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupSelenium -->
+        <test-method signature="createLocationAdmin()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:46:30Z" name="createLocationAdmin" finished-at="2020-02-10T13:46:34Z" duration-ms="3991" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- createLocationAdmin -->
+        <test-method is-config="true" signature="closeSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:46:34Z" name="closeSelenium" finished-at="2020-02-10T13:46:34Z" duration-ms="178" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- closeSelenium -->
+        <test-method is-config="true" signature="setupSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:46:34Z" name="setupSelenium" finished-at="2020-02-10T13:46:48Z" duration-ms="13972" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupSelenium -->
+        <test-method signature="deleteEventAdmin()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:46:48Z" name="deleteEventAdmin" finished-at="2020-02-10T13:46:50Z" duration-ms="2653" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteEventAdmin -->
+        <test-method is-config="true" signature="closeSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:46:50Z" name="closeSelenium" finished-at="2020-02-10T13:46:51Z" duration-ms="196" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- closeSelenium -->
+        <test-method is-config="true" signature="setupSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:46:51Z" name="setupSelenium" finished-at="2020-02-10T13:47:05Z" duration-ms="13984" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupSelenium -->
+        <test-method signature="deleteLocation()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:47:05Z" name="deleteLocation" finished-at="2020-02-10T13:47:07Z" duration-ms="2741" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteLocation -->
+        <test-method is-config="true" signature="closeSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:47:07Z" name="closeSelenium" finished-at="2020-02-10T13:47:07Z" duration-ms="188" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- closeSelenium -->
+        <test-method is-config="true" signature="setupSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:47:07Z" name="setupSelenium" finished-at="2020-02-10T13:47:20Z" duration-ms="12300" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupSelenium -->
+        <test-method signature="deleteUser()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:47:20Z" name="deleteUser" finished-at="2020-02-10T13:47:23Z" duration-ms="2887" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteUser -->
+        <test-method is-config="true" signature="closeSelenium()[pri:0, instance:com.project.master.e2e.MainPageSuperAdminTest@932bc4a]" started-at="2020-02-10T13:47:23Z" name="closeSelenium" finished-at="2020-02-10T13:47:23Z" duration-ms="137" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- closeSelenium -->
+      </class> <!-- com.project.master.e2e.MainPageSuperAdminTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

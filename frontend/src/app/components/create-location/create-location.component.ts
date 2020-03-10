@@ -13,26 +13,25 @@ export class CreateLocationComponent implements OnInit {
 
   constructor(private locationService: LocationService, public router: Router) {
     this.location = {
-      name: "",
-      locationCity: "",
-      user_id: "",
+      name: '',
+      locationCity: '',
+      user_id: '',
       numberOfHalls: 1
-    }
+    };
    }
 
   ngOnInit() {
   }
 
-  createLocation(){
+  createLocation() {
 
-    this.locationService.createLocation(this.location).subscribe(success =>{
-      alert("Successfully");
-      this.router.navigate(['/read_update_location'])
+    this.locationService.createLocation(this.location).subscribe(success => {
+      this.router.navigate(['/read_update_location']);
     }, err => {
       alert(err.error);
       console.log(err);
-    }); 
-    
+    });
+
   }
 
 

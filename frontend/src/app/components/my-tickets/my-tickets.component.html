@@ -1,0 +1,34 @@
+<div class="col-md-3"></div>
+    <div class="col-md-6">
+        <h2 class="form-signin-heading">My cart</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>  </th>
+                    <th>Price</th>
+                    <th>Seat row</th>
+                    <th>Seat column</th>
+                    <th>Event name</th>
+                    <th>Date from</th>  
+                    <th>Date to</th>
+                    <th>Location</th>
+
+                    <th>  </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ticket of tickets; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ ticket.price}}</td>
+                    <td>{{ ticket.seat_row }}</td>
+                    <td>{{ ticket.seat_column }}</td>
+                    <td>{{ ticket.event.name }}</td>
+                    <td>{{ ticket.event.dateFrom | date }}</td>
+                    <td>{{ ticket.event.dateTo  | date}}</td>
+                    <td>{{ ticket.event.location.name }}</td>
+                    <td><button type="button" class="btn btn-primary" *ngIf="!ticket.is_payed&&isBefore(ticket)" id="delete" (click) = "onDelete(ticket,i)"><i class="far fa-eye">X</i></button></td>
+                    <td><button type="button" class="btn btn-primary" *ngIf="!ticket.is_payed&&isBefore(ticket)"  id="buy" (click) = "buyTickets(ticket)"><i class="far fa-eye">BUY</i></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

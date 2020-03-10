@@ -38,8 +38,8 @@ public class LocationController {
 
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String message = locationService.createLocation(locationDTO.getName(), locationDTO.getLocationCity(), authentication.getName(), locationDTO.getNumberOfHalls());
-			return new ResponseEntity<String>(message, HttpStatus.OK);
+			String message = locationService.createLocation(locationDTO, authentication.getName());
+			return new ResponseEntity<String>("Successful", HttpStatus.OK);
 		} catch (DataException e) {
 			// TODO Auto-generated catch block
 			return new ResponseEntity<>("Failed null", HttpStatus.BAD_REQUEST);

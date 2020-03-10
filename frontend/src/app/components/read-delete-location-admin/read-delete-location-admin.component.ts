@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SuperUserService} from "src/app/services/super-user.service"
+import {SuperUserService} from 'src/app/services/super-user.service';
 import { Router } from '@angular/router';
 import { ThrowStmt } from '@angular/compiler';
 
@@ -10,30 +10,30 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class ReadDeleteLocationAdminComponent implements OnInit {
 
-  public users = []
+  public users = [];
 
-  constructor(private superuserservice: SuperUserService, private router:Router) { }
+  constructor(private superuserservice: SuperUserService, private router: Router) { }
 
   ngOnInit() {
-    this.superuserservice.getAll().subscribe(success => {this.setUsers(success)});
+    this.superuserservice.getAll().subscribe(success => {this.setUsers(success); });
   }
 
-  setUsers(data){
-    if(data.length != 0){
+  setUsers(data) {
+    if (data.length !== 0) {
       this.users = data;
       console.log(this.users[0].username);
 
     }
 
   }
-  addNewAdmin(){
+  addNewAdmin() {
     this.router.navigate(['/create_location_admin']);
   }
 
-  onDelete(username:string){
+  onDelete(username: string) {
     this.users = this.users.filter(u => u.username !== username);
     this.superuserservice.deleteUser(username).subscribe();
   }
-  
-  
+
+
 }

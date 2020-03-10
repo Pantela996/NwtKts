@@ -54,7 +54,8 @@ public class LocationServiceUnitTests {
     @Test(expected = DataException.class)
     public void whenLocationWithSameNameExistsThrowException_createLocation() throws Exception {
         when(mockedLocationRepository.findByName("name")).thenReturn(Optional.of(validLocation));
-        locationService.createLocation("name", "Some city", "name", 3);
+        LocationDTO locationDTO = new LocationDTO("name", "Some city", "user", 10);
+        locationService.createLocation(locationDTO, "name");
     }
 
     @Test

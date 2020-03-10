@@ -20,7 +20,7 @@ public class LogInPage {
     @FindBy(id = "sign_in")
     private WebElement singInButton;
 
-    @FindBy(id = "//*[@id=\"register\"]")
+    @FindBy(id = "register")
     private WebElement signUpButton;
 
     @FindBy(id = "errorMsg")

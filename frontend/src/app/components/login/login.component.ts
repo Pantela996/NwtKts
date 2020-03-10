@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/security/authentication-service.service';
-import { EventEmitter,Output } from '@angular/core';
+import { EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,12 +12,12 @@ export class LoginComponent implements OnInit {
 
   public user;
 
-  public wrongUsernameOrPass:boolean;
+  public wrongUsernameOrPass: boolean;
 
   @Output()
-  changeDisplay:EventEmitter<any> = new EventEmitter();
+  changeDisplay: EventEmitter<any> = new EventEmitter();
 
-  constructor(private authenticationService:AuthenticationService,
+  constructor(private authenticationService: AuthenticationService,
               private router: Router) {
     this.user = {};
 
@@ -25,25 +25,25 @@ export class LoginComponent implements OnInit {
    }
 
   ngOnInit() {
-   
+
   }
 
-  login():void{
-    this.authenticationService.login(this.user.name, this.user.password,this);
+  login(): void {
+    this.authenticationService.login(this.user.name, this.user.password, this);
   }
 
-  handleLogin(loggedIn){
-    if(loggedIn){
-      console.log("SUCCESSFUL COMPONENT");
-      this.router.navigate(['/']);          
-    }else{
+  handleLogin(loggedIn) {
+    if (loggedIn) {
+      console.log('SUCCESSFUL COMPONENT');
+      this.router.navigate(['/']);
+    } else {
       this.wrongUsernameOrPass = true;
-      console.log("ERROR COMPONENT");
+      console.log('ERROR COMPONENT');
     }
   }
 
-  openRegistration(){
-    this.router.navigate(['/register'])
+  openRegistration() {
+    this.router.navigate(['/register']);
 
   }
 

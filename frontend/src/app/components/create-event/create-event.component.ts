@@ -1,5 +1,5 @@
 import { Component, OnInit, Type, Output } from '@angular/core';
-import { EventService } from 'src/app/services/event.service'
+import { EventService } from 'src/app/services/event.service';
 import { LocationService } from 'src/app/services/location.service';
 import { Router } from '@angular/router';
 import { SeatSelectionComponent } from '../seat-selection/seat-selection.component';
@@ -16,7 +16,7 @@ import { EventEmitter } from 'protractor';
 })
 export class CreateEventComponent implements OnInit {
 
-  private name:string;
+  private name: string;
   private locations;
   private numberOfHalls;
   private event;
@@ -24,23 +24,25 @@ export class CreateEventComponent implements OnInit {
   private halls;
   private halChosen = false;
   private hall;
-  private date_from;
-  private date_to;
+  private dateFrom;
+  private dateTo;
   private description;
 
-  message:number;
+  message: number;
 
-  constructor(private data:TransferService,private locationService: LocationService, private eventService: EventService, public router:Router, private seatComponent:SeatSelectionComponent) {
+  constructor(private data: TransferService, private locationService: LocationService,
+              private eventService: EventService,
+              public router: Router, private seatComponent: SeatSelectionComponent) {
     this.event = {
-      name: "",
-      dateFrom: "",
-      dateTo: "",
-      event_location: "",
-      hall:null,
-      event_category: "",
-      description: "",
+      name: '',
+      dateFrom: '',
+      dateTo: '',
+      event_location: '',
+      hall: null,
+      event_category: '',
+      description: '',
 
-    }
+    };
 
    }
 
@@ -51,63 +53,63 @@ export class CreateEventComponent implements OnInit {
     });
   }
 
-  setLocations(data){
-    if(data.length != 0){
+  setLocations(data) {
+    if (data.length !== 0) {
       this.locations = data;
     }
   }
 
-  setHalls(data){
-    if(data.length != 0){
+  setHalls(data) {
+    if (data.length !== 0) {
       this.halls = data;
     }
   }
 
-  locationChosen(){
+  locationChosen() {
     this.locChosen = true;
     this.numberOfHalls = this.event.event_location.numberOfHalls;
-    this.locationService.getHalls(this.event.event_location.name).subscribe(success =>{
-      this.setHalls(success)
+    this.locationService.getHalls(this.event.event_location.name).subscribe(success => {
+      this.setHalls(success);
     });
   }
 
-  hallChosen(){
+  hallChosen() {
     this.data.changeRows(this.event.location_hall.totalRows);
     this.data.changeColumns(this.event.location_hall.totalColumns);
     this.halChosen = false;
-    setTimeout(() =>{
+    setTimeout(() => {
        this.halChosen = true;
     });
 
-    //this.seatComponent.initializeSeatMap(this.event.location_hall.totalRows,this.event.location_hall.totalColumns);
-    //this.locationService.setRowsColumns(this.event.location_hall.totalRows, this.event.location_hall.totalColumns);
+    // this.seatComponent.initializeSeatMap(this.event.location_hall.totalRows,this.event.location_hall.totalColumns);
+    // this.locationService.setRowsColumns(this.event.location_hall.totalRows, this.event.location_hall.totalColumns);
   }
-    
-  createEvent(){
+
+  createEvent() {
     this.data.currentMessage3.subscribe(message => this.hall = message);
     console.log(this.hall);
     this.event.hall = this.hall;
     this.event.hall.id = this.event.location_hall.id;
     console.log(this.event);
-    this.eventService.createEvent(this.event).subscribe(success =>{
+    this.eventService.createEvent(this.event).subscribe(success => {
       this.router.navigate(['/']);
     });
   }
 
-  isDateGreater(){
-    let d1 = new Date(this.event.dateFrom);
-    let d2 = new Date(this.event.dateTo);
+  isDateGreater() {
+    const d1 = new Date(this.event.dateFrom);
+    const d2 = new Date(this.event.dateTo);
 
-    if(d2 > d1){
+    if (d2 > d1) {
       return true;
-    }else{
+    } else {
       return false;
     }
 
 
   }
 
-  array(n:number){
+  array(n: number) {
     return Array(n);
 
   }

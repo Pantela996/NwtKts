@@ -10,7 +10,7 @@ public class RegisterPage {
 
     private WebDriver webDriver;
 
-    @FindBy(id = "//*[@id=\"username\"]")
+    @FindBy(id = "username")
     private WebElement usernameInput;
 
     @FindBy(id = "password")

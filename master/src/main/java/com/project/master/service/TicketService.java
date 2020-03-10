@@ -5,6 +5,7 @@ import com.project.master.dto.MessageDTO;
 import com.project.master.dto.SeatDTO;
 import com.project.master.dto.SelectedSeatInfoDTO;
 import com.project.master.dto.TicketDTO;
+import com.project.master.exception.DataException;
 import com.project.master.exception.UserNotFoundException;
 import com.project.master.repository.CategoryRepository;
 import com.project.master.repository.EventRepository;
@@ -87,7 +88,7 @@ public class TicketService {
 			String[] arrOfStr = s.getKey().split("_");
 			int row = (Integer.valueOf(arrOfStr[0]));
 			int column = (Integer.valueOf(arrOfStr[1]));
-        	Ticket t = new Ticket(s.getPrice(), row,column, event);
+        	Ticket t = new Ticket(false, s.getPrice(), row,column, event);
         	ticketRepository.save(t);
         	user.getTicket().add(t);
         	userRepository.save(user);
@@ -98,5 +99,24 @@ public class TicketService {
         
         return new MessageDTO(true, "Ticket was succesfully reserved!");
     }
+
+	public Ticket buyTicket(TicketDTO ticketInfoDTO) throws DataException {
+		
+		Optional<Ticket> oticket = ticketRepository.findById(ticketInfoDTO.getId());
+		
+		if(!oticket.isPresent()) {
+			throw new DataException("No ticket found with that id");
+		}
+		
+		Ticket ticket = oticket.get();
+		
+		ticket.setIs_payed(true);
+		
+		ticketRepository.save(ticket);
+		
+		return ticket;
+		// TODO Auto-generated method stub
+		
+	}
 
 }
