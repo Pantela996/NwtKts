@@ -21,7 +21,7 @@
     "@angular/router": "~8.2.14",
     "angular-selectable": "0.0.8",
     "bootstrap": "^4.4.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "ng-init": "^4.0.1",
     "ngx-bootstrap": "^5.2.0",
     "ngx-drag-to-select": "^3.1.1",
